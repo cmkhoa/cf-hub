@@ -1,0 +1,42 @@
+:root {
+	/* Primary Colors */
+	--cf-hub-blue: #0a3977;
+	--cf-hub-blue-light: #e5ebf4;
+	--cf-hub-blue-medium: #7494c0;
+
+	/* Secondary Colors */
+	--cf-hub-blue-dark: #072b5b;
+	--cf-hub-blue-lighter: #f5f8fc;
+
+	/* Accent Colors */
+	--cf-hub-accent-1: #2e5ca0;
+	--cf-hub-accent-2: #4b6ba8;
+	--cf-hub-accent-3: #5c89c7;
+
+	/* Text Colors */
+	--cf-hub-text-primary: #2c3e50;
+	--cf-hub-text-secondary: #506881;
+	--cf-hub-text-light: #ffffff;
+
+	/* Background Colors */
+	--cf-hub-bg-primary: #ffffff;
+	--cf-hub-bg-secondary: #e5ebf4;
+	--cf-hub-bg-tertiary: #f5f8fc;
+
+	/* Border Colors */
+	--cf-hub-border: rgba(10, 57, 119, 0.1);
+
+	/* Shadow Colors */
+	--cf-hub-shadow-light: rgba(10, 57, 119, 0.08);
+	--cf-hub-shadow-medium: rgba(10, 57, 119, 0.12);
+	--cf-hub-shadow-dark: rgba(10, 57, 119, 0.16);
+
+	/* Gradient Colors */
+	--cf-hub-gradient-1: linear-gradient(145deg, #0a3977, #2e5ca0);
+	--cf-hub-gradient-2: linear-gradient(145deg, #e5ebf4, #ffffff);
+
+	/* Success/Error Colors */
+	--cf-hub-success: #27ae60;
+	--cf-hub-error: #e74c3c;
+	--cf-hub-warning: #f39c12;
+}

@@ -1,0 +1,250 @@
+/* Root variables for colors */
+:root {
+	--cf-hub-blue: #0a3977; /* CF Hub's navy blue from logo */
+	--cf-hub-blue-light: #e5ebf4;
+	--cf-hub-blue-medium: #7494c0;
+}
+
+/* Timeline section styling */
+.timeline-section {
+	padding: 50px 20px;
+	background-color: var(--cf-hub-blue-light);
+}
+
+.timeline-title {
+	text-align: center;
+	color: var(--cf-hub-blue);
+	margin-bottom: 50px;
+}
+
+/* Timeline container */
+.timeline-container {
+	position: relative;
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 20px;
+}
+
+/* The vertical timeline line */
+.timeline-line {
+	position: absolute;
+	left: 50%;
+	top: 0;
+	width: 4px;
+	height: 100%;
+	background-color: var(--cf-hub-blue-medium);
+	transform: translateX(-50%);
+}
+
+/* Timeline items */
+.timeline-item {
+	position: relative;
+	width: 50%;
+	padding: 20px 40px;
+	box-sizing: border-box;
+}
+
+/* Left side */
+.timeline-item.left {
+	left: 0;
+	text-align: right;
+}
+
+/* Right side */
+.timeline-item.right {
+	left: 50%;
+}
+
+/* Content inside timeline item */
+.timeline-item .content {
+	position: relative;
+	background: #ffffff;
+	color: #2c3e50;
+	border-radius: 12px;
+	padding: 20px;
+	box-shadow: 0 4px 15px rgba(10, 57, 119, 0.08);
+	animation: fadeInUp 0.6s ease both;
+	border: 1px solid rgba(10, 57, 119, 0.1);
+}
+
+/* Add arrow pointers */
+.timeline-item.left .content::after {
+	content: "";
+	position: absolute;
+	top: 20px;
+	right: -15px;
+	border-width: 8px;
+	border-style: solid;
+	border-color: transparent transparent transparent #ffffff;
+}
+
+.timeline-item.right .content::after {
+	content: "";
+	position: absolute;
+	top: 20px;
+	left: -15px;
+	border-width: 8px;
+	border-style: solid;
+	border-color: transparent #ffffff transparent transparent;
+}
+
+/* Circle indicators on the timeline line */
+.timeline-item::before {
+	content: "";
+	position: absolute;
+	top: 30px;
+	right: -8px;
+	width: 16px;
+	height: 16px;
+	background-color: #ffffff;
+	border: 4px solid var(--cf-hub-blue);
+	border-radius: 50%;
+	z-index: 1;
+	box-shadow: 0 0 0 4px rgba(10, 57, 119, 0.1);
+}
+
+.timeline-item.right::before {
+	left: -8px;
+}
+
+.event-date {
+	font-size: 0.9rem;
+	color: var(--cf-hub-blue);
+	font-weight: 600;
+	margin-bottom: 5px;
+	display: block;
+}
+
+.event-title {
+	color: var(--cf-hub-blue);
+	margin-bottom: 10px;
+}
+
+.event-description {
+	font-size: 1rem;
+	line-height: 1.6;
+	color: #506881;
+}
+
+.event-tag {
+	display: inline-block;
+	margin-top: 15px;
+	padding: 5px 12px;
+	color: #ffffff;
+	border-radius: 20px;
+	font-size: 0.8rem;
+	text-transform: uppercase;
+	font-weight: 500;
+	letter-spacing: 0.5px;
+}
+
+.event-tag.profile {
+	background-color: #f39c12;
+}
+
+.event-tag.project {
+	background-color: #1c447a;
+}
+
+.event-tag.skills {
+	background-color: #27ae60;
+}
+
+.event-tag.applying {
+	background-color: #2980b9;
+}
+
+.event-tag.practice {
+	background-color: #d35400;
+}
+
+.event-tag.assessment {
+	background-color: #506881;
+}
+
+.event-tag.interview {
+	background-color: #1e4a8f;
+}
+
+.event-tag.networking {
+	background-color: var(--cf-hub-blue);
+}
+
+.event-tag.resume {
+	background-color: #4b6ba8;
+}
+
+.event-tag.career {
+	background-color: #2e5ca0;
+}
+
+.event-tag.strategy {
+	background-color: #0a3977;
+}
+
+.event-tag.technical {
+	background-color: #3e6db2;
+}
+
+.event-tag.communication {
+	background-color: #5c89c7;
+}
+
+.event-tag.competition {
+	background-color: #2e5ca0;
+}
+
+/* Animation for timeline items */
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(40px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* Responsive styling */
+@media screen and (max-width: 768px) {
+	.timeline-item {
+		width: 100%;
+		left: 0 !important;
+		text-align: left;
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+
+	.timeline-item .content {
+		margin-left: 30px;
+	}
+
+	.timeline-item.left .content::after,
+	.timeline-item.right .content::after {
+		left: -15px;
+		right: auto;
+		border-color: transparent var(--cf-hub-blue) transparent transparent;
+	}
+
+	.timeline-item::before {
+		left: 15px;
+	}
+
+	.timeline-line {
+		left: 20px;
+	}
+}
+
+/* Hover effects */
+.timeline-item .content:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 6px 20px rgba(10, 57, 119, 0.12);
+	transition: all 0.3s ease;
+}
+
+.event-tag:hover {
+	opacity: 0.9;
+	transform: scale(1.05);
+	transition: all 0.2s ease;
+}

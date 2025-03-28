@@ -1,0 +1,77 @@
+/* Root Variables (Assuming these are defined in your globals.css)
+:root {
+  --primary-color: #564497;
+  --secondary-color: #f8a025;
+  --text-color: #0F2442;
+  --background-color: #fff;
+}
+*/
+
+.faq-container {
+  /* max-width: 1200px; */
+  margin: 0 auto;
+  padding: 80px 320px;
+  background-color: var(--background-color);
+}
+
+.faq-title {
+  margin-bottom: 40px;
+  font-weight: 700;
+  font-size: 48px;
+  line-height: 1.2;
+  color: var(--primary-color);
+  text-align: center;
+}
+
+.faq-collapse {
+  border: none;
+}
+
+.faq-panel {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  overflow: hidden;
+  border: 1px solid #e8e8e8;
+}
+
+.faq-panel > .ant-collapse-header {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-color);
+  padding: 16px;
+}
+
+.faq-panel .ant-collapse-content {
+  background-color: #fff;
+}
+
+.faq-panel .ant-collapse-content > .ant-collapse-content-box {
+  padding: 16px;
+}
+
+.faq-answer {
+  font-size: 16px;
+  line-height: 1.6;
+  /* color: var(--text-color); */
+  display: block;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 768px) {
+  .faq-container {
+    padding: 40px 20px;
+  }
+
+  .faq-title {
+    font-size: 36px;
+  }
+
+  .faq-panel > .ant-collapse-header {
+    font-size: 18px;
+  }
+
+  .faq-answer {
+    font-size: 14px;
+  }
+}

@@ -1,0 +1,96 @@
+/* OffersSection.css */
+.offers-section {
+  padding: 60px 40px;
+  background-color: var(--background-color);
+}
+
+.section-title {
+  text-align: center;
+  color: var(--primary-color);
+  margin-bottom: 40px;
+}
+
+.offer-card {
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #fff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.offer-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.mentee-avatar-container {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.mentee-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--primary-color);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.mentee-details {
+  text-align: center;
+}
+
+.mentee-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.mentee-info {
+  font-size: 0.9rem;
+  color: #555;
+  display: block;
+  margin-top: 5px;
+}
+
+.mentee-offers {
+  margin-top: 10px;
+}
+
+.offers-title {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--primary-color);
+  margin-bottom: 5px;
+}
+
+.offers-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.offer-text {
+  font-size: 0.85rem;
+  color: #333;
+  line-height: 1.5;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .offers-section {
+    padding: 30px 20px;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .offer-card {
+    padding: 15px;
+  }
+
+  .mentee-avatar {
+    width: 60px;
+    height: 60px;
+  }
+}

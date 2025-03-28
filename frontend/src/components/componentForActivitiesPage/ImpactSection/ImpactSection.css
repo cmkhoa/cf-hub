@@ -1,0 +1,70 @@
+:root {
+    --primary-color: #564497;
+    --secondary-color: #f8a025;
+  }
+  
+  .impact-section {
+    padding: 50px;
+    background-color: #f9f9f9;
+  }
+  
+  .impact-item {
+    margin-bottom: 50px;
+  }
+  
+  .impact-title {
+    font-size: 2.5rem; /* Increased font size for impact */
+    font-weight: 700;
+    color: var(--primary-color);
+  }
+  
+  .impact-subtitle {
+    display: block;
+    font-size: 1.5rem; /* Slightly larger subtitle */
+    font-weight: 500;
+    color: var(--primary-color);
+    margin: 15px 0;
+  }
+  
+  .impact-description {
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.8;
+  }
+  
+  .single-image {
+    width: 100%;
+    max-width: 550px; /* Increased max-width for larger images */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: block;
+    margin: 0 auto;
+  }
+  
+  .image-column {
+    display: flex;
+    justify-content: center;
+  }
+  
+  @media (max-width: 768px) {
+    .impact-section {
+      padding: 20px;
+    }
+  
+    .impact-title {
+      font-size: 2rem;
+    }
+  
+    .impact-subtitle {
+      font-size: 1.25rem;
+    }
+  
+    .impact-description {
+      font-size: 1rem;
+    }
+  
+    .single-image {
+      max-width: 100%;
+    }
+  }
+  

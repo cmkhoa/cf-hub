@@ -1,0 +1,120 @@
+.company-interviews-section {
+  padding: 40px 60px;
+  background-color: #f5f6f9;
+}
+
+.section-title {
+  text-align: center;
+  color: #564497;
+  margin-bottom: 30px;
+  font-size: 2.5rem;
+}
+
+.company-category {
+  margin-top: 30px;
+}
+
+.category-title {
+  color: #564497;
+  margin-bottom: 15px;
+  font-weight: 500;
+  font-size: 1.5rem;
+}
+
+.company-card {
+  border-radius: 8px;
+  text-align: center;
+  padding: 12px 16px; /* Increased padding for more spacing */
+  background-color: #fff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  height: 90px; /* Increased height for better alignment */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 240px; /* Set a slightly wider max width */
+  margin: 0 auto;
+}
+
+.company-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.company-card .ant-typography {
+  font-size: 1.25rem; /* Adjusted font size */
+  color: #564497;
+  font-weight: 500;
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+/* Responsive adjustments for medium screens */
+@media (max-width: 992px) {
+  .company-interviews-section {
+      padding: 30px 40px;
+  }
+
+  .section-title {
+      font-size: 2.2rem;
+  }
+
+  .category-title {
+      font-size: 1.4rem;
+  }
+
+  .company-card {
+      padding: 10px 14px; /* Reduced padding slightly for medium screens */
+      height: 90px;
+      max-width: 200px; /* Adjusted max width for medium screens */
+  }
+
+  .company-card .ant-typography {
+      font-size: 1.15rem;
+  }
+}
+
+/* Responsive adjustments for small screens */
+@media (max-width: 768px) {
+  .company-interviews-section {
+      padding: 20px 20px;
+  }
+
+  .section-title {
+      font-size: 1.8rem;
+  }
+
+  .category-title {
+      font-size: 1.2rem;
+  }
+
+  .company-card {
+      padding: 8px 12px; /* Reduced padding for small screens */
+      height: 90px;
+      max-width: 150px; /* Further reduce width */
+  }
+
+  .company-card .ant-typography {
+      font-size: 1rem;
+  }
+}
+
+/* Responsive adjustments for extra small screens */
+@media (max-width: 576px) {
+  .section-title {
+      font-size: 1.5rem;
+  }
+
+  .category-title {
+      font-size: 1rem;
+  }
+
+  .company-card {
+      padding: 6px 10px; /* Reduced padding for extra small screens */
+      height: 80px;
+      max-width: 130px; /* Minimum width for extra small screens */
+  }
+
+  .company-card .ant-typography {
+      font-size: 0.9rem;
+  }
+}

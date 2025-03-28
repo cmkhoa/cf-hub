@@ -1,0 +1,105 @@
+/* Custom header background */
+.custom-header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+  background-color: white;
+  display: flex;
+  align-items: center; /* Center items vertically */
+  padding: 0 20px;
+}
+/* Title with primary color */
+.custom-title {
+  margin: 0;
+  color: var(--primary-color) !important;
+  font-family: 'Anuphan', sans-serif !important;
+}
+
+/* Custom Menu Styles */
+.custom-menu {
+  border-bottom: none;
+  justify-content: flex-end;
+  background-color: white;
+}
+
+/* Menu item customization */
+.custom-menu-item {
+  font-weight: 400;
+  font-size: 16px;
+  color: var(--primary-color) !important;
+  border-bottom: none !important;
+  margin-right: 20px;
+  font-family: 'Anuphan', sans-serif !important;
+}
+
+/* Selected and hover styles */
+.custom-menu-item:hover,
+.custom-menu-item.ant-menu-item-selected {
+  color: var(--secondary-color) !important;
+}
+
+.custom-menu-item a {
+  color: var(--primary-color) !important;
+  text-decoration: none;
+}
+
+/* Hover and selected link color */
+.custom-menu-item:hover a,
+.custom-menu-item.ant-menu-item-selected a {
+  color: var(--secondary-color) !important;
+}
+
+/* Header styles */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  background-color: white;
+  color: var(--primary-color);
+}
+
+/* Title styling */
+.header-title {
+  margin: 0;
+  color: var(--primary-color) !important;
+  font-family: 'Anuphan', sans-serif !important;
+}
+
+/* Ensure menu button is on the right in mobile view */
+.header-row {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center;
+}
+
+/* Custom Mobile Menu Button Alignment */
+.menu-button-col {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Mobile-specific styling */
+@media (max-width: 768px) {
+  .header-title-col {
+    flex: 1; /* Ensures the title takes available space */
+  }
+
+  .header-title {
+    font-size: 1.5em; /* Smaller title font on mobile */
+  }
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px; /* Set fixed height for container */
+  width: auto; /* Width will adjust based on image */
+  padding-left: 10px; /* Optional: Adds a small left padding if needed */
+}
+
+.logo-image {
+  margin-left: 40px;
+}

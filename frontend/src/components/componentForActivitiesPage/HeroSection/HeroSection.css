@@ -1,0 +1,100 @@
+.hero-section {
+    position: relative;
+    background-image: url("http://res.cloudinary.com/dbqcioj2g/image/upload/v1730702710/swc95t5mrptgvmr00byt.jpg"); /* Replace with your image URL */
+    background-size: cover;
+    background-position: center;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-color);
+  }
+  
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* Slightly darker overlay for better readability */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .content {
+    max-width: 600px;
+    text-align: center;
+    padding: 20px;
+    color: var(--text-color);
+  }
+  
+  .hero-title {
+    font-size: 2.5rem;
+    line-height: 1.2;
+    color: var(--text-color);
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .hero-description {
+    font-size: 1.125rem;
+    color: var(--text-color);
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+  
+  .hero-button {
+    display: inline-block;
+    margin-top: 20px;
+    background-color: var(--primary-color);
+    border: none;
+    color: #fff;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 5px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    text-decoration: none; /* Removes underline from the link */
+  }
+  
+  .hero-button:hover {
+    background-color: var(--secondary-color);
+    color: #fff;
+  }
+  
+  @media (max-width: 768px) {
+    .hero-title {
+      font-size: 2rem;
+    }
+  
+    .hero-description {
+      font-size: 1rem;
+    }
+  
+    .hero-button {
+      font-size: 0.9rem;
+      padding: 10px 20px;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .content {
+      padding: 10px;
+    }
+  
+    .hero-title {
+      font-size: 1.8rem;
+    }
+  
+    .hero-description {
+      font-size: 0.875rem;
+    }
+  
+    .hero-button {
+      width: 100%;
+      padding: 12px;
+    }
+  }
+  

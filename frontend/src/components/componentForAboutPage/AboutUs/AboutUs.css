@@ -1,0 +1,123 @@
+.about-us-container {
+    padding: 80px 40px;
+    background-color: #f9f9f9;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .about-us-title {
+    text-align: center;
+    font-size: 40px;
+    color: var(--primary-color);
+    margin-bottom: 40px;
+  }
+  
+  .about-us-intro {
+    text-align: center;
+    font-size: 18px;
+    line-height: 1.6;
+    color: #555;
+    max-width: 800px;
+    margin: 0 auto 50px;
+  }
+  
+  .member-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 60px;
+  }
+  
+  .description-column {
+    padding-right: 20px;
+  }
+  
+  .member-name {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    display: block;
+  }
+  
+  .member-description {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  .image-column {
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .member-image {
+    width: 100%;
+    max-width: 350px;
+    border-radius: 10px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  .role-label {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: var(--secondary-color);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-transform: uppercase;
+  }
+
+  .linkedin-link {
+    display: inline-flex;
+    align-items: center;
+    font-size: 16px;
+    color: #0077b5;
+    margin-top: 10px;
+  }
+  
+  .linkedin-icon {
+    font-size: 18px;
+    margin-right: 5px;
+  }
+  
+  @media (max-width: 768px) {
+    .about-us-container {
+      padding: 60px 20px;
+    }
+  
+    .about-us-title {
+      font-size: 32px;
+    }
+  
+    .about-us-intro {
+      font-size: 16px;
+    }
+  
+    .member-row {
+      flex-direction: column;
+      margin-bottom: 40px;
+    }
+  
+    .description-column {
+      padding-right: 0;
+    }
+  
+    .member-name {
+      font-size: 20px;
+    }
+  
+    .member-description {
+      font-size: 14px;
+    }
+  
+    .member-image {
+      max-width: 100%;
+    }
+  }
+  
