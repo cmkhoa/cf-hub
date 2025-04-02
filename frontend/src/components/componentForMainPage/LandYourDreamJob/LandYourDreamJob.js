@@ -60,13 +60,14 @@ const LandYourDreamJob = () => {
 
 	return (
 		<div className="container">
-			<Text className="main-title">Land Your Dream Offers</Text>
+			<h1 className="main-title">Land Your Dream Offers</h1>
 			<div className="small-container">
 				<Text className="description">
 					In the first year of launching the 2024 program, we helped{" "}
 					<span className="primary-color">32 mentees</span> secure multiple{" "}
 					<span className="primary-color">interviews and job offers</span> from
-					major companies in the U.S. like Capital One, Uber, Smithfield, Unilever, and JP Morgan Chase.{" "}
+					major companies in the U.S. like Capital One, Uber, Smithfield,
+					Unilever, and JP Morgan Chase.{" "}
 				</Text>
 				<Text className="description">
 					Our mentors have experience in various fields such as{" "}
@@ -89,9 +90,7 @@ const LandYourDreamJob = () => {
 						ref={dellInternshipRef}
 					>
 						<Text className="stat-number">{dellInternshipCount}</Text>
-						<Text className="stat-description">
-							job offers in the U.S.
-						</Text>
+						<Text className="stat-description">job offers in the U.S.</Text>
 					</Col>
 					{/* <Col
 						xs={24}

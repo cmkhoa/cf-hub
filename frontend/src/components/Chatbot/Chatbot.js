@@ -93,8 +93,8 @@ const Chatbot = () => {
 						height: 50,
 						zIndex: 1000,
 						boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-						backgroundColor: "var(--primary-color)",
-						borderColor: "var(--primary-color)",
+						backgroundColor: "var(--cf-hub-coral)",
+						borderColor: "var(--cf-hub-coral)",
 					}}
 				/>
 			) : (
@@ -107,11 +107,19 @@ const Chatbot = () => {
 								alignItems: "center",
 							}}
 						>
-							<span style={{ fontWeight: "bold" }}>CF Hub Assistant</span>
+							<span
+								style={{ fontWeight: "bold", color: "var(--cf-hub-coral)" }}
+							>
+								CF Hub Assistant
+							</span>
 							<Button
 								type="text"
 								onClick={() => setIsOpen(false)}
-								style={{ fontSize: "20px", padding: "0 8px" }}
+								style={{
+									fontSize: "20px",
+									padding: "0 8px",
+									color: "var(--cf-hub-coral)",
+								}}
 							>
 								×
 							</Button>
@@ -156,7 +164,7 @@ const Chatbot = () => {
 									style={{
 										backgroundColor:
 											message.type === "user"
-												? "var(--primary-color)"
+												? "var(--cf-hub-coral-light)"
 												: "#52c41a",
 										margin: "0 8px",
 									}}
@@ -168,7 +176,7 @@ const Chatbot = () => {
 										borderRadius: "8px",
 										backgroundColor:
 											message.type === "user"
-												? "var(--primary-color-light)"
+												? "var(--cf-hub-coral-light)"
 												: "#f6ffed",
 									}}
 								>
@@ -209,8 +217,8 @@ const Chatbot = () => {
 							loading={loading}
 							disabled={!input.trim()}
 							style={{
-								backgroundColor: "var(--primary-color)",
-								borderColor: "var(--primary-color)",
+								backgroundColor: "var(--cf-hub-coral)",
+								borderColor: "var(--cf-hub-coral)",
 							}}
 						/>
 					</div>
