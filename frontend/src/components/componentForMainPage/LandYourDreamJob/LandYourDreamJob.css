@@ -1,149 +1,160 @@
-:root {
-  --primary-color: #564497;
-  --secondary-color: #f8a025;
-}
+@import "../../../styles/colors.css";
 
 .container {
-  text-align: center;
-  padding: 20px;
-  height: auto;
-  overflow-x: hidden;
-  margin-top: 20px
+	text-align: center;
+	padding: 80px 20px;
+	height: auto;
+	overflow-x: hidden;
+	background: var(--cf-hub-bg-primary);
 }
 
 .small-container {
-  text-align: center;
-  max-width: 940px;
-  width: 100%;
-  padding: 20px;
-  margin: 0 auto;
+	text-align: center;
+	max-width: 940px;
+	width: 100%;
+	padding: 20px;
+	margin: 0 auto;
 }
 
-.main-title {
-  font-weight: 700;
-  font-size: 40px;
-  line-height: 1.2;
-  margin-bottom: 20px;
-  color: #0f2442;
+.container .main-title {
+	font-weight: 700;
+	font-size: 40px;
+	line-height: 1.2;
+	margin-bottom: 20px;
+	color: var(--cf-hub-coral) !important;
 }
 
 .description {
-  font-size: 20px;
-  line-height: 1.4;
-  font-weight: 400;
-  margin-bottom: 40px;
+	font-size: 20px;
+	line-height: 1.4;
+	font-weight: 400;
+	margin-bottom: 40px;
+	color: var(--cf-hub-text-secondary);
+}
+
+.primary-color {
+	color: var(--cf-hub-coral);
+	font-weight: 600;
 }
 
 .statistics {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  margin-top: 30px;
-  gap: 16px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	margin-top: 30px;
+	gap: 16px;
 }
 
 .stat-item {
-  text-align: center;
-  flex: 1 1 200px;
-  max-width: 300px;
+	text-align: center;
+	flex: 1 1 200px;
+	max-width: 300px;
 }
 
 .stat-number {
-  font-size: 64px !important;
-  font-weight: 400;
-  line-height: 1.2;
-  margin-bottom: 10px;
-  color: var(--secondary-color);
-  display: block;
-  animation: count-animation 2s ease-in-out;
+	font-size: 64px !important;
+	font-weight: 400;
+	line-height: 1.2;
+	margin-bottom: 10px;
+	color: var(--cf-hub-coral) !important;
+	display: block;
+	animation: count-animation 2s ease-in-out;
 }
 
 .stat-description {
-  font-size: 24px;
-  font-weight: 400;
-  line-height: 1.2;
-  color: var(--secondary-color);
+	font-size: 24px;
+	font-weight: 400;
+	line-height: 1.2;
+	color: var(--cf-hub-blue);
 }
 
 /* Large Image Styling */
 .image-container {
-  text-align: center;
-  margin-top: 40px;
+	text-align: center;
+	margin-top: 40px;
 }
 
 .large-image {
-  width: 80%;
-  max-width: 700px;
-  height: auto;
-  border-radius: 8px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+	width: 80%;
+	max-width: 700px;
+	height: auto;
+	border-radius: 8px;
+	box-shadow: 0 8px 16px var(--cf-hub-shadow-medium);
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .large-image:hover {
-  transform: scale(1.03);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+	transform: scale(1.03);
+	box-shadow: 0 12px 24px var(--cf-hub-shadow-dark);
 }
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
-  .main-title {
-    font-size: 32px;
-  }
+	.container {
+		padding: 60px 20px;
+	}
 
-  .description {
-    font-size: 18px;
-  }
+	.main-title {
+		font-size: 32px;
+	}
 
-  .stat-number {
-    font-size: 48px;
-  }
+	.description {
+		font-size: 18px;
+	}
 
-  .stat-description {
-    font-size: 18px;
-  }
+	.stat-number {
+		font-size: 48px !important;
+	}
 
-  .large-image {
-    width: 90%;
-    max-width: 90%;
-  }
+	.stat-description {
+		font-size: 18px;
+	}
+
+	.large-image {
+		width: 90%;
+		max-width: 90%;
+	}
 }
 
 @media (max-width: 576px) {
-  .main-title {
-    font-size: 28px;
-  }
+	.container {
+		padding: 40px 20px;
+	}
 
-  .description {
-    font-size: 16px;
-  }
+	.main-title {
+		font-size: 28px;
+	}
 
-  .statistics {
-    flex-direction: column;
-    gap: 8px; /* Reduce gap between stat items */
-  }
+	.description {
+		font-size: 16px;
+	}
 
-  .stat-item {
-    max-width: 100%;
-  }
+	.statistics {
+		flex-direction: column;
+		gap: 8px;
+	}
 
-  .image-container {
-    margin-top: 20px; /* Reduce vertical space above image */
-  }
+	.stat-item {
+		max-width: 100%;
+	}
 
-  .large-image {
-    width: 100%;
-    max-width: 100%;
-  }
+	.image-container {
+		margin-top: 20px;
+	}
+
+	.large-image {
+		width: 100%;
+		max-width: 100%;
+	}
 }
 
 @keyframes count-animation {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+	from {
+		opacity: 0;
+		transform: scale(0.9);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
 }

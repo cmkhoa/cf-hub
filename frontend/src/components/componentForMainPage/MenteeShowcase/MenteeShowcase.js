@@ -60,7 +60,7 @@ const MenteeShowcase = () => {
 					color: "white",
 				}}
 			>
-				Students of Pathwise Mentorship
+				Students of Career Foundation Hub
 			</Title>
 			{/* <Text className="sub-title">Software Engineer and Data</Text> */}
 

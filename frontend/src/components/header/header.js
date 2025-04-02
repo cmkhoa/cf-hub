@@ -63,7 +63,7 @@ const HeaderComponent = ({ current, handleClick }) => {
 								width={120}
 								height={50}
 								className="logo-image"
-								alt="Pathwise Logo"
+								alt="CF Hub Logo"
 								priority
 								style={{ objectFit: "contain" }}
 							/>
@@ -83,7 +83,7 @@ const HeaderComponent = ({ current, handleClick }) => {
 							justifyContent: "flex-end",
 							fontWeight: 400,
 							fontSize: 16,
-							color: "var(--primary-color)",
+							color: "var(--cf-hub-coral)",
 						}}
 					>
 						{[
@@ -103,7 +103,7 @@ const HeaderComponent = ({ current, handleClick }) => {
 									<span
 										style={{
 											color:
-												current === key ? "var(--primary-color)" : "inherit",
+												current === key ? "var(--cf-hub-coral)" : "inherit",
 										}}
 									>
 										{key.charAt(0).toUpperCase() + key.slice(1)}
@@ -132,8 +132,8 @@ const HeaderComponent = ({ current, handleClick }) => {
 									type="primary"
 									onClick={() => setLoginModalVisible(true)}
 									style={{
-										backgroundColor: "var(--primary-color)",
-										borderColor: "var(--primary-color)",
+										backgroundColor: "var(--cf-hub-coral)",
+										borderColor: "var(--cf-hub-coral)",
 									}}
 								>
 									Login
@@ -186,7 +186,7 @@ const HeaderComponent = ({ current, handleClick }) => {
 							<Link href={`/${key === "home" ? "" : key}`} passHref>
 								<span
 									style={{
-										color: current === key ? "var(--primary-color)" : "inherit",
+										color: current === key ? "var(--cf-hub-coral)" : "inherit",
 									}}
 								>
 									{key.charAt(0).toUpperCase() + key.slice(1)}
@@ -218,8 +218,8 @@ const HeaderComponent = ({ current, handleClick }) => {
 									closeDrawer();
 								}}
 								style={{
-									backgroundColor: "var(--primary-color)",
-									borderColor: "var(--primary-color)",
+									backgroundColor: "var(--cf-hub-coral)",
+									borderColor: "var(--cf-hub-coral)",
 									width: "100%",
 								}}
 							>

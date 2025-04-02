@@ -42,11 +42,22 @@ const LoginModal = ({ visible, onClose, onLogin, onShowRegister }) => {
 
 	return (
 		<Modal
-			title="Login"
+			title={
+				<Text
+					style={{
+						fontSize: "24px",
+						fontWeight: "600",
+						color: "var(--cf-hub-blue)",
+					}}
+				>
+					Login
+				</Text>
+			}
 			open={visible}
 			onCancel={onClose}
 			footer={null}
 			width={400}
+			style={{ borderRadius: "12px" }}
 		>
 			<Form form={form} onFinish={handleSubmit} layout="vertical">
 				<Form.Item
@@ -56,7 +67,12 @@ const LoginModal = ({ visible, onClose, onLogin, onShowRegister }) => {
 						{ type: "email", message: "Please enter a valid email!" },
 					]}
 				>
-					<Input prefix={<UserOutlined />} placeholder="Email" size="large" />
+					<Input
+						prefix={<UserOutlined style={{ color: "var(--cf-hub-coral)" }} />}
+						placeholder="Email"
+						size="large"
+						style={{ borderRadius: "8px" }}
+					/>
 				</Form.Item>
 
 				<Form.Item
@@ -64,9 +80,10 @@ const LoginModal = ({ visible, onClose, onLogin, onShowRegister }) => {
 					rules={[{ required: true, message: "Please input your password!" }]}
 				>
 					<Input.Password
-						prefix={<LockOutlined />}
+						prefix={<LockOutlined style={{ color: "var(--cf-hub-coral)" }} />}
 						placeholder="Password"
 						size="large"
+						style={{ borderRadius: "8px" }}
 					/>
 				</Form.Item>
 
@@ -78,8 +95,13 @@ const LoginModal = ({ visible, onClose, onLogin, onShowRegister }) => {
 						block
 						size="large"
 						style={{
-							backgroundColor: "var(--primary-color)",
-							borderColor: "var(--primary-color)",
+							backgroundColor: "var(--cf-hub-coral)",
+							borderColor: "var(--cf-hub-coral)",
+							borderRadius: "8px",
+							height: "45px",
+							fontSize: "16px",
+							fontWeight: "500",
+							boxShadow: "0 2px 8px rgba(244, 116, 88, 0.2)",
 						}}
 					>
 						Login
@@ -87,7 +109,9 @@ const LoginModal = ({ visible, onClose, onLogin, onShowRegister }) => {
 				</Form.Item>
 
 				<div style={{ textAlign: "center" }}>
-					<Text>Don't have an account? </Text>
+					<Text style={{ color: "var(--cf-hub-text-secondary)" }}>
+						Don't have an account?{" "}
+					</Text>
 					<Button
 						type="link"
 						onClick={() => {
@@ -96,8 +120,9 @@ const LoginModal = ({ visible, onClose, onLogin, onShowRegister }) => {
 						}}
 						style={{
 							padding: 0,
-							color: "var(--primary-color)",
+							color: "var(--cf-hub-coral)",
 							fontSize: "14px",
+							fontWeight: "500",
 						}}
 					>
 						Register here

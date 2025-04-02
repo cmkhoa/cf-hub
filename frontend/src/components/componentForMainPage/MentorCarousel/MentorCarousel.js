@@ -13,7 +13,7 @@ const MentorCarousel = ({ mentors }) => {
     <Layout
       style={{
         padding: "64px 20px",
-        backgroundColor: "var(--mentor-color)",
+        backgroundColor: "var(--cf-hub-bg-primary)",
         width: "100%",
         marginTop: 40,
       }}
@@ -25,7 +25,7 @@ const MentorCarousel = ({ mentors }) => {
             style={{
               fontWeight: 700,
               textAlign: "center",
-              color: "#0F2442",
+              color: "var(--cf-hub-text-primary)",
               fontSize: "clamp(24px, 5vw, 40px)",
             }}
           >

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { Modal, Form, Input, Button, message } from "antd";
+import { Modal, Form, Input, Button, message, Typography } from "antd";
 import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
+
+const { Text } = Typography;
 
 const RegisterModal = ({ visible, onClose, onRegister }) => {
 	const [form] = Form.useForm();
@@ -35,11 +37,22 @@ const RegisterModal = ({ visible, onClose, onRegister }) => {
 
 	return (
 		<Modal
-			title="Register"
+			title={
+				<Text
+					style={{
+						fontSize: "24px",
+						fontWeight: "600",
+						color: "var(--cf-hub-blue)",
+					}}
+				>
+					Register
+				</Text>
+			}
 			open={visible}
 			onCancel={onClose}
 			footer={null}
 			width={400}
+			style={{ borderRadius: "12px" }}
 		>
 			<Form form={form} onFinish={handleSubmit} layout="vertical">
 				<Form.Item
@@ -50,9 +63,10 @@ const RegisterModal = ({ visible, onClose, onRegister }) => {
 					]}
 				>
 					<Input
-						prefix={<UserOutlined />}
+						prefix={<UserOutlined style={{ color: "var(--cf-hub-coral)" }} />}
 						placeholder="Username"
 						size="large"
+						style={{ borderRadius: "8px" }}
 					/>
 				</Form.Item>
 
@@ -63,7 +77,12 @@ const RegisterModal = ({ visible, onClose, onRegister }) => {
 						{ type: "email", message: "Please enter a valid email!" },
 					]}
 				>
-					<Input prefix={<MailOutlined />} placeholder="Email" size="large" />
+					<Input
+						prefix={<MailOutlined style={{ color: "var(--cf-hub-coral)" }} />}
+						placeholder="Email"
+						size="large"
+						style={{ borderRadius: "8px" }}
+					/>
 				</Form.Item>
 
 				<Form.Item
@@ -74,9 +93,10 @@ const RegisterModal = ({ visible, onClose, onRegister }) => {
 					]}
 				>
 					<Input.Password
-						prefix={<LockOutlined />}
+						prefix={<LockOutlined style={{ color: "var(--cf-hub-coral)" }} />}
 						placeholder="Password"
 						size="large"
+						style={{ borderRadius: "8px" }}
 					/>
 				</Form.Item>
 
@@ -98,9 +118,10 @@ const RegisterModal = ({ visible, onClose, onRegister }) => {
 					]}
 				>
 					<Input.Password
-						prefix={<LockOutlined />}
+						prefix={<LockOutlined style={{ color: "var(--cf-hub-coral)" }} />}
 						placeholder="Confirm Password"
 						size="large"
+						style={{ borderRadius: "8px" }}
 					/>
 				</Form.Item>
 
@@ -112,8 +133,13 @@ const RegisterModal = ({ visible, onClose, onRegister }) => {
 						block
 						size="large"
 						style={{
-							backgroundColor: "var(--primary-color)",
-							borderColor: "var(--primary-color)",
+							backgroundColor: "var(--cf-hub-coral)",
+							borderColor: "var(--cf-hub-coral)",
+							borderRadius: "8px",
+							height: "45px",
+							fontSize: "16px",
+							fontWeight: "500",
+							boxShadow: "0 2px 8px rgba(244, 116, 88, 0.2)",
 						}}
 					>
 						Register
