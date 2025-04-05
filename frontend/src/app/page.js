@@ -5,12 +5,15 @@ import HeaderComponent from "@/components/header/header";
 import MentorCarousel from "@/components/componentForMainPage/MentorCarousel/MentorCarousel";
 import LandYourDreamJob from "@/components/componentForMainPage/LandYourDreamJob/LandYourDreamJob";
 import Features from "@/components/componentForMainPage/Features/Features";
-import AchievementGallery from "@/components/componentForMainPage/AchievementGallery/AchievementGallery";
+import FeedbackGallery from "@/components/componentForMainPage/FeedbackGallery/FeedbackGallery";
 import MenteeShowcase from "@/components/componentForMainPage/MenteeShowcase/MenteeShowcase";
 import PeerToPeerMentoring from "@/components/componentForMainPage/PeerToPeerMentoring/PeerToPeerMentoring";
 import Community from "@/components/componentForMainPage/Community/Community";
 import FAQ from "@/components/componentForMainPage/FAQ/FAQ";
 import FooterComponent from "@/components/footer/Footer";
+import AboutUs from "@/components/componentForMainPage/AboutUs/AboutUs";
+import OurProcess from "@/components/componentForMainPage/OurProcess/OurProcess";
+import Achievements from "@/components/componentForMainPage/Achievements/Achievements";
 import Image from "next/image";
 
 const { Header, Content } = Layout;
@@ -93,11 +96,13 @@ export default function Home() {
 				<div className="site-layout-content">
 					<PeerToPeerMentoring />
 					<LandYourDreamJob />
-					{/* <MentorCarousel mentors={mentors} /> */}
+					<OurProcess />
 					<Features />
+					<AboutUs />
+					<Achievements />
 					<MenteeShowcase />
 					<MentorCarousel mentors={mentors} />
-					<AchievementGallery />
+					<FeedbackGallery />
 					<Community />
 					<FAQ />
 					<FooterComponent />

@@ -4,6 +4,8 @@
 	--cf-hub-coral: #f47458;
 	--cf-hub-blue-light: #e5ebf4;
 	--cf-hub-coral-light: #ffe8e3;
+	--cf-hub-pink: #ff3b84;
+	--cf-hub-purple: #4b0082;
 
 	/* Secondary Colors */
 	--cf-hub-blue-dark: #152c68;
@@ -38,6 +40,16 @@
 	--cf-hub-gradient-1: linear-gradient(145deg, #1e3b8b, #2e5ca0);
 	--cf-hub-gradient-2: linear-gradient(145deg, #f47458, #e85c3d);
 	--cf-hub-gradient-3: linear-gradient(145deg, #e5ebf4, #ffffff);
+	--cf-hub-gradient-pink-purple: linear-gradient(
+		135deg,
+		var(--cf-hub-pink) 0%,
+		var(--cf-hub-purple) 100%
+	);
+	--cf-hub-gradient-purple-blue: linear-gradient(
+		135deg,
+		#4b0082 0%,
+		#1e3b8b 100%
+	);
 
 	/* Success/Error Colors */
 	--cf-hub-success: #27ae60;

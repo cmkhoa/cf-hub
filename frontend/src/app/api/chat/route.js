@@ -1,130 +1,120 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import { NextResponse } from "next/server";
+import OpenAI from "openai";
+import { DataAPIClient } from "@datastax/astra-db-ts";
 
-// Check if API key exists
-if (!process.env.GOOGLE_API_KEY) {
-	throw new Error("GOOGLE_API_KEY is not set in environment variables");
+// Check for required environment variables
+if (!process.env.OPENAI_API_KEY) {
+	throw new Error("OPENAI_API_KEY is not set in environment variables");
 }
 
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+if (
+	!process.env.ASTRA_DB_APPLICATION_TOKEN ||
+	!process.env.ASTRA_DB_API_ENDPOINT ||
+	!process.env.ASTRA_DB_NAMESPACE ||
+	!process.env.ASTRA_DB_COLLECTION
+) {
+	throw new Error(
+		"One or more required Astra DB environment variables are not set"
+	);
+}
 
-const systemPrompt = `You are an AI assistant for CF Hub, a comprehensive career mentorship platform. Here's what you need to know:
+console.log(process.env.ASTRA_DB_APPLICATION_TOKEN);
+console.log(process.env.ASTRA_DB_API_ENDPOINT);
+console.log(process.env.ASTRA_DB_NAMESPACE);
+console.log(process.env.ASTRA_DB_COLLECTION);
+console.log(process.env.OPENAI_API_KEY);
 
-1. About CF Hub:
-   - A platform connecting students with industry professionals
-   - Focuses on career development and mentorship
-   - Provides guidance for various industries and career paths
+// Initialize OpenAI API client
+const openai = new OpenAI({
+	apiKey: process.env.OPENAI_API_KEY,
+});
 
-2. Industries We Cover:
-   - Investment Banking
-   - Risk Management
-   - Finance
-   - Business Analytics
-   - Brand Management
-   - Demand Planning
-   - Operations
-   - Consulting
-   - Technology
+// Initialize Astra DB client
+const client = new DataAPIClient(process.env.ASTRA_DB_APPLICATION_TOKEN);
 
-3. Program Features:
-   - One-on-one mentorship sessions
-   - Industry-specific guidance
-   - Career path planning
-   - Resume and interview preparation
-   - Networking opportunities
-   - Professional development workshops
+// Get database and collection
+const db = client.db(process.env.ASTRA_DB_API_ENDPOINT, {
+	namespace: process.env.ASTRA_DB_NAMESPACE,
+});
 
-4. Mentorship Process:
-   - Initial consultation
-   - Career assessment
-   - Personalized development plan
-   - Regular mentoring sessions
-   - Progress tracking
-   - Industry networking
-
-5. Key Information to Provide:
-   - Program details and requirements
-   - Registration process
-   - Mentorship benefits
-   - Industry insights
-   - Career development tips
-   - Learning resources
-
-6. Important Guidelines:
-   - Always maintain a professional and supportive tone
-   - Provide specific, actionable advice
-   - Direct users to appropriate resources
-   - If unsure about specific details, guide users to contact the support team
-   - Emphasize the personalized nature of the mentorship program
-   - Include information about both technical and soft skills development
-
-7. Registration Process:
-   - Visit the website
-   - Create an account
-   - Complete profile
-   - Select preferred industry/mentor
-   - Schedule initial consultation
-
-Remember to:
-- Be encouraging and supportive
-- Provide practical, industry-specific advice
-- Guide users toward making informed career decisions
-- Maintain confidentiality and professionalism
-- Direct users to the appropriate sections of the website for more information`;
+// Specify runtime for better performance
+export const runtime = "edge";
 
 export async function POST(req) {
 	try {
-		const { message } = await req.json();
+		const { messages } = await req.json();
 
-		if (!message) {
-			return NextResponse.json(
-				{ error: "Message is required" },
-				{ status: 400 }
-			);
+		// Get the last user message
+		const lastMessage = messages[messages?.length - 1]?.content;
+
+		let docContext = "";
+
+		const embedding = await openai.embeddings.create({
+			model: "text-embedding-3-small",
+			input: lastMessage,
+			encoding_format: "float",
+		});
+
+		try {
+			const collection = db.collection(process.env.ASTRA_DB_COLLECTION);
+			const cursor = collection.find(null, {
+				sort: {
+					$vector: embedding.data[0].embedding,
+				},
+				limit: 10,
+			});
+
+			const documents = await cursor.toArray();
+
+			if (Array.isArray(documents)) {
+				const docsMap = documents.map((doc) => doc.text || "");
+				docContext = JSON.stringify(docsMap);
+			}
+		} catch (error) {
+			console.log("Error querying db:", error);
 		}
 
-		console.log("Sending request to Gemini with message:", message);
+		const template = {
+			role: "system",
+			content: `
+				You are a helpful AI assistant for CF Hub, a mentorship platform connecting students with industry professionals.
+				Use the below context to answer what you know about the CF Hub mentorship program.
+				The context will provide you with the most recent page data from the CF Hub website.
+				If the context doesn't include the information, you need to answer based on you existing knowledge
+				and don't mention the source of you information or what the context does or doesn't include.
+				Format responses using markdown where applicable and and don't return images.
 
-		// Initialize the chat with the system prompt
-		const chat = model.startChat({
-			history: [
-				{
-					role: "user",
-					parts: [{ text: systemPrompt }],
-				},
-			],
-			generationConfig: {
-				temperature: 0.7,
-				maxOutputTokens: 500,
-			},
+				-----------
+				START CONTEXT
+				${docContext}
+				END CONTEXT
+				-----------
+				QUESTION: ${lastMessage}
+				-----------
+			`,
+		};
+
+		// Use non-streaming response
+		const response = await openai.chat.completions.create({
+			model: "gpt-4",
+			stream: false, // Set to false for non-streaming
+			messages: [template, ...messages],
 		});
 
-		/**
-		 * Send the message posted by the user to the Gemini model and read the
-		 * response generated by the model.
-		 */
-		const result = await chat.sendMessage(message);
-		const response = await result.response;
-		const text = response.text();
-
-		console.log("Received response from Gemini:", text);
-
-		return NextResponse.json({ response: text });
-	} catch (error) {
-		console.error("Chat API Error Details:", {
-			name: error.name,
-			message: error.message,
-			stack: error.stack,
-		});
-
-		return NextResponse.json(
+		// Return the response as JSON
+		return new Response(
+			JSON.stringify({
+				role: "assistant",
+				content: response.choices[0].message.content,
+			}),
 			{
-				error: "Failed to process chat request",
-				message: error.message,
-				details: "No additional details available",
-			},
-			{ status: 500 }
+				headers: { "Content-Type": "application/json" },
+			}
 		);
+	} catch (error) {
+		console.error("API Error:", error);
+		return new Response(JSON.stringify({ error: error.message }), {
+			status: 500,
+			headers: { "Content-Type": "application/json" },
+		});
 	}
 }

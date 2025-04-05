@@ -1,77 +1,161 @@
-/* Root Variables (Assuming these are defined in your globals.css)
-:root {
-  --primary-color: #564497;
-  --secondary-color: #f8a025;
-  --text-color: #0F2442;
-  --background-color: #fff;
-}
-*/
+@import "../../../styles/colors.css";
 
 .faq-container {
-  /* max-width: 1200px; */
-  margin: 0 auto;
-  padding: 80px 320px;
-  background-color: var(--background-color);
+	width: 100%;
+	padding: 80px 20px;
+	background: var(--cf-hub-gradient-1);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 .faq-title {
-  margin-bottom: 40px;
-  font-weight: 700;
-  font-size: 48px;
-  line-height: 1.2;
-  color: var(--primary-color);
-  text-align: center;
+	color: var(--cf-hub-text-light);
+	text-align: center;
+	margin-bottom: 40px;
+	font-weight: 700;
+	font-size: clamp(28px, 5vw, 40px);
+	position: relative;
+}
+
+.faq-title:after {
+	content: "";
+	position: absolute;
+	bottom: -10px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 80px;
+	height: 4px;
+	background: linear-gradient(
+		to right,
+		var(--cf-hub-coral),
+		var(--cf-hub-purple)
+	);
+	border-radius: 2px;
 }
 
 .faq-collapse {
-  border: none;
+	width: 100%;
+	max-width: 800px;
+	background: transparent;
+	border: none;
 }
 
 .faq-panel {
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  margin-bottom: 16px;
-  overflow: hidden;
-  border: 1px solid #e8e8e8;
+	background-color: var(--cf-hub-bg-primary);
+	border-radius: 12px;
+	margin-bottom: 16px;
+	overflow: hidden;
+	box-shadow: 0 4px 12px var(--cf-hub-shadow-light);
+	border: 1px solid var(--cf-hub-border);
+	transition: all 0.3s ease;
 }
 
-.faq-panel > .ant-collapse-header {
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--text-color);
-  padding: 16px;
+.faq-panel:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 6px 16px var(--cf-hub-shadow-medium);
+}
+
+.faq-panel .ant-collapse-header {
+	color: var(--cf-hub-blue);
+	font-weight: 600;
+	font-size: 1.1em;
+	padding: 16px 20px;
+	transition: all 0.3s ease;
+	position: relative;
+}
+
+.faq-panel .ant-collapse-header:hover {
+	color: var(--cf-hub-purple);
 }
 
 .faq-panel .ant-collapse-content {
-  background-color: #fff;
+	border-top: 1px solid var(--cf-hub-border);
 }
 
-.faq-panel .ant-collapse-content > .ant-collapse-content-box {
-  padding: 16px;
+.faq-panel .ant-collapse-content-box {
+	padding: 20px;
 }
 
 .faq-answer {
-  font-size: 16px;
-  line-height: 1.6;
-  /* color: var(--text-color); */
-  display: block;
-  margin-bottom: 16px;
+	display: block;
+	color: var(--cf-hub-text-secondary);
+	line-height: 1.6;
+	margin-bottom: 12px;
+}
+
+.faq-answer:last-child {
+	margin-bottom: 0;
+}
+
+/* Custom arrow styling */
+.faq-panel .ant-collapse-arrow {
+	color: var(--cf-hub-coral);
+	font-size: 16px;
+	transition: all 0.3s ease;
+}
+
+.faq-panel:hover .ant-collapse-arrow {
+	color: var(--cf-hub-purple);
+}
+
+/* Active panel styling */
+.faq-panel.ant-collapse-item-active {
+	box-shadow: 0 6px 16px var(--cf-hub-shadow-medium);
+	border-left: 4px solid var(--cf-hub-coral);
+}
+
+.faq-panel.ant-collapse-item-active .ant-collapse-header {
+	color: var(--cf-hub-purple);
+	background-color: var(--cf-hub-bg-secondary);
+}
+
+.faq-panel.ant-collapse-item-active .ant-collapse-arrow {
+	color: var(--cf-hub-purple);
+}
+
+/* Add subtle color variations to different panels */
+.faq-panel:nth-child(1) {
+	border-top: 3px solid var(--cf-hub-coral);
+}
+
+.faq-panel:nth-child(2) {
+	border-top: 3px solid var(--cf-hub-purple);
+}
+
+.faq-panel:nth-child(3) {
+	border-top: 3px solid var(--cf-hub-pink);
+}
+
+.faq-panel:nth-child(4) {
+	border-top: 3px solid var(--cf-hub-blue);
 }
 
 @media (max-width: 768px) {
-  .faq-container {
-    padding: 40px 20px;
-  }
+	.faq-container {
+		padding: 60px 15px;
+	}
 
-  .faq-title {
-    font-size: 36px;
-  }
+	.faq-title {
+		margin-bottom: 30px;
+	}
 
-  .faq-panel > .ant-collapse-header {
-    font-size: 18px;
-  }
+	.faq-panel .ant-collapse-header {
+		font-size: 1em;
+		padding: 14px 16px;
+	}
 
-  .faq-answer {
-    font-size: 14px;
-  }
+	.faq-panel .ant-collapse-content-box {
+		padding: 16px;
+	}
+}
+
+@media (max-width: 480px) {
+	.faq-container {
+		padding: 40px 10px;
+	}
+
+	.faq-title {
+		margin-bottom: 24px;
+	}
 }

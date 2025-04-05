@@ -1,4 +1,4 @@
-  import React from "react";
+import React from "react";
 import { Layout, Row, Col, Typography, Carousel, Card } from "antd";
 import { LinkedinOutlined } from "@ant-design/icons";
 import "antd/dist/reset.css";

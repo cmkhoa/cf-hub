@@ -76,12 +76,12 @@ const LandYourDreamJob = () => {
 					</span>
 				</Text>
 				<Row gutter={[16, 16]} className="statistics">
-					{/* <Col xs={24} sm={8} md={8} className="stat-item" ref={researchLabRef}>
+					<Col xs={24} sm={8} md={8} className="stat-item" ref={researchLabRef}>
 						<Text className="stat-number">{researchLabCount}</Text>
 						<Text className="stat-description">
 							offers in research labs and data programs
 						</Text>
-					</Col> */}
+					</Col>
 					<Col
 						xs={24}
 						sm={8}
@@ -92,7 +92,7 @@ const LandYourDreamJob = () => {
 						<Text className="stat-number">{dellInternshipCount}</Text>
 						<Text className="stat-description">job offers in the U.S.</Text>
 					</Col>
-					{/* <Col
+					<Col
 						xs={24}
 						sm={8}
 						md={8}
@@ -103,7 +103,7 @@ const LandYourDreamJob = () => {
 						<Text className="stat-description">
 							new grad offers in the U.S.
 						</Text>
-					</Col> */}
+					</Col>
 				</Row>
 			</div>
 			<div className="image-container">

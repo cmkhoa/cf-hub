@@ -1,0 +1,35 @@
+.prompt-suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 16px 0;
+}
+
+.suggestion-button {
+    background-color: white;
+    border: 1px solid var(--cf-hub-coral);
+    color: var(--cf-hub-coral);
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.suggestion-button:hover {
+    background-color: var(--cf-hub-coral);
+    color: white;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .prompt-suggestions {
+        flex-direction: column;
+    }
+
+    .suggestion-button {
+        width: 100%;
+        text-align: center;
+    }
+} 

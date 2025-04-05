@@ -62,10 +62,32 @@ class ApiService {
 
 	// Chat endpoint (using Next.js API route)
 	static async sendChatMessage(message) {
-		return this.request("/api/chat", {
-			method: "POST",
-			body: JSON.stringify({ message }),
-		});
+		try {
+			const response = await fetch("/api/chat", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					messages: [
+						{
+							role: "user",
+							content: message,
+						},
+					],
+				}),
+			});
+
+			if (!response.ok) {
+				throw new Error(`API error: ${response.status}`);
+			}
+
+			const data = await response.json();
+			return { response: data.content };
+		} catch (error) {
+			console.error("Error sending chat message:", error);
+			throw error;
+		}
 	}
 }
 

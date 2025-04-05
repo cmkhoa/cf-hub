@@ -1,0 +1,109 @@
+.process-container {
+	padding: 40px 20px;
+	background-color: #f5f5f5;
+}
+
+.process-title {
+	text-align: center;
+	margin-bottom: 40px !important;
+	color: #1a365d;
+}
+
+.process-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	gap: 20px;
+	max-width: 1200px;
+	margin: 0 auto;
+}
+
+.process-card {
+	background: white;
+	border-radius: 10px;
+	padding: 20px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+	cursor: pointer;
+}
+
+.process-card:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.process-card-title {
+	color: #2c5282 !important;
+	margin-bottom: 15px !important;
+	font-size: 1.2rem !important;
+}
+
+.process-points {
+	list-style-type: none;
+	padding-left: 0;
+	margin: 0;
+}
+
+.process-points li {
+	margin-bottom: 8px;
+	padding-left: 20px;
+	position: relative;
+	color: #4a5568;
+}
+
+.process-points li:before {
+	content: "•";
+	position: absolute;
+	left: 0;
+	color: #4299e1;
+}
+
+/* Modal Styles */
+.workshop-modal .ant-modal-content {
+	border-radius: 12px;
+	overflow: hidden;
+}
+
+.workshop-modal .ant-modal-body {
+	padding: 0;
+}
+
+.workshop-modal-content {
+	padding: 24px;
+}
+
+.workshop-modal-content h2 {
+	color: #1a365d;
+	margin-bottom: 20px;
+	text-align: center;
+}
+
+.workshop-image-container {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 20px;
+}
+
+.workshop-image {
+	max-width: 100%;
+	height: auto;
+	border-radius: 8px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Modal */
+@media (max-width: 768px) {
+	.workshop-modal {
+		width: 90% !important;
+		margin: 0 auto;
+	}
+
+	.process-card-title {
+		font-size: 1rem !important;
+	}
+
+	.process-points li {
+		font-size: 0.9rem;
+	}
+}

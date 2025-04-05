@@ -1,11 +1,11 @@
 import React from "react";
 import { Typography, Carousel } from "antd";
-import "./AchievementGallery.css";
+import "./FeedbackGallery.css";
 import Image from "next/image";
 
 const { Title } = Typography;
 
-const AchievementGallery = () => {
+const FeedbackGallery = () => {
 	const images = [
 		"/assets/feedbacks/feedback1.png",
 		"/assets/feedbacks/feedback2.png",
@@ -82,4 +82,4 @@ const AchievementGallery = () => {
 	);
 };
 
-export default AchievementGallery;
+export default FeedbackGallery;
