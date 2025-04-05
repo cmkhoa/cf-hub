@@ -5,7 +5,7 @@ import Chatbot from "@/components/Chatbot/Chatbot";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-	title: "Pathwise Mentorship",
+	title: "CF Hub Mentorship",
 	description:
 		"This is a mentorship program for students looking for internships/jobs in the US.",
 };
