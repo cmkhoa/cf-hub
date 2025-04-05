@@ -1,20 +1,17 @@
-const nextConfig = {
-	images: {
-	  domains: [
-		"1000logos.net",
-		"res.cloudinary.com",
-		"d2q79iu7y748jz.cloudfront.net",
-		"www.smithfieldfoods.com",
-		"www.irpt.net",
-		"encrypted-tbn0.gstatic.com",
-		"www.lippincott.com",
-	  ],
-	},
-	eslint: {
-	  ignoreDuringBuilds: true,
-	},
+/** @type {import('next').NextConfig} */
+const isNetlify = process.env.NETLIFY === 'true';
 
-  };
-  
-  export default nextConfig;
-  
+const nextConfig = {
+  ...(isNetlify && {
+    output: 'export',
+    images: {
+      unoptimized: true,
+      remotePatterns: [{ protocol: 'https', hostname: '**' }],
+    },
+  }),
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+};
+
+export default nextConfig;
