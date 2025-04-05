@@ -29,7 +29,7 @@ const PeerToPeerMentoring = () => {
 				<Col xs={24} md={12} className="image-col">
 					<div className="mentoring-image">
 						<img
-							src="/assets/Picture1.png"
+							src="/assets/logo.png"
 							alt="Peer to Peer Mentoring"
 							className="feature-image"
 						/>

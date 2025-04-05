@@ -65,7 +65,7 @@
 	padding: 0 32px !important;
 	font-size: 1rem !important;
 	border-radius: 8px !important;
-	background: var(--cf-hub-coral) !important;
+	background: #F0386B !important;
 	color: var(--cf-hub-text-light) !important;
 	border: none !important;
 	font-weight: 500 !important;
@@ -74,7 +74,7 @@
 }
 
 .get-started-button:hover {
-	background: var(--cf-hub-coral-dark) !important;
+	background: #D92D5C !important;
 	transform: translateY(-1px);
 	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }

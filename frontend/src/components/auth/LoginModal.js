@@ -47,7 +47,7 @@ const LoginModal = ({ visible, onClose, onLogin, onShowRegister }) => {
 					style={{
 						fontSize: "24px",
 						fontWeight: "600",
-						color: "var(--cf-hub-blue)",
+						color: "#F0386B",
 					}}
 				>
 					Login
@@ -68,7 +68,7 @@ const LoginModal = ({ visible, onClose, onLogin, onShowRegister }) => {
 					]}
 				>
 					<Input
-						prefix={<UserOutlined style={{ color: "var(--cf-hub-coral)" }} />}
+						prefix={<UserOutlined style={{ color: "#F0386B" }} />}
 						placeholder="Email"
 						size="large"
 						style={{ borderRadius: "8px" }}
@@ -80,7 +80,7 @@ const LoginModal = ({ visible, onClose, onLogin, onShowRegister }) => {
 					rules={[{ required: true, message: "Please input your password!" }]}
 				>
 					<Input.Password
-						prefix={<LockOutlined style={{ color: "var(--cf-hub-coral)" }} />}
+						prefix={<LockOutlined style={{ color: "#F0386B" }} />}
 						placeholder="Password"
 						size="large"
 						style={{ borderRadius: "8px" }}
@@ -95,8 +95,8 @@ const LoginModal = ({ visible, onClose, onLogin, onShowRegister }) => {
 						block
 						size="large"
 						style={{
-							backgroundColor: "var(--cf-hub-coral)",
-							borderColor: "var(--cf-hub-coral)",
+							backgroundColor: "#F0386B",
+							borderColor: "#F0386B",
 							borderRadius: "8px",
 							height: "45px",
 							fontSize: "16px",
@@ -120,7 +120,7 @@ const LoginModal = ({ visible, onClose, onLogin, onShowRegister }) => {
 						}}
 						style={{
 							padding: 0,
-							color: "var(--cf-hub-coral)",
+							color: "#F0386B",
 							fontSize: "14px",
 							fontWeight: "500",
 						}}

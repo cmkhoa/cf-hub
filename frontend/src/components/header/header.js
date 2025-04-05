@@ -131,9 +131,10 @@ const HeaderComponent = ({ current, handleClick }) => {
 								<Button
 									type="primary"
 									onClick={() => setLoginModalVisible(true)}
+									className="login-button"
 									style={{
-										backgroundColor: "var(--cf-hub-coral)",
-										borderColor: "var(--cf-hub-coral)",
+										backgroundColor: "#F0386B",
+										borderColor: "#F0386B",
 									}}
 								>
 									Login

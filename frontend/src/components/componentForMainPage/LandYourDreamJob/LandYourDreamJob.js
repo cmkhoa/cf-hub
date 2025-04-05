@@ -64,7 +64,7 @@ const LandYourDreamJob = () => {
 			<div className="small-container">
 				<Text className="description">
 					In the first year of launching the 2024 program, we helped{" "}
-					<span className="primary-color">32 mentees</span> secure multiple{" "}
+					<span className="primary-color">100 mentees</span> secure multiple{" "}
 					<span className="primary-color">interviews and job offers</span> from
 					major companies in the U.S. like Capital One, Uber, Smithfield,
 					Unilever, and JP Morgan Chase.{" "}

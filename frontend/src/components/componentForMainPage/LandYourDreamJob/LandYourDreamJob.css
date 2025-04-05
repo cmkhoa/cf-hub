@@ -21,7 +21,7 @@
 	font-size: 40px;
 	line-height: 1.2;
 	margin-bottom: 20px;
-	color: var(--cf-hub-coral) !important;
+	color: #F0386B !important;
 }
 
 .description {
@@ -33,7 +33,7 @@
 }
 
 .primary-color {
-	color: var(--cf-hub-coral);
+	color: #F0386B;
 	font-weight: 600;
 }
 
@@ -56,7 +56,7 @@
 	font-weight: 400;
 	line-height: 1.2;
 	margin-bottom: 10px;
-	color: var(--cf-hub-coral) !important;
+	color: #F0386B !important;
 	display: block;
 	animation: count-animation 2s ease-in-out;
 }
