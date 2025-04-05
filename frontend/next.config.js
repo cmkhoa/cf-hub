@@ -1,5 +1,4 @@
 const nextConfig = {
-	output: 'export',
 	images: {
 	  domains: [
 		"1000logos.net",
