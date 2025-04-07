@@ -22,8 +22,23 @@
 	color: #fff;
 }
 
-.carousel-slide {
-	padding: 0 10px;
+/* Auto scrolling */
+.ant-carousel {	
+	overflow: hidden;	
+}
+
+.ant-carousel .slick-track {
+	display: flex;
+	animation: scroll 30s 0.5s linear infinite;
+}
+  
+@keyframes scroll {
+	0% {
+	  transform: translateX(0);
+	}
+	100% {
+		transform: translateX(calc(-360px * 5));;
+	}
 }
 
 .mentor-card {
@@ -39,6 +54,7 @@
 	height: 100%;
 	margin: 20px;
 	transition: all 0.3s ease;
+	width: 320px;
 }
 
 .mentor-card:hover {
@@ -111,30 +127,6 @@
 	background: var(--primary-color);
 	color: #fff;
 	transform: translateY(-2px);
-}
-
-/* Carousel customization */
-.ant-carousel .slick-slide {
-	padding: 0 10px;
-}
-
-.ant-carousel .slick-prev,
-.ant-carousel .slick-next {
-	z-index: 1;
-}
-
-.ant-carousel .slick-prev {
-	left: -25px;
-}
-
-.ant-carousel .slick-next {
-	right: -25px;
-}
-
-.ant-carousel .slick-prev:before,
-.ant-carousel .slick-next:before {
-	color: #fff;
-	font-size: 24px;
 }
 
 /* Responsive adjustments */
