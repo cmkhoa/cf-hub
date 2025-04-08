@@ -1,7 +1,7 @@
 {
-	"name": "pathwise-backend",
+	"name": "cf-hub-backend",
 	"version": "1.0.0",
-	"description": "Backend for Pathwise Website",
+	"description": "Backend for CF Hub Website",
 	"main": "server.js",
 	"scripts": {
 		"start": "node server.js",

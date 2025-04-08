@@ -1,0 +1,22 @@
+{
+  "name": "cf-hub",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "cd frontend && npm run dev",
+    "build": "next build",
+    "export": "next build && next export",
+    "start": "next start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@datastax/astra-db-ts": "^1.5.0",
+    "dotenv": "^16.4.7",
+    "langchain": "^0.3.20",
+    "openai": "^4.91.1",
+    "puppeteer": "^24.6.0"
+  }
+}

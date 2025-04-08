@@ -6,6 +6,7 @@ import { AuthProvider } from "@/contexts/authContext/authContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
+	title: "CF Hub Mentorship",
 	title: "Career Foudnation Hub",
 	description:
 		"This is a mentorship program for students/new graduates looking for internships/jobs in the US.",
@@ -23,6 +24,10 @@ export default function RootLayout({ children }) {
 				/>
 				<link
 					href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;700&display=swap"
+					rel="stylesheet"
+				/>
+				<link
+					href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
 					rel="stylesheet"
 				/>
 			</head>

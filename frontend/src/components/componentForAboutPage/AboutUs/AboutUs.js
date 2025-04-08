@@ -55,7 +55,7 @@ const AboutUs = () => (
   //     We are Vietnamese students in the U.S. who have experienced many
   //     challenges during our studies and job search journeys here. Understanding
   //     the difficulties of applying to hundreds of positions without receiving a
-  //     single interview, Pathwise Mentorship program was established with the
+  //     single interview, CF Hub Mentorship program was established with the
   //     mission to build a community that shares knowledge and experiences to help
   //     Vietnamese students achieve their dream jobs.
   //   </Text>
