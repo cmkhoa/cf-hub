@@ -71,15 +71,6 @@ const Footer = () => {
 					</div>
 				</div>
 
-				{/* Chat Button */}
-				<div className={styles.chatButton}>
-					<Button
-						type="primary"
-						shape="circle"
-						size="large"
-						icon={<span>💬</span>}
-					/>
-				</div>
 			</div>
 		</footer>
 	);

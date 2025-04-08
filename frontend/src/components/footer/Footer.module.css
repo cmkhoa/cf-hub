@@ -84,7 +84,7 @@
 .subscribeInput {
 	background: rgba(255, 255, 255, 0.1);
 	border: 1px solid rgba(255, 255, 255, 0.2);
-	color: white;
+	color: black;
 	padding: 0.5rem 1rem;
 	border-radius: 4px;
 }
@@ -121,31 +121,9 @@
 	transition: all 0.2s;
 	font-size: 0.9rem;
 }
-
 .linkColumn a:hover {
-	color: white;
-	transform: translateX(5px);
-}
-
-/* Chat Button */
-.chatButton {
-	position: fixed;
-	bottom: 2rem;
-	right: 2rem;
-	z-index: 100;
-}
-
-.chatButton button {
-	width: 50px;
-	height: 50px;
-	background: #1890ff;
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-	transition: all 0.3s;
-}
-
-.chatButton button:hover {
-	background: #40a9ff;
-	transform: scale(1.1);
+	color: #add8e6;
+	text-decoration: underline;
 }
 
 /* Responsive Design */

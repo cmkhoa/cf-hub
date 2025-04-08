@@ -3,7 +3,11 @@ import React, { useState, useRef, useEffect } from "react";
 import OpenAI from "openai";
 import PromptSuggestionsRow from "./PromptSuggestionsRow.js";
 import LoadingBubble from "./LoadingBubble.js";
-import { MessageOutlined, CloseOutlined } from "@ant-design/icons";
+import {
+	MessageOutlined,
+	CloseOutlined,
+	SmileOutlined,
+} from "@ant-design/icons";
 import "./Chatbot.css";
 import { useAuth } from "@/contexts/authContext/authContext";
 
@@ -82,7 +86,10 @@ const Chatbot = () => {
 			{/* Chat Modal */}
 			<div className={`chat-modal ${isOpen ? "open" : ""}`}>
 				<div className="chat-header">
-					<h3>CF Hub Assistant</h3>
+					<div className="header-content">
+						<h3>Let's Chat!</h3>
+						<p className="header-subtitle">We'll reply as soon as we can</p>
+					</div>
 					<button className="close-button" onClick={toggleChat}>
 						<CloseOutlined />
 					</button>
@@ -90,11 +97,14 @@ const Chatbot = () => {
 				<div className="chat-messages" ref={chatContainerRef}>
 					{noMessages ? (
 						<>
-							<p className="starter-text">
-								{currentUser
-									? `Hi, ${currentUser.name}. I'm the CF Hub Chatbot. How can I help you today?`
-									: "Hi! I'm the CF Hub Chatbot. How can I help you today?"}
-							</p>
+							<div className="message assistant">
+								<p>
+									{currentUser
+										? `Hi, ${currentUser.name}! How can I help you today?`
+										: "Hi! How can I help you today?"}
+								</p>
+								<span className="message-time">03:52 PM</span>
+							</div>
 							<PromptSuggestionsRow />
 						</>
 					) : (
@@ -106,7 +116,14 @@ const Chatbot = () => {
 										message.role === "user" ? "user" : "assistant"
 									}`}
 								>
-									{message.content}
+									<p>{message.content}</p>
+									<span className="message-time">
+										{new Date().toLocaleTimeString("en-US", {
+											hour: "2-digit",
+											minute: "2-digit",
+											hour12: true,
+										})}
+									</span>
 								</div>
 							))}
 							{isLoading && <LoadingBubble />}
@@ -114,11 +131,14 @@ const Chatbot = () => {
 					)}
 				</div>
 				<form onSubmit={handleSubmit} className="chat-input-form">
+					<button type="button" className="emoji-button">
+						<SmileOutlined />
+					</button>
 					<input
 						className="chat-input"
 						onChange={handleInputChange}
 						value={input}
-						placeholder="Ask me something..."
+						placeholder="Write your message..."
 					/>
 					<button type="submit" className="send-button">
 						Send
@@ -126,10 +146,12 @@ const Chatbot = () => {
 				</form>
 			</div>
 
-			{/* Floating Button */}
-			<button className="chat-toggle-button" onClick={toggleChat}>
-				<MessageOutlined />
-			</button>
+			{/* Floating Button - Conditionally render based on isOpen state */}
+			{!isOpen && (
+				<button className="chat-toggle-button" onClick={toggleChat}>
+					<MessageOutlined />
+				</button>
+			)}
 		</div>
 	);
 };
