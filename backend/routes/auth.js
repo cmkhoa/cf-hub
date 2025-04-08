@@ -7,17 +7,17 @@ const auth = require("../middleware/auth");
 // Register new user
 router.post("/register", async (req, res) => {
 	try {
-		const { username, email, password, profile } = req.body;
+		const { name, email, password, profile } = req.body;
 
 		// Check if user already exists
-		const existingUser = await User.findOne({ $or: [{ email }, { username }] });
+		const existingUser = await User.findOne({ email });
 		if (existingUser) {
 			return res.status(400).json({ message: "User already exists" });
 		}
 
 		// Create new user
 		const user = new User({
-			username,
+			name,
 			email,
 			password,
 			profile,
@@ -37,13 +37,14 @@ router.post("/register", async (req, res) => {
 			token,
 			user: {
 				id: user._id,
-				username: user.username,
+				name: user.name,
 				email: user.email,
 				role: user.role,
 				profile: user.profile,
 			},
 		});
 	} catch (error) {
+		console.error("Registration error:", error);
 		res
 			.status(500)
 			.json({ message: "Error creating user", error: error.message });

@@ -1,152 +1,88 @@
+"use client";
+
 import React from "react";
-import { Row, Col, Typography } from "antd";
-import Link from "next/link";
-import {
-	FacebookOutlined,
-	MailOutlined,
-	InstagramOutlined,
-	LinkedinOutlined,
-} from "@ant-design/icons";
-import "./Footer.css";
-import { useRouter } from "next/navigation";
+import { Input, Button } from "antd";
+import styles from "./Footer.module.css";
 
-const { Title } = Typography;
+const Footer = () => {
+	const handleSubscribe = (e) => {
+		e.preventDefault();
+		// TODO: Implement subscription logic
+	};
 
-const FooterComponent = () => {
-	const router = useRouter();
 	return (
-		<div className="footer">
-			<div className="footer-container">
-				<Row gutter={[16, 16]} justify="start">
-					{/* Logo Section */}
-					<Col xs={24} sm={12} md={8} lg={8} className="footer-logo-col">
-						<div className="footer-logo">
-							<img src="assets/logo.png" alt="Logo" className="logo-image-2" />
-							<div className="social-icons">
-								<a
-									href="https://www.facebook.com/CareerFoundationHub"
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									<FacebookOutlined className="social-icon" />
-								</a>
-								<a
-									href="mailto:techprep.mentor@gmail.com"
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									<MailOutlined className="social-icon" />
-								</a>
-								<a
-									href="https://www.instagram.com/cf.hub_2025/"
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									<InstagramOutlined className="social-icon" />
-								</a>
-								<a
-									href="https://www.linkedin.com/in/tribuidinh/"
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									<LinkedinOutlined className="social-icon" />
-								</a>
+		<footer className={styles.footer}>
+			<div className={styles.container}>
+				<div className={styles.footerContent}>
+					{/* Left Section - Brand */}
+					<div className={styles.brandSection}>
+						<h2 className={styles.brandName}>CF Hub</h2>
+						<p className={styles.brandSlogan}>
+							Competitive Programming - Community - Growth
+						</p>
+						<p className={styles.brandDescription}>
+							Join our community to enhance your competitive programming skills
+							and connect with like-minded individuals.
+						</p>
+					</div>
+
+					{/* Middle Section - Subscribe */}
+					<div className={styles.subscribeSection}>
+						<div className={styles.subscribeWrapper}>
+							<h3>Subscribe to Us</h3>
+							<p className={styles.subscribeText}>
+								Stay updated with our latest news and updates
+							</p>
+							<div className={styles.subscribeForm}>
+								<Input
+									placeholder="Enter your email"
+									className={styles.subscribeInput}
+								/>
+								<Button type="primary" onClick={handleSubscribe}>
+									Subscribe
+								</Button>
 							</div>
 						</div>
-					</Col>
+					</div>
 
-					{/* Information Links */}
-					<Col xs={12} sm={6} md={4} lg={4}>
-						<Title
-							level={4}
-							className="footer-title"
-							style={{ color: "white" }}
-						>
-							Information
-						</Title>
-						<a className="footer-link" onClick={() => router.push("/results")}>
-							Outcomes Report
-						</a>
-						<a className="footer-link" onClick={() => router.push("/results")}>
-							Fellow Stories
-						</a>
-						<a className="footer-link" onClick={() => router.push("/about")}>
-							Our Mentors
-						</a>
-						<a className="footer-link" onClick={() => router.push("/")}>
-							FAQ
-						</a>
-					</Col>
+					{/* Right Section - Quick Links */}
+					<div className={styles.linksSection}>
+						<div className={styles.linkColumn}>
+							<h4 className={styles.linkTitle}>Navigation</h4>
+							<a href="/">Home</a>
+							<a href="/about">About Us</a>
+							<a href="/contact">Contact</a>
+							<a href="/blog">Blog</a>
+						</div>
+						<div className={styles.linkColumn}>
+							<h4 className={styles.linkTitle}>Services</h4>
+							<a href="/activities">Activities</a>
+							<a href="/services">Services</a>
+							<a href="/results">Results</a>
+							<a href="/apply">Apply Now</a>
+						</div>
+						<div className={styles.linkColumn}>
+							<h4 className={styles.linkTitle}>Resources</h4>
+							<a href="/mentorship">Mentorship</a>
+							<a href="/workshops">Workshops</a>
+							<a href="/competitions">Competitions</a>
+							<a href="/faq">FAQ</a>
+						</div>
+					</div>
+				</div>
 
-					{/* Company Links */}
-					<Col xs={12} sm={6} md={4} lg={4}>
-						<Title
-							level={4}
-							className="footer-title"
-							style={{ color: "white" }}
-						>
-							Company
-						</Title>
-						<a className="footer-link" onClick={() => router.push("/about")}>
-							About Us
-						</a>
-						<a className="footer-link" onClick={() => router.push("/contact")}>
-							Contact Us
-						</a>
-					</Col>
-
-					{/* Resource Links */}
-					<Col xs={12} sm={6} md={4} lg={4}>
-						<Title
-							level={4}
-							className="footer-title"
-							style={{ color: "white" }}
-						>
-							Resource
-						</Title>
-						<Link href="#" className="footer-link">
-							Blog
-						</Link>
-						<Link href="#" className="footer-link">
-							Privacy Policy
-						</Link>
-						<Link href="#" className="footer-link">
-							Terms of Use
-						</Link>
-					</Col>
-
-					{/* Industry Tracks Links */}
-					<Col xs={12} sm={6} md={4} lg={4}>
-						<Title
-							level={4}
-							className="footer-title"
-							style={{ color: "white" }}
-						>
-							Industry Tracks
-						</Title>
-						<a className="footer-link" onClick={() => router.push("/services")}>
-							Investment Banking
-						</a>
-						<a className="footer-link" onClick={() => router.push("/services")}>
-							Risk Management, Finance, Business Analytics
-						</a>
-						<a className="footer-link" onClick={() => router.push("/services")}>
-							Brand Management, FP&A, Demand Planning
-						</a>
-						<a className="footer-link" onClick={() => router.push("/services")}>
-							Operation, Business Analytics, Finance
-						</a>
-					</Col>
-				</Row>
-
-				{/* Contact Email */}
-				<div className="contact-email">
-					<span>Contact: </span>
-					<a href="mailto:cfhub.mentor@gmail.com">cfhub.mentor@gmail.com</a>
+				{/* Chat Button */}
+				<div className={styles.chatButton}>
+					<Button
+						type="primary"
+						shape="circle"
+						size="large"
+						icon={<span>💬</span>}
+					/>
 				</div>
 			</div>
-		</div>
+		</footer>
 	);
 };
 
-export default FooterComponent;
+export default Footer;

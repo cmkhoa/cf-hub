@@ -1,0 +1,209 @@
+.footer {
+	background-color: #15204b;
+	padding: 4rem 2rem;
+	color: white;
+	position: relative;
+}
+
+.container {
+	max-width: 1200px;
+	margin: 0 auto;
+	position: relative;
+}
+
+.footerContent {
+	display: grid;
+	grid-template-columns: 1fr 1.2fr 2fr;
+	gap: 4rem;
+	align-items: start;
+}
+
+/* Brand Section */
+.brandSection {
+	padding-right: 2rem;
+}
+
+.brandName {
+	font-size: 2.5rem;
+	font-weight: bold;
+	margin: 0;
+	color: white;
+	letter-spacing: -0.5px;
+}
+
+.brandSlogan {
+	margin-top: 0.5rem;
+	color: #b0b0b0;
+	font-size: 1rem;
+	font-weight: 500;
+}
+
+.brandDescription {
+	margin-top: 1rem;
+	color: #d0d0d0;
+	font-size: 0.9rem;
+	line-height: 1.6;
+}
+
+/* Subscribe Section */
+.subscribeSection {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 2rem;
+	background: rgba(255, 255, 255, 0.05);
+	border-radius: 12px;
+	backdrop-filter: blur(10px);
+}
+
+.subscribeWrapper {
+	width: 100%;
+	text-align: center;
+}
+
+.subscribeSection h3 {
+	color: white;
+	margin-bottom: 0.5rem;
+	font-size: 1.5rem;
+	font-weight: 600;
+}
+
+.subscribeText {
+	color: #b0b0b0;
+	margin-bottom: 1.5rem;
+	font-size: 0.9rem;
+}
+
+.subscribeForm {
+	display: flex;
+	gap: 0.5rem;
+	max-width: 400px;
+	margin: 0 auto;
+}
+
+.subscribeInput {
+	background: rgba(255, 255, 255, 0.1);
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	color: white;
+	padding: 0.5rem 1rem;
+	border-radius: 4px;
+}
+
+.subscribeInput::placeholder {
+	color: #b0b0b0;
+}
+
+/* Links Section */
+.linksSection {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 2rem;
+}
+
+.linkColumn {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+}
+
+.linkTitle {
+	color: white;
+	font-size: 1.1rem;
+	font-weight: 600;
+	margin-bottom: 0.5rem;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.linkColumn a {
+	color: #b0b0b0;
+	text-decoration: none;
+	transition: all 0.2s;
+	font-size: 0.9rem;
+}
+
+.linkColumn a:hover {
+	color: white;
+	transform: translateX(5px);
+}
+
+/* Chat Button */
+.chatButton {
+	position: fixed;
+	bottom: 2rem;
+	right: 2rem;
+	z-index: 100;
+}
+
+.chatButton button {
+	width: 50px;
+	height: 50px;
+	background: #1890ff;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	transition: all 0.3s;
+}
+
+.chatButton button:hover {
+	background: #40a9ff;
+	transform: scale(1.1);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+	.footerContent {
+		grid-template-columns: 1fr 1fr;
+	}
+
+	.subscribeSection {
+		grid-column: span 2;
+		order: -1;
+	}
+}
+
+@media (max-width: 768px) {
+	.footerContent {
+		grid-template-columns: 1fr;
+		gap: 3rem;
+	}
+
+	.subscribeSection {
+		grid-column: span 1;
+		padding: 1.5rem;
+	}
+
+	.brandSection {
+		padding-right: 0;
+		text-align: center;
+	}
+
+	.linksSection {
+		grid-template-columns: repeat(2, 1fr);
+		justify-content: center;
+		text-align: center;
+	}
+
+	.linkColumn a:hover {
+		transform: none;
+	}
+
+	.subscribeForm {
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.chatButton {
+		bottom: 1rem;
+		right: 1rem;
+	}
+}
+
+@media (max-width: 480px) {
+	.linksSection {
+		grid-template-columns: 1fr;
+		gap: 2rem;
+	}
+
+	.footer {
+		padding: 3rem 1rem;
+	}
+}

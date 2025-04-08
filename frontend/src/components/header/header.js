@@ -5,22 +5,24 @@ import { MenuOutlined, UserOutlined } from "@ant-design/icons";
 import Image from "next/image";
 import LoginModal from "../auth/LoginModal";
 import RegisterModal from "../auth/RegisterModal";
-
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/authContext/authContext";
+import { message } from "antd";
 const { Header } = Layout;
 
 const HeaderComponent = ({ current, handleClick }) => {
 	const [drawerVisible, setDrawerVisible] = useState(false);
 	const [loginModalVisible, setLoginModalVisible] = useState(false);
 	const [registerModalVisible, setRegisterModalVisible] = useState(false);
-	const [user, setUser] = useState(null);
+	const router = useRouter();
+	const { currentUser, userLoggedIn, logout } = useAuth();
 
 	useEffect(() => {
 		// Check if user is logged in
-		const storedUser = localStorage.getItem("user");
-		if (storedUser) {
-			setUser(JSON.parse(storedUser));
+		if (userLoggedIn && currentUser) {
+			// User is already logged in, no need to check localStorage
 		}
-	}, []);
+	}, [userLoggedIn, currentUser]);
 
 	const showDrawer = () => {
 		setDrawerVisible(true);
@@ -30,14 +32,17 @@ const HeaderComponent = ({ current, handleClick }) => {
 		setDrawerVisible(false);
 	};
 
-	const handleLogin = (userData) => {
-		setUser(userData);
+	const handleLogout = async () => {
+		try {
+			await logout();
+			message.success("Logged out successfully");
+		} catch (error) {
+			message.error("Failed to log out: " + error.message);
+		}
 	};
 
-	const handleLogout = () => {
-		localStorage.removeItem("token");
-		localStorage.removeItem("user");
-		setUser(null);
+	const handleLogin = () => {
+		router.push("/login");
 	};
 
 	return (
@@ -91,7 +96,6 @@ const HeaderComponent = ({ current, handleClick }) => {
 							"services",
 							"results",
 							"apply",
-							// "about",
 							"blog",
 							"contact",
 						].map((key) => (
@@ -113,12 +117,12 @@ const HeaderComponent = ({ current, handleClick }) => {
 						))}
 						{/* Login Button */}
 						<Menu.Item key="login" style={{ borderBottom: "none" }}>
-							{user ? (
+							{userLoggedIn ? (
 								<div
 									style={{ display: "flex", alignItems: "center", gap: "10px" }}
 								>
 									<UserOutlined />
-									<span>{user.username}</span>
+									<span>{currentUser.name}</span>
 									<Button
 										type="link"
 										onClick={handleLogout}
@@ -130,7 +134,7 @@ const HeaderComponent = ({ current, handleClick }) => {
 							) : (
 								<Button
 									type="primary"
-									onClick={() => setLoginModalVisible(true)}
+									onClick={handleLogin}
 									className="login-button"
 									style={{
 										backgroundColor: "#F0386B",
@@ -179,7 +183,6 @@ const HeaderComponent = ({ current, handleClick }) => {
 						"services",
 						"results",
 						"apply",
-						// "about",
 						"blog",
 						"contact",
 					].map((key) => (
@@ -197,12 +200,12 @@ const HeaderComponent = ({ current, handleClick }) => {
 					))}
 					{/* Mobile Login Button */}
 					<Menu.Item key="login" onClick={closeDrawer}>
-						{user ? (
+						{userLoggedIn ? (
 							<div
 								style={{ display: "flex", alignItems: "center", gap: "10px" }}
 							>
 								<UserOutlined />
-								<span>{user.username}</span>
+								<span>{currentUser.name}</span>
 								<Button
 									type="link"
 									onClick={handleLogout}
@@ -215,7 +218,7 @@ const HeaderComponent = ({ current, handleClick }) => {
 							<Button
 								type="primary"
 								onClick={() => {
-									setLoginModalVisible(true);
+									handleLogin();
 									closeDrawer();
 								}}
 								style={{
@@ -232,7 +235,7 @@ const HeaderComponent = ({ current, handleClick }) => {
 			</Drawer>
 
 			{/* Login Modal */}
-			<LoginModal
+			{/* <LoginModal
 				visible={loginModalVisible}
 				onClose={() => setLoginModalVisible(false)}
 				onLogin={handleLogin}
@@ -240,11 +243,11 @@ const HeaderComponent = ({ current, handleClick }) => {
 			/>
 
 			{/* Register Modal */}
-			<RegisterModal
+			{/* <RegisterModal
 				visible={registerModalVisible}
 				onClose={() => setRegisterModalVisible(false)}
 				onRegister={() => setLoginModalVisible(true)}
-			/>
+			/> */}
 		</Header>
 	);
 };

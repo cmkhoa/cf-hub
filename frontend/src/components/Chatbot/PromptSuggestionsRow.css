@@ -7,8 +7,8 @@
 
 .suggestion-button {
     background-color: white;
-    border: 1px solid var(--cf-hub-coral);
-    color: var(--cf-hub-coral);
+    border: 1px solid #F0386B;
+    color: #F0386B;
     padding: 8px 16px;
     border-radius: 20px;
     cursor: pointer;
@@ -18,7 +18,7 @@
 }
 
 .suggestion-button:hover {
-    background-color: var(--cf-hub-coral);
+    background-color: #F0386B;
     color: white;
     transform: translateY(-2px);
 }

@@ -5,6 +5,7 @@ import PromptSuggestionsRow from "./PromptSuggestionsRow.js";
 import LoadingBubble from "./LoadingBubble.js";
 import { MessageOutlined, CloseOutlined } from "@ant-design/icons";
 import "./Chatbot.css";
+import { useAuth } from "@/contexts/authContext/authContext";
 
 const Chatbot = () => {
 	const [input, setInput] = useState("");
@@ -12,6 +13,7 @@ const Chatbot = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
 	const chatContainerRef = useRef(null);
+	const { currentUser } = useAuth();
 
 	const handleInputChange = (e) => {
 		setInput(e.target.value);
@@ -89,7 +91,9 @@ const Chatbot = () => {
 					{noMessages ? (
 						<>
 							<p className="starter-text">
-								Hi, I'm the CF Hub Chatbot. How can I help you today?
+								{currentUser
+									? `Hi, ${currentUser.name}. I'm the CF Hub Chatbot. How can I help you today?`
+									: "Hi! I'm the CF Hub Chatbot. How can I help you today?"}
 							</p>
 							<PromptSuggestionsRow />
 						</>

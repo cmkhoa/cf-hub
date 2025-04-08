@@ -1,13 +1,14 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Chatbot from "@/components/Chatbot/Chatbot";
+import { AuthProvider } from "@/contexts/authContext/authContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-	title: "Pathwise Mentorship",
+	title: "Career Foudnation Hub",
 	description:
-		"This is a mentorship program for students looking for internships/jobs in the US.",
+		"This is a mentorship program for students/new graduates looking for internships/jobs in the US.",
 };
 
 export default function RootLayout({ children }) {
@@ -26,8 +27,10 @@ export default function RootLayout({ children }) {
 				/>
 			</head>
 			<body className={inter.className}>
-				{children}
-				<Chatbot />
+				<AuthProvider>
+					{children}
+					<Chatbot />
+				</AuthProvider>
 			</body>
 		</html>
 	);

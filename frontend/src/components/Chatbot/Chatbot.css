@@ -190,7 +190,7 @@
 }
 
 .message.user {
-	background-color: var(--cf-hub-coral);
+	background-color: #F0386B;
 	color: white;
 	align-self: flex-end;
 }
@@ -217,11 +217,11 @@
 }
 
 .chat-input:focus {
-	border-color: var(--cf-hub-coral);
+	border-color: #F0386B;
 }
 
 .send-button {
-	background-color: var(--cf-hub-coral);
+	background-color: #F0386B;
 	color: white;
 	border: none;
 	padding: 8px 16px;
@@ -231,7 +231,7 @@
 }
 
 .send-button:hover {
-	background-color: #ff6b6b;
+	background-color: #d02d59;
 }
 
 .starter-text {
