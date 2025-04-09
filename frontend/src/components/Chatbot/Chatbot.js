@@ -97,12 +97,14 @@ const Chatbot = () => {
 				<div className="chat-messages" ref={chatContainerRef}>
 					{noMessages ? (
 						<>
-							<div className="message assistant">
-								<p>
-									{currentUser
-										? `Hi, ${currentUser.name}! How can I help you today?`
-										: "Hi! How can I help you today?"}
-								</p>
+							<div className="message-block assistant-block">
+								<div className="message assistant">
+									<p>
+										{currentUser
+											? `Hi, ${currentUser.name}! How can I help you today?`
+											: "Hi! How can I help you today?"}
+									</p>
+								</div>
 								<span className="message-time">03:52 PM</span>
 							</div>
 							<PromptSuggestionsRow />
@@ -112,11 +114,17 @@ const Chatbot = () => {
 							{messages.map((message, index) => (
 								<div
 									key={index}
-									className={`message ${
-										message.role === "user" ? "user" : "assistant"
+									className={`message-block ${
+										message.role === "user" ? "user-block" : "assistant-block"
 									}`}
 								>
-									<p>{message.content}</p>
+									<div
+										className={`message ${
+											message.role === "user" ? "user" : "assistant"
+										}`}
+									>
+										<p>{message.content}</p>
+									</div>
 									<span className="message-time">
 										{new Date().toLocaleTimeString("en-US", {
 											hour: "2-digit",

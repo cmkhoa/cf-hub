@@ -1,19 +1,17 @@
-import React, { useState, useEffect } from "react";
+	import React, { useState, useEffect } from "react";
 import { Layout, Row, Col, Menu, Button, Drawer } from "antd";
 import Link from "next/link";
 import { MenuOutlined, UserOutlined } from "@ant-design/icons";
 import Image from "next/image";
-import LoginModal from "../auth/LoginModal";
-import RegisterModal from "../auth/RegisterModal";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/authContext/authContext";
 import { message } from "antd";
+import "./header.css";
 const { Header } = Layout;
 
 const HeaderComponent = ({ current, handleClick }) => {
 	const [drawerVisible, setDrawerVisible] = useState(false);
-	const [loginModalVisible, setLoginModalVisible] = useState(false);
-	const [registerModalVisible, setRegisterModalVisible] = useState(false);
+	const [isScrolled, setIsScrolled] = useState(false);
 	const router = useRouter();
 	const { currentUser, userLoggedIn, logout } = useAuth();
 
@@ -23,6 +21,24 @@ const HeaderComponent = ({ current, handleClick }) => {
 			// User is already logged in, no need to check localStorage
 		}
 	}, [userLoggedIn, currentUser]);
+
+	// Add scroll event listener
+	useEffect(() => {
+		const handleScroll = () => {
+			const scrollPosition = window.scrollY;
+			setIsScrolled(scrollPosition > 1);
+		};
+
+		window.addEventListener("scroll", handleScroll);
+
+		// Initial check
+		handleScroll();
+
+		// Cleanup
+		return () => {
+			window.removeEventListener("scroll", handleScroll);
+		};
+	}, []);
 
 	const showDrawer = () => {
 		setDrawerVisible(true);
@@ -47,19 +63,20 @@ const HeaderComponent = ({ current, handleClick }) => {
 
 	return (
 		<Header
+			className={`header ${isScrolled ? "scrolled" : ""}`}
 			style={{
 				position: "sticky",
 				top: 0,
 				zIndex: 1,
 				width: "100%",
-				backgroundColor: "white",
 				height: "70px",
 				display: "flex",
 				alignItems: "center",
 				padding: "0 20px",
+				transition: "background-color 0.3s ease, box-shadow 0.3s ease",
 			}}
 		>
-			<Row justify="space-between" align="middle" style={{ width: "100%" }}>
+			<Row justify="space-around" align="middle" style={{ width: "100%" }}>
 				<Col xs={18} sm={18} md={10} lg={10}>
 					<Link href="/" passHref>
 						<div className="logo-container">
@@ -89,6 +106,7 @@ const HeaderComponent = ({ current, handleClick }) => {
 							fontWeight: 400,
 							fontSize: 16,
 							color: "var(--cf-hub-coral)",
+							background: "transparent",
 						}}
 					>
 						{[
@@ -233,21 +251,6 @@ const HeaderComponent = ({ current, handleClick }) => {
 					</Menu.Item>
 				</Menu>
 			</Drawer>
-
-			{/* Login Modal */}
-			{/* <LoginModal
-				visible={loginModalVisible}
-				onClose={() => setLoginModalVisible(false)}
-				onLogin={handleLogin}
-				onShowRegister={() => setRegisterModalVisible(true)}
-			/>
-
-			{/* Register Modal */}
-			{/* <RegisterModal
-				visible={registerModalVisible}
-				onClose={() => setRegisterModalVisible(false)}
-				onRegister={() => setLoginModalVisible(true)}
-			/> */}
 		</Header>
 	);
 };

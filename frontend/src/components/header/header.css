@@ -56,8 +56,23 @@
 	justify-content: space-between;
 	align-items: center;
 	padding: 0 20px;
-	background-color: white;
+	background-color: var(--cf-hub-blue);
 	color: var(--primary-color);
+}
+
+.header.scrolled {
+	background: white !important;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Adjust logo visibility based on scroll state */
+.header:not(.scrolled) .logo-image {
+	filter: brightness(0) invert(1); /* Makes the logo white */
+}
+
+/* Adjust mobile menu button color based on scroll state */
+.header:not(.scrolled) .ant-btn {
+	color: white !important;
 }
 
 /* Title styling */
@@ -94,14 +109,14 @@
 .logo-container {
 	display: flex;
 	align-items: center;
-	justify-content: center;
-	height: 40px; /* Set fixed height for container */
-	width: auto; /* Width will adjust based on image */
-	padding-left: 10px; /* Optional: Adds a small left padding if needed */
+	justify-content: flex-start;
+	height: 40px;
+	width: auto;
+	padding-left: 0;
 }
 
 .logo-image {
-	margin-left: 40px;
+	margin-left: 0;
 }
 
 .login-button.ant-btn {

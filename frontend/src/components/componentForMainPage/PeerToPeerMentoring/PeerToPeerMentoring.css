@@ -2,11 +2,7 @@
 
 .peer-mentoring-container {
 	padding: 80px 24px;
-	background: linear-gradient(
-		135deg,
-		var(--cf-hub-blue) 0%,
-		var(--cf-hub-blue-dark) 100%
-	);
+	background-color: var(--cf-hub-blue);
 	overflow: hidden;
 	position: relative;
 }
