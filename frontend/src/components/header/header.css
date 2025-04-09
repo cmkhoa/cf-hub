@@ -75,6 +75,8 @@
 	color: white !important;
 }
 
+/* Keep login button visible on transparent header */
+
 /* Title styling */
 .header-title {
 	margin: 0;

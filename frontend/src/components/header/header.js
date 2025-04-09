@@ -1,4 +1,4 @@
-	import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Layout, Row, Col, Menu, Button, Drawer } from "antd";
 import Link from "next/link";
 import { MenuOutlined, UserOutlined } from "@ant-design/icons";
@@ -125,7 +125,7 @@ const HeaderComponent = ({ current, handleClick }) => {
 									<span
 										style={{
 											color:
-												current === key ? "var(--cf-hub-coral)" : "inherit",
+												current === key ? "var(--cf-hub-coral)" : isScrolled ? "inherit" : "white",
 										}}
 									>
 										{key.charAt(0).toUpperCase() + key.slice(1)}
@@ -137,7 +137,11 @@ const HeaderComponent = ({ current, handleClick }) => {
 						<Menu.Item key="login" style={{ borderBottom: "none" }}>
 							{userLoggedIn ? (
 								<div
-									style={{ display: "flex", alignItems: "center", gap: "10px" }}
+									style={{
+										display: "flex",
+										alignItems: "center",
+										gap: "10px"
+									}}
 								>
 									<UserOutlined />
 									<span>{currentUser.name}</span>
