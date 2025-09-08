@@ -3,7 +3,7 @@ import { Row, Col, Typography, Button } from "antd";
 import "./PeerToPeerMentoring.css";
 import { useRouter } from "next/navigation";
 
-const { Title, Text } = Typography;
+const { Title, Text: AntText } = Typography;
 
 const PeerToPeerMentoring = () => {
 	const router = useRouter();
@@ -15,10 +15,10 @@ const PeerToPeerMentoring = () => {
 					<Title level={1} className="main-title">
 						Peer-to-Peer Mentoring
 					</Title>
-					<Text className="subtitle">
+					<AntText className="subtitle">
 						Connect with experienced mentors and fellow students to enhance your
 						learning journey. Share knowledge, gain insights, and grow together.
-					</Text>
+					</AntText>
 					<Button
 						className="get-started-button"
 						onClick={() => router.push("/apply")}

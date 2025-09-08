@@ -3,7 +3,7 @@ import { Row, Col, Card, Typography } from "antd";
 import "./OffersSection.css";
 import Image from "next/image";
 
-const { Title, Text } = Typography;
+const { Title, Text: AntText } = Typography;
 
 const offersData = [
 	{
@@ -186,8 +186,8 @@ const OffersSection = () => {
 								/>
 							</div>
 							<div className="mentee-details">
-								<Text className="mentee-name">{mentee.name}</Text>
-								<Text className="mentee-info">{`${mentee.company} - ${mentee.position} - ${mentee.location}`}</Text>
+								<AntText className="mentee-name">{mentee.name}</AntText>
+								<AntText className="mentee-info">{`${mentee.company} - ${mentee.position} - ${mentee.location}`}</AntText>
 							</div>
 						</Card>
 					</Col>
@@ -211,11 +211,11 @@ const OffersSection = () => {
 								/>
 							</div>
 							<div className="mentee-details">
-								<Text className="mentee-name">{mentee.name}</Text>
-								<Text className="mentee-info">{`${mentee.school} - ${mentee.year}`}</Text>
-								<Text className="mentee-info">{mentee.major}</Text>
+								<AntText className="mentee-name">{mentee.name}</AntText>
+								<AntText className="mentee-info">{`${mentee.school} - ${mentee.year}`}</AntText>
+								<AntText className="mentee-info">{mentee.major}</AntText>
 								<div className="mentee-offers">
-									<Text className="offers-title">Offers:</Text>
+									<AntText className="offers-title">Offers:</AntText>
 									<ul className="offers-list">
 										{mentee.offers.map((offer, idx) => (
 											<li key={idx} className="offer-text">

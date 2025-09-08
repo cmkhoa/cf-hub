@@ -1,13 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { Layout, Row, Col, Menu, Button, Drawer } from "antd";
+import { Layout, Row, Col, Menu, Button, Drawer, Input, Dropdown, Typography } from "antd";
 import Link from "next/link";
-import { MenuOutlined, UserOutlined } from "@ant-design/icons";
+import { 
+	MenuOutlined, 
+	UserOutlined, 
+	SearchOutlined, 
+	FacebookOutlined, 
+	LinkedinOutlined, 
+	YoutubeOutlined,
+	DownOutlined,
+	LoginOutlined,
+	UserAddOutlined
+} from "@ant-design/icons";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/authContext/authContext";
 import { message } from "antd";
 import "./header.css";
 const { Header } = Layout;
+const { Search } = Input;
+const { Text: AntText } = Typography;
 
 const HeaderComponent = ({ current, handleClick }) => {
 	const [drawerVisible, setDrawerVisible] = useState(false);
@@ -61,132 +73,209 @@ const HeaderComponent = ({ current, handleClick }) => {
 		router.push("/login");
 	};
 
+	// Categories dropdown items
+	const categoriesItems = [
+		{
+			key: 'big-tech',
+			label: 'Big Tech, Fortune 500 & Top Companies',
+		},
+		{
+			key: 'events-community',
+			label: 'Events & Community',
+		},
+		{
+			key: 'main-blog',
+			label: 'Main Blog',
+		},
+		{
+			key: 'professional-development',
+			label: 'Professional Development',
+		},
+		{
+			key: 'resume-job-search',
+			label: 'Resume, Job Search & Interview Tips',
+		},
+		{
+			key: 'immigration-visas',
+			label: 'Immigration & Visas',
+		},
+		{
+			key: 'industry-insights',
+			label: 'Industry Insights',
+		},
+		{
+			key: 'networking-tips',
+			label: 'Networking Tips',
+		},
+		{
+			key: 'success-stories',
+			label: 'Success Stories',
+		},
+		{
+			key: 'webinars-workshops',
+			label: 'Webinars & Workshops',
+		},
+	];
+
+	// Tags dropdown items
+	const tagsItems = [
+		{ key: 'application', label: 'application' },
+		{ key: 'behavioral-interview', label: 'behavioral interview' },
+		{ key: 'career', label: 'career' },
+		{ key: 'computer-science', label: 'computer science' },
+		{ key: 'conference', label: 'conference' },
+		{ key: 'connection', label: 'connection' },
+		{ key: 'google', label: 'google' },
+		{ key: 'interview', label: 'interview' },
+		{ key: 'job-search', label: 'job search' },
+		{ key: 'networking', label: 'networking' },
+		{ key: 'referral', label: 'referral' },
+		{ key: 'resume', label: 'resume' },
+		{ key: 'viet-career-conference', label: 'viet-career-conference' },
+		{ key: 'vietnamese', label: 'vietnamese' },
+		{ key: 'visa', label: 'visa' },
+	];
+
 	return (
-		<Header
-			className={`header ${isScrolled ? "scrolled" : ""}`}
-			style={{
-				position: "sticky",
-				top: 0,
-				zIndex: 1,
-				width: "100%",
-				height: "70px",
-				display: "flex",
-				alignItems: "center",
-				padding: "0 20px",
-				transition: "background-color 0.3s ease, box-shadow 0.3s ease",
-			}}
-		>
-			<Row justify="space-around" align="middle" style={{ width: "100%" }}>
-				<Col xs={18} sm={18} md={10} lg={10}>
-					<Link href="/" passHref>
-						<div className="logo-container">
-							<Image
-								src="/assets/logo.png"
-								width={120}
-								height={50}
-								className="logo-image"
-								alt="CF Hub Logo"
-								priority
-								style={{ objectFit: "contain" }}
-							/>
-						</div>
-					</Link>
-				</Col>
+		<>
+			{/* Top Information Bar */}
+			<div className="top-info-bar">
+				<div className="container">
+					<Row justify="space-between" align="middle">
+						<Col>
+							<AntText className="top-info-text">About Career Foundation Hub</AntText>
+						</Col>
+						<Col>
+							<AntText className="top-info-text">Recent News</AntText>
+						</Col>
+					</Row>
+				</div>
+			</div>
 
-				{/* Desktop Menu */}
-				<Col xs={0} sm={0} md={14} lg={14}>
-					<Menu
-						theme="light"
-						mode="horizontal"
-						selectedKeys={[current]}
-						onClick={handleClick}
-						style={{
-							borderBottom: "none",
-							justifyContent: "flex-end",
-							fontWeight: 400,
-							fontSize: 16,
-							color: "var(--cf-hub-coral)",
-							background: "transparent",
-						}}
-					>
-						{[
-							"activities",
-							"services",
-							"results",
-							"apply",
-							"blog",
-							"contact",
-						].map((key) => (
-							<Menu.Item
-								key={key}
-								style={{ borderBottom: "none", marginRight: "20px" }}
-							>
-								<Link href={`/${key === "home" ? "" : key}`} passHref>
-									<span
-										style={{
-											color:
-												current === key ? "var(--cf-hub-coral)" : isScrolled ? "inherit" : "white",
-										}}
-									>
-										{key.charAt(0).toUpperCase() + key.slice(1)}
-									</span>
-								</Link>
-							</Menu.Item>
-						))}
-						{/* Login Button */}
-						<Menu.Item key="login" style={{ borderBottom: "none" }}>
-							{userLoggedIn ? (
-								<div
-									style={{
-										display: "flex",
-										alignItems: "center",
-										gap: "10px"
-									}}
-								>
-									<UserOutlined />
-									<span>{currentUser.name}</span>
-									<Button
-										type="link"
-										onClick={handleLogout}
-										style={{ padding: 0 }}
-									>
-										Logout
-									</Button>
+			{/* Main Header */}
+			<Header className="main-header">
+				<div className="container">
+					<Row justify="space-between" align="middle">
+						{/* Logo */}
+						<Col xs={12} sm={12} md={8} lg={8}>
+							<Link href="/" passHref>
+								<div className="logo-container">
+									<span className="logo-text">CF Hub</span>
 								</div>
-							) : (
+							</Link>
+						</Col>
+
+						{/* Right Side - Social, Search & Auth */}
+						<Col xs={12} sm={12} md={16} lg={16}>
+							<div className="header-right">
+								{/* Social Icons */}
+								<div className="social-icons">
+									<Button type="text" icon={<FacebookOutlined />} className="social-btn facebook" />
+									<Button type="text" icon={<LinkedinOutlined />} className="social-btn linkedin" />
+									<Button type="text" icon={<YoutubeOutlined />} className="social-btn youtube" />
+								</div>
+								
+								{/* Search Icon */}
+								<Button type="text" icon={<SearchOutlined />} className="search-btn" />
+
+								{/* Auth Buttons */}
+								{userLoggedIn ? (
+									<div className="user-info">
+										<UserOutlined className="user-icon" />
+										<span className="user-name">{currentUser.name}</span>
+										<Button type="link" onClick={handleLogout} className="logout-btn">
+											Logout
+										</Button>
+									</div>
+								) : (
+									<div className="auth-buttons">
+										<Button 
+											icon={<LoginOutlined />} 
+											className="login-btn"
+											onClick={handleLogin}
+										>
+											Login
+										</Button>
+										<Button 
+											icon={<UserAddOutlined />} 
+											className="register-btn"
+										>
+											Register
+										</Button>
+									</div>
+								)}
+
+								{/* Mobile Menu Button */}
 								<Button
-									type="primary"
-									onClick={handleLogin}
-									className="login-button"
-									style={{
-										backgroundColor: "#F0386B",
-										borderColor: "#F0386B",
-									}}
+									icon={<MenuOutlined />}
+									onClick={showDrawer}
+									className="mobile-menu-btn"
+								/>
+							</div>
+						</Col>
+					</Row>
+				</div>
+			</Header>
+
+			{/* Main Navigation Bar */}
+			<div className="main-nav-bar">
+				<div className="container">
+					<Row justify="space-between" align="middle">
+						<Col xs={0} sm={0} md={16} lg={16}>
+							<Menu
+								theme="dark"
+								mode="horizontal"
+								selectedKeys={[current]}
+								onClick={handleClick}
+								className="main-nav-menu"
+							>
+								<Menu.Item key="home">
+									<Link href="/">HOME</Link>
+								</Menu.Item>
+								<Menu.Item key="about">
+									<Link href="/about">ABOUT</Link>
+								</Menu.Item>
+								<Menu.Item key="blog">
+									<Link href="/blog">BLOGS</Link>
+								</Menu.Item>
+								<Menu.Item key="conference">
+									<Link href="/conference">VIET CAREER CONFERENCE</Link>
+								</Menu.Item>
+								<Menu.Item key="videos">
+									<Link href="/videos">LATEST VIDEOS</Link>
+								</Menu.Item>
+								<Menu.Item key="support">
+									<Link href="/support">SUPPORT US</Link>
+								</Menu.Item>
+							</Menu>
+						</Col>
+						<Col xs={0} sm={0} md={8} lg={8}>
+							<div className="nav-dropdowns">
+								<Dropdown
+									menu={{ items: categoriesItems }}
+									placement="bottomLeft"
+									trigger={['hover']}
 								>
-									Login
-								</Button>
-							)}
-						</Menu.Item>
-					</Menu>
-				</Col>
+									<Button className="dropdown-btn">
+										Categories <DownOutlined />
+									</Button>
+								</Dropdown>
+								<Dropdown
+									menu={{ items: tagsItems }}
+									placement="bottomLeft"
+									trigger={['hover']}
+								>
+									<Button className="dropdown-btn">
+										Tags <DownOutlined />
+									</Button>
+								</Dropdown>
+							</div>
+						</Col>
+					</Row>
+				</div>
+			</div>
 
-				{/* Mobile Menu Button */}
-				<Col xs={6} sm={6} md={0} lg={0}>
-					<Button
-						icon={<MenuOutlined />}
-						onClick={showDrawer}
-						style={{
-							border: "none",
-							backgroundColor: "transparent",
-							color: "var(--primary-color)",
-							boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-							marginLeft: 20,
-						}}
-					/>
-				</Col>
-			</Row>
-
-			{/* Drawer for Mobile Menu */}
+			{/* Mobile Drawer */}
 			<Drawer
 				title="CF Hub"
 				placement="right"
@@ -201,61 +290,22 @@ const HeaderComponent = ({ current, handleClick }) => {
 					style={{ borderRight: "none" }}
 				>
 					{[
-						"activities",
-						"services",
-						"results",
-						"apply",
-						"blog",
-						"contact",
-					].map((key) => (
-						<Menu.Item key={key} onClick={closeDrawer}>
-							<Link href={`/${key === "home" ? "" : key}`} passHref>
-								<span
-									style={{
-										color: current === key ? "var(--cf-hub-coral)" : "inherit",
-									}}
-								>
-									{key.charAt(0).toUpperCase() + key.slice(1)}
-								</span>
+						{ key: "home", label: "HOME" },
+						{ key: "about", label: "ABOUT" },
+						{ key: "blog", label: "BLOGS" },
+						{ key: "conference", label: "VIET CAREER CONFERENCE" },
+						{ key: "videos", label: "LATEST VIDEOS" },
+						{ key: "support", label: "SUPPORT US" },
+					].map((item) => (
+						<Menu.Item key={item.key} onClick={closeDrawer}>
+							<Link href={`/${item.key === "home" ? "" : item.key}`} passHref>
+								<span>{item.label}</span>
 							</Link>
 						</Menu.Item>
 					))}
-					{/* Mobile Login Button */}
-					<Menu.Item key="login" onClick={closeDrawer}>
-						{userLoggedIn ? (
-							<div
-								style={{ display: "flex", alignItems: "center", gap: "10px" }}
-							>
-								<UserOutlined />
-								<span>{currentUser.name}</span>
-								<Button
-									type="link"
-									onClick={handleLogout}
-									style={{ padding: 0 }}
-								>
-									Logout
-								</Button>
-							</div>
-						) : (
-							<Button
-								type="primary"
-								onClick={() => {
-									handleLogin();
-									closeDrawer();
-								}}
-								style={{
-									backgroundColor: "var(--cf-hub-coral)",
-									borderColor: "var(--cf-hub-coral)",
-									width: "100%",
-								}}
-							>
-								Login
-							</Button>
-						)}
-					</Menu.Item>
 				</Menu>
 			</Drawer>
-		</Header>
+		</>
 	);
 };
 

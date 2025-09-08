@@ -1,49 +1,133 @@
 /* src/app/globals.css */
 :root {
-  --primary-color: #564497;
-  --secondary-color: #f8a025;
-  --background-color: #f0d394;
-  --mentor-color: #e5cc95;
-  --text-color: white;
+  /* CF Hub Color Scheme */
+  --primary-blue: #3b82f6;
+  --secondary-blue: #2563eb;
+  --light-blue: #60a5fa;
+  --accent-orange: #f4a261;
+  --accent-red: #e76f51;
+  --background-white: #ffffff;
+  --text-dark: #0F2442;
+  --text-light: #6b7280;
+  --border-light: #e5e7eb;
+  --shadow-light: rgba(0, 0, 0, 0.1);
 }
 
 html, body, #__next {
   height: 100%;
   margin: 0;
   padding: 0;
-  font-family: 'Anuphan', sans-serif !important;
-  color: #0F2442  
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif !important;
+  color: var(--text-dark);
+  line-height: 1.6;
 }
 
 .site-layout-content {
-  /* padding: 50px; */
   min-height: 280px;
-  background: #fff;
+  background: var(--background-white);
 }
 
-.ant-menu-title-content {
-	font-family: 'Space Grotesk', sans-serif !important;
-  font-size: 16.8px;
-  font-weight: 600;
+/* Global Typography */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-dark);
+  font-weight: 700;
+  line-height: 1.2;
 }
 
+p {
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
+/* Global Button Styles */
+.ant-btn-primary {
+  background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue)) !important;
+  border: none !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
+}
+
+.ant-btn-primary:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.3) !important;
+}
+
+/* Global Card Styles */
+.ant-card {
+  border-radius: 12px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+  border: 1px solid var(--border-light) !important;
+  transition: all 0.3s ease !important;
+}
+
+.ant-card:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Global Input Styles */
+.ant-input {
+  border-radius: 8px !important;
+  border: 1px solid var(--border-light) !important;
+  transition: all 0.3s ease !important;
+}
+
+.ant-input:focus {
+  border-color: var(--primary-blue) !important;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2) !important;
+}
+
+/* Global Menu Styles */
 .ant-menu-horizontal > .ant-menu-item::after {
   border-bottom: none !important;
 }
 
+.ant-menu-item {
+  border-radius: 6px !important;
+  margin: 0 4px !important;
+  transition: all 0.3s ease !important;
+}
+
+.ant-menu-item:hover {
+  background: rgba(59, 130, 246, 0.1) !important;
+  color: var(--primary-blue) !important;
+}
+
+.ant-menu-item-selected {
+  background: rgba(59, 130, 246, 0.1) !important;
+  color: var(--primary-blue) !important;
+}
+
+/* Global Typography Overrides */
 .ant-typography,
 .ant-menu,
 .ant-card,
 .ant-layout {
-  font-family: 'Anuphan', sans-serif !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif !important;
 }
 
-.ant-layout-header {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  width: 100%;
+.ant-menu-title-content {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif !important;
+  font-size: 14px;
+  font-weight: 600;
 }
+
+/* Responsive Utilities */
+@media (max-width: 768px) {
+  .ant-typography h1 {
+    font-size: 2rem !important;
+  }
+  
+  .ant-typography h2 {
+    font-size: 1.75rem !important;
+  }
+  
+  .ant-typography h3 {
+    font-size: 1.5rem !important;
+  }
+}
+
 
 /* Peer to peer mentoring CSS */
 .buttons-container {

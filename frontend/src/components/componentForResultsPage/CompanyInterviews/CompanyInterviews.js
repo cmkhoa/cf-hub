@@ -2,7 +2,7 @@ import React from "react";
 import { Row, Col, Typography, Card } from "antd";
 import "./CompanyInterviews.css";
 
-const { Title, Text } = Typography;
+const { Title, Text: AntText } = Typography;
 
 const internships = [
   "Apple",
@@ -60,7 +60,7 @@ const CompanyInterviews = () => {
           {internships.map((company, index) => (
             <Col xs={12} sm={8} md={6} lg={4} xl={3} key={index}>
               <Card className="company-card">
-                <Text>{company}</Text>
+                <AntText>{company}</AntText>
               </Card>
             </Col>
           ))}
@@ -76,7 +76,7 @@ const CompanyInterviews = () => {
           {newGradPositions.map((company, index) => (
             <Col xs={12} sm={8} md={6} lg={4} xl={3} key={index}>
               <Card className="company-card">
-                <Text>{company}</Text>
+                <AntText>{company}</AntText>
               </Card>
             </Col>
           ))}
@@ -92,7 +92,7 @@ const CompanyInterviews = () => {
           {dataPositions.map((company, index) => (
             <Col xs={12} sm={8} md={6} lg={4} xl={3} key={index}>
               <Card className="company-card">
-                <Text>{company}</Text>
+                <AntText>{company}</AntText>
               </Card>
             </Col>
           ))}

@@ -4,7 +4,7 @@ import "./MenteeShowcase.css";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
-const { Title, Text } = Typography;
+const { Title, Text: AntText } = Typography;
 const { Meta } = Card;
 
 const mentees = [
@@ -62,7 +62,7 @@ const MenteeShowcase = () => {
 			>
 				Students of Career Foundation Hub
 			</Title>
-			{/* <Text className="sub-title">Software Engineer and Data</Text> */}
+			{/* <AntText className="sub-title">Software Engineer and Data</AntText> */}
 
 			<Carousel
 				arrows

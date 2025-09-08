@@ -3,7 +3,7 @@ import { Row, Col, Typography } from "antd";
 import Image from "next/image";
 import "./LandYourDreamJob.css";
 
-const { Text } = Typography;
+const { Text: AntText } = Typography;
 
 const LandYourDreamJob = () => {
 	const [researchLabCount, setResearchLabCount] = useState(0);
@@ -62,25 +62,25 @@ const LandYourDreamJob = () => {
 		<div className="container">
 			<h1 className="main-title">Land Your Dream Offers</h1>
 			<div className="small-container">
-				<Text className="description">
+				<AntText className="description">
 					In the first year of launching the 2024 program, we helped{" "}
 					<span className="primary-color">100 mentees</span> secure multiple{" "}
 					<span className="primary-color">interviews and job offers</span> from
 					major companies in the U.S. like Capital One, Uber, Smithfield,
 					Unilever, and JP Morgan Chase.{" "}
-				</Text>
-				<Text className="description">
+				</AntText>
+				<AntText className="description">
 					Our mentors have experience in various fields such as{" "}
 					<span className="primary-color">
 						Software, Data, Finance, and Consulting
 					</span>
-				</Text>
+				</AntText>
 				<Row gutter={[16, 16]} className="statistics">
 					<Col xs={24} sm={8} md={8} className="stat-item" ref={researchLabRef}>
-						<Text className="stat-number">{researchLabCount}</Text>
-						<Text className="stat-description">
+						<AntText className="stat-number">{researchLabCount}</AntText>
+						<AntText className="stat-description">
 							offers in research labs and data programs
-						</Text>
+						</AntText>
 					</Col>
 					<Col
 						xs={24}
@@ -89,8 +89,8 @@ const LandYourDreamJob = () => {
 						className="stat-item"
 						ref={dellInternshipRef}
 					>
-						<Text className="stat-number">{dellInternshipCount}</Text>
-						<Text className="stat-description">job offers in the U.S.</Text>
+						<AntText className="stat-number">{dellInternshipCount}</AntText>
+						<AntText className="stat-description">job offers in the U.S.</AntText>
 					</Col>
 					<Col
 						xs={24}
@@ -99,10 +99,10 @@ const LandYourDreamJob = () => {
 						className="stat-item"
 						ref={dowJonesInternshipRef}
 					>
-						<Text className="stat-number">{dowJonesInternshipCount}</Text>
-						<Text className="stat-description">
+						<AntText className="stat-number">{dowJonesInternshipCount}</AntText>
+						<AntText className="stat-description">
 							new grad offers in the U.S.
-						</Text>
+						</AntText>
 					</Col>
 				</Row>
 			</div>

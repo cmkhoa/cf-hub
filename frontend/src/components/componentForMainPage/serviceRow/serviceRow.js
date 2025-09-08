@@ -3,13 +3,13 @@ import { Row, Col, Typography } from "antd";
 import "./serviceRow.css";
 import CustomCard from "../customCard/customCard";
 
-const { Text } = Typography;
+const { Text: AntText } = Typography;
 
 const ServiceRow = () => (
   <Row gutter={[16, 16]} style={{ padding: "64px 120px 80px 120px" }}>
     {/* Column for "Our Services" text */}
     <Col xs={24} lg={6}>
-      <Text
+      <AntText
         style={{
           fontWeight: 700,
           fontSize: 40,
@@ -19,7 +19,7 @@ const ServiceRow = () => (
         level={2}
       >
         Our Services
-      </Text>
+      </AntText>
     </Col>
 
     {/* Column for the Cards */}

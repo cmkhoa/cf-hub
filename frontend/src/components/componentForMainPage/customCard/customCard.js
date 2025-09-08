@@ -1,7 +1,7 @@
 import React from "react";
 import { Typography, Card } from "antd";
 
-const { Title, Text } = Typography;
+const { Title, Text: AntText } = Typography;
 
 const CustomCard = ({ imgSrc, imgAlt, title, description }) => (
   <Card
@@ -18,7 +18,7 @@ const CustomCard = ({ imgSrc, imgAlt, title, description }) => (
         marginBottom: "16px",
       }}
     />
-    <Text
+    <AntText
       level={4}
       style={{
         fontWeight: 700,
@@ -29,8 +29,8 @@ const CustomCard = ({ imgSrc, imgAlt, title, description }) => (
       }}
     >
       {title}
-    </Text>
-    <Text style={{ fontSize: "16px" }}>{description}</Text>
+    </AntText>
+    <AntText style={{ fontSize: "16px" }}>{description}</AntText>
   </Card>
 );
 

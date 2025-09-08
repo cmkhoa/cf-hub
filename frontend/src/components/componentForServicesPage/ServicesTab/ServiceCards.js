@@ -8,7 +8,7 @@ import {
 } from "@ant-design/icons";
 import "./ServiceCards.css";
 
-const { Title, Text } = Typography;
+const { Title, Text: AntText } = Typography;
 
 const services = [
   {
@@ -76,24 +76,24 @@ const ServiceCard = ({ service }) => {
     <Card className="service-card">
       <div className="service-header">
         <Title level={4}>{service.title}</Title>
-        <Text>{service.description}</Text>
+        <AntText>{service.description}</AntText>
       </div>
       <div className="service-info">
         <div className="info-item">
           <CalendarOutlined className="icon" />
-          <Text>{service.start}</Text>
+          <AntText>{service.start}</AntText>
         </div>
         <div className="info-item">
           <ClockCircleOutlined className="icon" />
-          <Text>{service.duration}</Text>
+          <AntText>{service.duration}</AntText>
         </div>
         <div className="info-item">
           <UsergroupAddOutlined className="icon" />
-          <Text>{service.people}</Text>
+          <AntText>{service.people}</AntText>
         </div>
         <div className="info-item">
           <DollarOutlined className="icon" />
-          <Text>{service.fee}</Text>
+          <AntText>{service.fee}</AntText>
         </div>
       </div>
       <Button
@@ -107,7 +107,7 @@ const ServiceCard = ({ service }) => {
         <ul className="service-details">
           {service.details.map((detail, index) => (
             <li key={index}>
-              <Text>{detail}</Text>
+              <AntText>{detail}</AntText>
             </li>
           ))}
         </ul>

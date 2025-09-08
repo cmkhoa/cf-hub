@@ -1,138 +1,284 @@
-/* Custom header background */
-.custom-header {
-	position: sticky;
-	top: 0;
-	z-index: 1;
-	width: 100%;
-	background-color: white;
-	display: flex;
-	align-items: center; /* Center items vertically */
-	padding: 0 20px;
-}
-/* Title with primary color */
-.custom-title {
-	margin: 0;
-	color: var(--primary-color) !important;
-	font-family: "Anuphan", sans-serif !important;
+/* VCG Style Header */
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
-/* Custom Menu Styles */
-.custom-menu {
-	border-bottom: none;
-	justify-content: flex-end;
-	background-color: white;
+/* Top Information Bar */
+.top-info-bar {
+  background: var(--primary-blue);
+  color: white;
+  padding: 12px 0;
+  font-size: 14px;
+  font-weight: 500;
 }
 
-/* Menu item customization */
-.custom-menu-item {
-	font-weight: 400;
-	font-size: 16px;
-	color: var(--primary-color) !important;
-	border-bottom: none !important;
-	margin-right: 20px;
-	font-family: "Anuphan", sans-serif !important;
+.top-info-text {
+  color: white !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
 }
 
-/* Selected and hover styles */
-.custom-menu-item:hover,
-.custom-menu-item.ant-menu-item-selected {
-	color: var(--secondary-color) !important;
-}
-
-.custom-menu-item a {
-	color: var(--primary-color) !important;
-	text-decoration: none;
-}
-
-/* Hover and selected link color */
-.custom-menu-item:hover a,
-.custom-menu-item.ant-menu-item-selected a {
-	color: var(--secondary-color) !important;
-}
-
-/* Header styles */
-.header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 0 20px;
-	background-color: var(--cf-hub-blue);
-	color: var(--primary-color);
-}
-
-.header.scrolled {
-	background: white !important;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Adjust logo visibility based on scroll state */
-.header:not(.scrolled) .logo-image {
-	filter: brightness(0) invert(1); /* Makes the logo white */
-}
-
-/* Adjust mobile menu button color based on scroll state */
-.header:not(.scrolled) .ant-btn {
-	color: white !important;
-}
-
-/* Keep login button visible on transparent header */
-
-/* Title styling */
-.header-title {
-	margin: 0;
-	color: var(--primary-color) !important;
-	font-family: "Anuphan", sans-serif !important;
-}
-
-/* Ensure menu button is on the right in mobile view */
-.header-row {
-	display: flex !important;
-	justify-content: space-between !important;
-	align-items: center;
-}
-
-/* Custom Mobile Menu Button Alignment */
-.menu-button-col {
-	display: flex;
-	justify-content: flex-end;
-}
-
-/* Mobile-specific styling */
-@media (max-width: 768px) {
-	.header-title-col {
-		flex: 1; /* Ensures the title takes available space */
-	}
-
-	.header-title {
-		font-size: 1.5em; /* Smaller title font on mobile */
-	}
+/* Main Header */
+.main-header {
+  background: white !important;
+  padding: 16px 0 !important;
+  border-bottom: 1px solid var(--border-light);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .logo-container {
-	display: flex;
-	align-items: center;
-	justify-content: flex-start;
-	height: 40px;
-	width: auto;
-	padding-left: 0;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }
 
-.logo-image {
-	margin-left: 0;
+.logo-text {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--primary-blue);
 }
 
-.login-button.ant-btn {
-	background-color: #f0386b !important;
-	border-color: #f0386b !important;
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
-.login-button.ant-btn:hover,
-.login-button.ant-btn:focus {
-	background-color: #d42e5d !important;
-	border-color: #d42e5d !important;
+.social-icons {
+  display: flex;
+  gap: 8px;
 }
 
-.login-button.ant-btn:active {
-	background-color: #b82751 !important;
-	border-color: #b82751 !important;
+.social-btn {
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 4px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.3s ease !important;
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+.social-btn.facebook {
+  background: #1877F2 !important;
+  color: white !important;
+}
+
+.social-btn.linkedin {
+  background: #0077B5 !important;
+  color: white !important;
+}
+
+.social-btn.youtube {
+  background: #FF0000 !important;
+  color: white !important;
+}
+
+.social-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.search-btn {
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 4px !important;
+  color: #666 !important;
+  border: none !important;
+  background: #f5f5f5 !important;
+  padding: 0 !important;
+}
+
+.search-btn:hover {
+  color: var(--primary-blue) !important;
+  background: #e6f3ff !important;
+}
+
+.auth-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.login-btn,
+.register-btn {
+  height: 36px !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+.login-btn {
+  background: var(--primary-blue) !important;
+  border-color: var(--primary-blue) !important;
+  color: white !important;
+}
+
+.register-btn {
+  background: transparent !important;
+  border-color: var(--primary-blue) !important;
+  color: var(--primary-blue) !important;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-icon {
+  color: var(--primary-blue);
+  font-size: 16px;
+}
+
+.user-name {
+  font-size: 14px;
+  color: var(--text-dark);
+  font-weight: 500;
+}
+
+.logout-btn {
+  padding: 0 !important;
+  color: var(--text-light) !important;
+  font-size: 14px !important;
+}
+
+.mobile-menu-btn {
+  display: none !important;
+  border: none !important;
+  background: transparent !important;
+  color: var(--primary-blue) !important;
+  box-shadow: none !important;
+}
+
+/* Main Navigation Bar */
+.main-nav-bar {
+  background: #1a1a1a;
+  color: white;
+  padding: 0;
+  height: 50px;
+}
+
+.main-nav-menu {
+  background: #1a1a1a !important;
+  border-bottom: none !important;
+  line-height: 50px !important;
+  height: 50px !important;
+}
+
+.main-nav-menu .ant-menu-item {
+  color: white !important;
+  border-bottom: none !important;
+  margin: 0 !important;
+  padding: 0 24px !important;
+  height: 50px !important;
+  line-height: 50px !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  transition: all 0.3s ease !important;
+}
+
+.main-nav-menu .ant-menu-item:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: white !important;
+}
+
+.main-nav-menu .ant-menu-item-selected {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: white !important;
+}
+
+.main-nav-menu .ant-menu-item a {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+.nav-dropdowns {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+  height: 50px;
+  align-items: center;
+}
+
+.dropdown-btn {
+  background: transparent !important;
+  border: 1px solid #444 !important;
+  color: white !important;
+  height: 36px !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  transition: all 0.3s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+.dropdown-btn:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  color: white !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 16px;
+  }
+  
+  .header-right {
+    gap: 8px;
+  }
+  
+  .social-icons {
+    display: none;
+  }
+  
+  .search-btn {
+    display: none;
+  }
+  
+  .auth-buttons {
+    display: none;
+  }
+  
+  .mobile-menu-btn {
+    display: flex !important;
+  }
+  
+  .main-nav-bar {
+    display: none;
+  }
+  
+  .logo-text {
+    font-size: 20px;
+  }
+  
+}
+
+@media (max-width: 480px) {
+  .top-info-bar {
+    display: none;
+  }
+  
+  .main-header {
+    padding: 12px 0 !important;
+  }
+  
+  .logo-text {
+    font-size: 18px;
+  }
 }

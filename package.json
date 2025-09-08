@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "cd frontend && npm run dev",
+    "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm run dev\"",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && npm run dev",
     "build": "next build",
     "export": "next build && next export",
     "start": "next start"
@@ -18,5 +20,8 @@
     "langchain": "^0.3.20",
     "openai": "^4.91.1",
     "puppeteer": "^24.6.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
   }
 }

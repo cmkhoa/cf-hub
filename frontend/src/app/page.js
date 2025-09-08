@@ -2,22 +2,21 @@
 import { Layout, Row, Col, Typography, Button } from "antd";
 import { useState } from "react";
 import HeaderComponent from "@/components/header/header";
-import MentorCarousel from "@/components/componentForMainPage/MentorCarousel/MentorCarousel";
-import LandYourDreamJob from "@/components/componentForMainPage/LandYourDreamJob/LandYourDreamJob";
+import MorePrograms from "@/components/componentForMainPage/MorePrograms/MorePrograms";
+import SuccessStory from "@/components/componentForMainPage/SuccessStory/SuccessStory";
 import Features from "@/components/componentForMainPage/Features/Features";
 import FeedbackGallery from "@/components/componentForMainPage/FeedbackGallery/FeedbackGallery";
 import MenteeShowcase from "@/components/componentForMainPage/MenteeShowcase/MenteeShowcase";
-import PeerToPeerMentoring from "@/components/componentForMainPage/PeerToPeerMentoring/PeerToPeerMentoring";
+import HeroSection from "@/components/componentForMainPage/HeroSection/HeroSection";
+import BlogGrid from "@/components/componentForMainPage/BlogGrid/BlogGrid";
 import Community from "@/components/componentForMainPage/Community/Community";
-import FAQ from "@/components/componentForMainPage/FAQ/FAQ";
 import FooterComponent from "@/components/footer/Footer";
-import AboutUs from "@/components/componentForMainPage/AboutUs/AboutUs";
-import OurProcess from "@/components/componentForMainPage/OurProcess/OurProcess";
+import Trending from "@/components/componentForMainPage/Trending/Trending";
 import Achievements from "@/components/componentForMainPage/Achievements/Achievements";
 import Image from "next/image";
 
 const { Header, Content } = Layout;
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 const mentors = [
 	{
@@ -94,17 +93,16 @@ export default function Home() {
 			<HeaderComponent current={current} handleClick={handleClick} />
 			<Content>
 				<div className="site-layout-content">
-					<PeerToPeerMentoring />
-					<LandYourDreamJob />
-					<OurProcess />
+					<HeroSection />
+					<BlogGrid />
+					<SuccessStory />
+					<Trending />
 					<Features />
-					<AboutUs />
 					<Achievements />
 					<MenteeShowcase />
-					<MentorCarousel mentors={mentors} />
+					<MorePrograms />
 					<FeedbackGallery />
 					<Community />
-					<FAQ />
 					<FooterComponent />
 				</div>
 			</Content>

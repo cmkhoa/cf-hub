@@ -1,8 +1,21 @@
 "use client";
 
 import React from "react";
-import { Input, Button } from "antd";
-import styles from "./Footer.module.css";
+import { Input, Button, Row, Col, Typography } from "antd";
+import { 
+	FacebookOutlined, 
+	LinkedinOutlined, 
+	YoutubeOutlined, 
+	InstagramOutlined,
+	MailOutlined,
+	PhoneOutlined,
+	EnvironmentOutlined
+} from "@ant-design/icons";
+import Link from "next/link";
+import Image from "next/image";
+import './Footer.css';
+
+const { Title, Paragraph, Text: AntText } = Typography;
 
 const Footer = () => {
 	const handleSubscribe = (e) => {
@@ -11,66 +24,171 @@ const Footer = () => {
 	};
 
 	return (
-		<footer className={styles.footer}>
-			<div className={styles.container}>
-				<div className={styles.footerContent}>
-					{/* Left Section - Brand */}
-					<div className={styles.brandSection}>
-						<h2 className={styles.brandName}>CF Hub</h2>
-						<p className={styles.brandSlogan}>
-							Competitive Programming - Community - Growth
-						</p>
-						<p className={styles.brandDescription}>
-							Join our community to enhance your competitive programming skills
-							and connect with like-minded individuals.
-						</p>
-					</div>
-
-					{/* Middle Section - Subscribe */}
-					<div className={styles.subscribeSection}>
-						<div className={styles.subscribeWrapper}>
-							<h3>Subscribe to Us</h3>
-							<p className={styles.subscribeText}>
-								Stay updated with our latest news and updates
-							</p>
-							<div className={styles.subscribeForm}>
-								<Input
-									placeholder="Enter your email"
-									className={styles.subscribeInput}
-								/>
-								<Button type="primary" onClick={handleSubscribe}>
-									Subscribe
-								</Button>
-							</div>
-						</div>
-					</div>
-
-					{/* Right Section - Quick Links */}
-					<div className={styles.linksSection}>
-						<div className={styles.linkColumn}>
-							<h4 className={styles.linkTitle}>Navigation</h4>
-							<a href="/">Home</a>
-							<a href="/about">About Us</a>
-							<a href="/contact">Contact</a>
-							<a href="/blog">Blog</a>
-						</div>
-						<div className={styles.linkColumn}>
-							<h4 className={styles.linkTitle}>Services</h4>
-							<a href="/activities">Activities</a>
-							<a href="/services">Services</a>
-							<a href="/results">Results</a>
-							<a href="/apply">Apply Now</a>
-						</div>
-						<div className={styles.linkColumn}>
-							<h4 className={styles.linkTitle}>Resources</h4>
-							<a href="/mentorship">Mentorship</a>
-							<a href="/workshops">Workshops</a>
-							<a href="/competitions">Competitions</a>
-							<a href="/faq">FAQ</a>
-						</div>
-					</div>
+		<footer className="footer">
+			{/* Top Section */}
+			<div className="footer-top">
+				<div className="container">
+					<Row justify="space-between" align="middle">
+						<Col>
+							<AntText className="footer-top-text">About Career Foundation Hub</AntText>
+						</Col>
+						<Col>
+							<AntText className="footer-top-text">Recent News</AntText>
+						</Col>
+					</Row>
 				</div>
+			</div>
 
+			{/* Main Footer Content */}
+			<div className="footer-main">
+				<div className="container">
+					<Row gutter={[48, 48]}>
+						{/* Brand Section */}
+						<Col xs={24} md={8} lg={6}>
+							<div className="brand-section">
+								<div className="brand-logo">
+									<div className="logo-icon">CFH</div>
+									<span className="logo-text">CF Hub</span>
+								</div>
+								<Paragraph className="brand-description">
+									CF Hub là tổ chức phi lợi nhuận 501(c)(3) được thành lập bởi các bạn trẻ 
+									sinh viên và chuyên gia người Việt tại Mỹ, nhằm trở thành nền tảng cộng đồng 
+									hỗ trợ sinh viên và các bạn trẻ trong quá trình chuyển đổi từ môi trường học 
+									thuật sang môi trường chuyên nghiệp, giúp các bạn kết nối và phát triển.
+								</Paragraph>
+								<Title level={5} className="follow-title">Follow Us</Title>
+								<div className="social-links">
+									<Button 
+										type="text" 
+										icon={<FacebookOutlined />}
+										className="social-btn facebook"
+									/>
+									<Button 
+										type="text" 
+										icon={<LinkedinOutlined />}
+										className="social-btn linkedin"
+									/>
+									<Button 
+										type="text" 
+										icon={<YoutubeOutlined />}
+										className="social-btn youtube"
+									/>
+								</div>
+							</div>
+						</Col>
+
+						{/* Categories */}
+						<Col xs={12} md={8} lg={6}>
+							<div className="links-section">
+								<Title level={5} className="links-title">Categories</Title>
+								<div className="categories-grid">
+									<div className="category-column">
+										<Link href="/big-tech">Big Tech, Fortune 500 & Top Companies</Link>
+										<Link href="/events">Events & Community</Link>
+										<Link href="/blog">Main Blog</Link>
+										<Link href="/professional-development">Professional Development</Link>
+										<Link href="/resume-tips">Resume, Job Search & Interview Tips</Link>
+										<Link href="/immigration">Immigration & Visas</Link>
+									</div>
+									<div className="category-column">
+										<Link href="/industry-insights">Industry Insights</Link>
+										<Link href="/networking">Networking Tips</Link>
+										<Link href="/success-stories">Success Stories</Link>
+										<Link href="/conference">Viet Career Conference</Link>
+										<Link href="/webinars">Webinars & Workshops</Link>
+									</div>
+								</div>
+							</div>
+						</Col>
+
+						{/* Tags */}
+						<Col xs={12} md={8} lg={6}>
+							<div className="links-section">
+								<Title level={5} className="links-title">Tags</Title>
+								<div className="tags-cloud">
+									{[
+										'application', 'behavioral interview', 'career', 'career review', 
+										'challenge', 'computer science', 'conference', 'connection', 'cpt', 
+										'google', 'infrastructure engineer', 'interview', 'interview preparation', 
+										'job', 'job market', 'job search', 'networking', 'opt', 'preparing', 
+										'project', 'promotion', 'referral', 'resume', 'sde', 'sharing', 
+										'stem-opt', 'strategies', 'strength', 'viet-career-conference', 
+										'vietnamese', 'visa', 'weakness'
+									].map((tag, index) => (
+										<span key={index} className="tag-item">{tag}</span>
+									))}
+								</div>
+							</div>
+						</Col>
+
+						{/* Recent News */}
+						<Col xs={24} md={24} lg={6}>
+							<div className="news-section">
+								<Title level={5} className="links-title">Recent News</Title>
+								<div className="news-list">
+									<div className="news-item">
+										<div className="news-image">
+											<Image
+												src="/assets/mentors/linh_nguyen.jpg"
+												alt="Referral discussion"
+												width={60}
+												height={40}
+												className="news-img"
+											/>
+										</div>
+										<div className="news-content">
+											<div className="news-title">Một chút bàn luận về Referral</div>
+											<div className="news-date">SEPTEMBER 7, 2025</div>
+										</div>
+									</div>
+									<div className="news-item">
+										<div className="news-image">
+											<Image
+												src="/assets/mentors/tribui.jpg"
+												alt="Resources and projects"
+												width={60}
+												height={40}
+												className="news-img"
+											/>
+										</div>
+										<div className="news-content">
+											<div className="news-title">Resources, project, và những câu chuyện chưa kể</div>
+											<div className="news-date">SEPTEMBER 5, 2025</div>
+										</div>
+									</div>
+									<div className="news-item">
+										<div className="news-image">
+											<Image
+												src="/assets/mentors/winnie.jpg"
+												alt="Job search strategy"
+												width={60}
+												height={40}
+												className="news-img"
+											/>
+										</div>
+										<div className="news-content">
+											<div className="news-title">TIMELINE & JOB SEARCH STRATEGY FOR RECRUITING SEASON</div>
+											<div className="news-date">SEPTEMBER 3, 2025</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</Col>
+					</Row>
+				</div>
+			</div>
+
+			{/* Footer Bottom */}
+			<div className="footer-bottom">
+				<div className="container">
+					<Row justify="center" align="middle">
+						<Col>
+							<Paragraph className="copyright">
+								© 2025 CF Hub Corporation - Official website of CF Hub Corporation.
+							</Paragraph>
+						</Col>
+					</Row>
+				</div>
 			</div>
 		</footer>
 	);
