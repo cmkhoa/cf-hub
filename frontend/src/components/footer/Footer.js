@@ -12,7 +12,7 @@ import {
 	EnvironmentOutlined
 } from "@ant-design/icons";
 import Link from "next/link";
-import Image from "next/image";
+// Using native <img> for small thumbnails to avoid Next/Image optimizer hitting backend multiple times (429)
 import './Footer.css';
 import { API_ENDPOINTS } from '@/config/api';
 
@@ -167,13 +167,15 @@ const Footer = () => {
 											return (
 												<Link key={post._id} href={`/blog/${post.slug}`} className="news-item" prefetch={false}>
 													<div className="news-image">
-														<Image
+														<img
 															src={coverUrl}
 															alt={post.title}
 															width={60}
 															height={40}
 															className="news-img"
-															onError={(e)=>{ e.currentTarget.src = '/assets/reference_image_1.jpg'; }}
+															loading="lazy"
+															decoding="async"
+															onError={(e)=>{ e.currentTarget.src = '/assets/reference_image_1.jpg'; e.currentTarget.onerror = null; }}
 														/>
 													</div>
 													<div className="news-content">
