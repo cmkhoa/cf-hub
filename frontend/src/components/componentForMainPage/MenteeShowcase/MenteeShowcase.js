@@ -57,7 +57,6 @@ const MenteeShowcase = () => {
 					fontSize: 40,
 					lineHeight: "65.35px",
 					textAlign: "center",
-					color: "white",
 				}}
 			>
 				Students of Career Foundation Hub

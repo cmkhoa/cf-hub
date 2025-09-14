@@ -16,7 +16,7 @@ import {
 	LockOutlined,
 	UserOutlined,
 } from "@ant-design/icons";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import styles from "./register.module.css";
 import { useAuth } from "@/contexts/authContext/authContext";
@@ -25,6 +25,8 @@ const { Title, Text } = Typography;
 
 const RegisterPage = () => {
 	const router = useRouter();
+	const search = useSearchParams();
+	const nextPath = search?.get('next') || '/';
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
 	const [form] = Form.useForm();
@@ -33,9 +35,9 @@ const RegisterPage = () => {
 	// Check if user is already logged in
 	useEffect(() => {
 		if (userLoggedIn) {
-			router.push("/");
+			router.push(nextPath.startsWith('/') ? nextPath : '/');
 		}
-	}, [userLoggedIn, router]);
+	}, [userLoggedIn, router, nextPath]);
 
 	const onFinish = async (values) => {
 		if (loading) return;
@@ -46,7 +48,7 @@ const RegisterPage = () => {
 		try {
 			await register(values.email, values.password, values.name);
 			message.success("Registration successful!");
-			router.push("/");
+			router.push(nextPath.startsWith('/') ? nextPath : '/');
 		} catch (error) {
 			setError(error.message);
 			message.error(error.message || "Registration failed. Please try again.");
@@ -64,7 +66,7 @@ const RegisterPage = () => {
 		try {
 			await loginWithGoogle();
 			message.success("Registration successful!");
-			router.push("/");
+			router.push(nextPath.startsWith('/') ? nextPath : '/');
 		} catch (error) {
 			setError(error.message);
 			message.error("Google registration failed. Please try again.");

@@ -1,16 +1,40 @@
 /** @type {import('next').NextConfig} */
 const isNetlify = process.env.NETLIFY === 'true';
 
-const nextConfig = {
-  ...(isNetlify && {
-    output: 'export',
-    images: {
-      unoptimized: true,
-      remotePatterns: [{ protocol: 'https', hostname: '**' }],
+// Common image config (augmented with unoptimized flag on Netlify)
+const imageConfig = {
+  domains: ['images.unsplash.com', 'localhost'],
+  remotePatterns: [
+    {
+      protocol: 'http',
+      hostname: 'localhost',
+      port: '8008',
+      pathname: '/api/blog/posts/**/cover',
     },
-  }),
-  eslint: {
-    ignoreDuringBuilds: true,
+    // Allow any https host when on Netlify export (can refine later)
+    ...(isNetlify
+      ? [
+          {
+            protocol: 'https',
+            hostname: '**',
+          },
+        ]
+      : []),
+  ],
+  ...(isNetlify ? { unoptimized: true } : {}),
+};
+
+const nextConfig = {
+  images: imageConfig,
+  ...(isNetlify && { output: 'export' }),
+  eslint: { ignoreDuringBuilds: true },
+  webpack: (config) => {
+    config.resolve = config.resolve || {};
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': './src',
+    };
+    return config;
   },
 };
 

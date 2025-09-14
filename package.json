@@ -4,6 +4,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm run dev\"",
+    "install:all": "(cd backend && npm install) && (cd frontend && npm install)",
+    "setup": "npm install && npm run install:all",
     "dev:frontend": "cd frontend && npm run dev",
     "dev:backend": "cd backend && npm run dev",
     "build": "next build",

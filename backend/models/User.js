@@ -43,6 +43,10 @@ const userSchema = new mongoose.Schema({
 		type: Boolean,
 		default: true,
 	},
+	firebaseUid: {
+		type: String,
+		index: true,
+	},
 });
 
 // Hash password before saving

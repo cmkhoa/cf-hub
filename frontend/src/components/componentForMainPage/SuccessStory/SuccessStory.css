@@ -1,9 +1,69 @@
+.success-story-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+.success-story-title {
+  font-size: 2.4rem !important;
+  font-weight: 800 !important;
+  color: var(--brand-blue) !important;
+  margin-bottom: 10px !important;
+}
+.success-story-subtitle {
+  font-size: 1.1rem;
+  color: #2a2a2a;
+  margin-bottom: 0;
+}
+
+.posts-container.redesigned {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+.small-card {
+  border-radius: 10px !important;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08) !important;
+  padding: 0 !important;
+  overflow: hidden;
+  min-height: 180px;
+}
+.small-image {
+  height: 120px !important;
+}
+.small-content {
+  padding: 14px 16px !important;
+}
+.small-title {
+  font-size: 1rem !important;
+  margin-bottom: 8px !important;
+  color: var(--brand-blue) !important;
+  font-weight: 700 !important;
+}
+.small-meta {
+  font-size: 0.85rem;
+  color: #444;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.small-excerpt {
+  font-size: 0.92rem !important;
+  color: #2a2a2a !important;
+  margin-bottom: 0;
+  line-height: 1.45;
+}
+@media (max-width: 768px) {
+  .success-story-title { font-size: 1.6rem !important; }
+  .success-story-header { margin-bottom: 32px; }
+  .small-image { height: 80px !important; }
+  .small-content { padding: 10px 8px !important; }
+}
 .success-story-section {
   padding: 80px 0;
   background: #fafafa;
 }
 
-.container {
+.success-story-section .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
@@ -23,7 +83,7 @@
 }
 
 .category-title {
-  color: var(--primary-blue) !important;
+  color: var(--brand-blue) !important;
   font-size: 1rem !important;
   font-weight: 700 !important;
   text-transform: uppercase;
@@ -87,7 +147,7 @@
 
 .post-tag {
   position: absolute;
-  bottom: 12px;
+  /* bottom: 12px; */
   left: 12px;
   background: var(--primary-blue);
   color: white;
@@ -108,7 +168,7 @@
 }
 
 .post-title {
-  color: #1a1a1a !important;
+  color: #0b1a55 !important; /* deep navy for better focus */
   font-weight: 700 !important;
   margin-bottom: 12px !important;
   line-height: 1.3 !important;
@@ -128,11 +188,11 @@
   gap: 8px;
   margin-bottom: 16px;
   font-size: 0.875rem;
-  color: #666;
+  color: #333;
 }
 
 .author {
-  color: #666 !important;
+  color: #333 !important;
   font-weight: 500;
 }
 
@@ -144,7 +204,7 @@
 }
 
 .date {
-  color: #666 !important;
+  color: #333 !important;
 }
 
 .comments {
@@ -152,59 +212,46 @@
   align-items: center;
   gap: 4px;
   margin-left: auto;
-  color: #666;
+  color: #333;
 }
 
 .post-excerpt {
-  color: #666 !important;
+  color: #333 !important;
   line-height: 1.5;
   font-size: 0.9rem;
 }
 
 .post-date {
-  color: #666 !important;
+  color: #333 !important;
   font-size: 0.875rem;
 }
+/* Override compact card variants (deduplicated) */
+.small-title { font-size: 1rem !important; margin-bottom: 8px !important; color:#0b1a55 !important; font-weight:700 !important; }
+.post-excerpt { color:#444d5a !important; }
+.small-excerpt { font-size:0.92rem !important; color:#444d5a !important; margin-bottom:0; line-height:1.45; }
 
-/* Responsive Design */
+/* Responsive Design (clean) */
 @media (max-width: 768px) {
-  .success-story-section {
-    padding: 40px 0;
-  }
-  
-  .category-header {
-    margin-bottom: 16px;
-  }
-  
-  .category-title {
-    font-size: 0.9rem !important;
-  }
-  
-  .posts-container {
-    gap: 16px;
-  }
-  
-  .post-image-container {
-    height: 160px;
-  }
-  
-  .featured-post .post-image-container {
-    height: 200px;
-  }
-  
-  .post-content {
-    padding: 16px;
-  }
-  
-  .featured-post .post-content {
-    padding: 20px;
-  }
-  
-  .featured-post .post-title {
-    font-size: 1.1rem !important;
-  }
-  
-  .regular-post .post-title {
-    font-size: 0.9rem !important;
-  }
+  .success-story-section { padding: 40px 0; }
+  .category-header { margin-bottom:16px; }
+  .category-title { font-size:0.9rem !important; }
+  .posts-container { gap:16px; }
+  .post-image-container { height:160px; }
+  .featured-post .post-image-container { height:200px; }
+  .post-content { padding:16px; }
+  .featured-post .post-content { padding:20px; }
+  .featured-post .post-title { font-size:1.1rem !important; }
+  .regular-post .post-title { font-size:0.9rem !important; }
+  .small-image { height:90px !important; }
 }
+
+/* High-specificity overrides to ensure title colors are not overwritten by Ant Typography */
+.success-story-section .ant-typography.post-title,
+.success-story-section .post-title,
+.success-story-section .ant-typography.post-title.small-title {
+  color:#0b1a55 !important;
+}
+
+/* Ensure excerpt colors persist */
+.success-story-section .post-excerpt,
+.success-story-section .small-excerpt { color:#444d5a !important; }

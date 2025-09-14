@@ -1,3 +1,11 @@
+/* Simple section divider used between hero and features */
+.section-divider {
+  width: 70vw;
+  height: 2px;
+  background: #ffffff;
+  margin: 0 auto;
+  border-radius: 2px;
+}
 /* src/app/globals.css */
 :root {
   /* CF Hub Color Scheme */
@@ -20,6 +28,20 @@ html, body, #__next {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif !important;
   color: var(--text-dark);
   line-height: 1.6;
+}
+
+html { scroll-behavior:smooth; }
+
+/* Quick global zoom (requested 125%). Note: zoom is non-standard (best in Chromium). */
+body { zoom:1.15; }
+
+/* Fallback for browsers ignoring zoom (Firefox/Safari) - scale inner root */
+@supports not (zoom:1.25) {
+  #__next { 
+    transform:scale(1.25); 
+    transform-origin: top left; 
+    width:80%; /* 1/1.25 to compensate scale */
+  }
 }
 
 .site-layout-content {

@@ -2,6 +2,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const mongoSanitize = require('express-mongo-sanitize');
 
 // Load environment variables
 dotenv.config();
@@ -9,36 +12,106 @@ dotenv.config();
 const app = express();
 
 // CORS Configuration
-app.use(
-	cors({
-		origin: process.env.FRONTEND_URL || "http://localhost:8080",
-		credentials: true,
-	})
-);
+const allowedOrigins = [
+	process.env.FRONTEND_URL || 'http://localhost:3000',
+	...((process.env.ADDITIONAL_ORIGINS || '').split(',').map(s=> s.trim()).filter(Boolean))
+];
+app.use(cors({
+	origin: function(origin, callback){
+		if(!origin) return callback(null, true); // allow non-browser tools
+		if(allowedOrigins.includes(origin)) return callback(null, true);
+		return callback(new Error('Not allowed by CORS'));
+	},
+	credentials: true,
+	methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
+	allowedHeaders: ['Content-Type','Authorization']
+}));
 
-// Middleware
-app.use(express.json());
+// Security headers
+app.use(helmet({
+	crossOriginResourcePolicy: { policy: "cross-origin" }
+}));
+
+// Behind proxies (e.g., Render/Heroku/NGINX)
+app.set('trust proxy', 1);
+
+// Basic rate limiting
+const apiLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 600 });
+app.use('/api/', apiLimiter);
+
+// Tighter limits for auth endpoints
+const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 50, standardHeaders: true, legacyHeaders: false });
+app.use(['/api/auth/login','/api/auth/register','/api/auth/firebase'], authLimiter);
+
+// Sanitize inputs against NoSQL injection
+app.use(mongoSanitize());
+
+// Middleware (increase JSON limit for base64 image payloads)
+const JSON_LIMIT = process.env.JSON_BODY_LIMIT || '5mb';
+app.use(express.json({ limit: JSON_LIMIT }));
 
 // MongoDB Connection
 const MONGODB_URI = process.env.MONGODB_URI;
-console.log("Attempting to connect to MongoDB with URI:", MONGODB_URI);
+if(!process.env.JWT_SECRET){
+	console.error('Missing JWT_SECRET - refusing to start.');
+	process.exit(1);
+}
+console.log("Attempting to connect to MongoDB...");
 
 mongoose
-	.connect(MONGODB_URI, {
-		useNewUrlParser: true,
-		useUnifiedTopology: true,
-	})
+	.connect(MONGODB_URI)
 	.then(() => console.log("Successfully connected to MongoDB Atlas"))
 	.catch((err) => {
 		console.error("MongoDB connection error:", err);
 		console.error("Please check your MONGODB_URI in .env file");
 	});
 
+// Base API path configurable
+const API_BASE = process.env.API_BASE_PATH || '/api';
+
 // Routes
 const authRoutes = require("./routes/auth");
-app.use("/api/auth", authRoutes);
+app.use(`${API_BASE}/auth`, authRoutes);
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-	console.log(`Server is running on port ${PORT}`);
-});
+// Blog / CMS routes
+const blogRoutes = require('./routes/blog');
+app.use(`${API_BASE}/blog`, blogRoutes);
+
+// Applications routes
+const applicationRoutes = require('./routes/applications');
+app.use(`${API_BASE}/applications`, applicationRoutes);
+
+// Consultation requests routes
+const consultationRoutes = require('./routes/consultations');
+app.use(`${API_BASE}/consultations`, consultationRoutes);
+
+// Static file serving for uploaded images
+const path = require('path');
+app.use('/uploads', express.static(path.join(__dirname,'uploads')));
+
+const BASE_PORT = parseInt(process.env.PORT, 10) || 8008;
+function startServer(port, attempt = 0) {
+	const server = app.listen(port, () => {
+		if (attempt === 0) {
+			console.log(`Server is running on port ${port}`);
+		} else {
+			console.log(`Server recovered on fallback port ${port}`);
+		}
+	});
+	server.on('error', (err) => {
+		if (err.code === 'EADDRINUSE') {
+			if (attempt < 5) {
+				const nextPort = port + 1;
+				console.warn(`Port ${port} in use, retrying on ${nextPort} (attempt ${attempt + 1})`);
+				setTimeout(() => startServer(nextPort, attempt + 1), 300);
+			} else {
+				console.error('Exceeded max port attempts. Please free a port starting at', BASE_PORT);
+				process.exit(1);
+			}
+		} else {
+			console.error('Server error:', err);
+			process.exit(1);
+		}
+	});
+}
+startServer(BASE_PORT);

@@ -7,41 +7,36 @@ const { Title, Text: AntText } = Typography;
 const Features = () => {
 	return (
 		<div className="features-container">
+			<Title
+				level={2}
+				className="feature-title"
+				style={{
+					fontWeight: 700,
+					fontSize: 40,
+					lineHeight: "65.35px",
+					textAlign: "center",
+					marginBottom: 32,
+				}}
+			>
+				Features
+			</Title>
 			<Row gutter={[16, 16]} justify="center">
-				<Col xs={24} md={24} lg={4}>
-					<Title
-						level={2}
-						className="feature-title"
-						style={{
-							fontWeight: 700,
-							fontSize: 40,
-							lineHeight: "65.35px",
-							textAlign: "center",
-							// color: "white",
-						}}
-					>
-						Features
-					</Title>
-				</Col>
 				<Col xs={24} md={24} lg={20}>
 					<Row gutter={[16, 16]}>
 						<Col xs={24} sm={12} md={12} lg={12} xl={6}>
 							<Card className="feature-item" bordered={false}>
 								<Title level={4} className="feature-heading">
-									10 Sessions of Training and Mentorship
+									10 Sessions of Mentorship
 								</Title>
 								<AntText className="feature-content">
-									Covering the entire job application process, from
-									resume and personal projects to behavioral and technical
-									interviews. Weekly 1-on-1 advisory meetings to address any
-									questions, with unlimited interview support.
+									Covers the full job application process from resume and personal projects to behavioral and technical interviews. Includes weekly 1-on-1 advisory meetings and ongoing interview support.
 								</AntText>
 							</Card>
 						</Col>
 						<Col xs={24} sm={12} md={12} lg={12} xl={6}>
 							<Card className="feature-item" bordered={false}>
 								<Title level={4} className="feature-heading">
-									Direct Guidance
+									Direct Guidance & Training
 								</Title>
 								<AntText className="feature-content">
                 Work on real-world business and finance projects with other mentees while receiving continuous, personalized mentorship from two dedicated mentors
@@ -51,7 +46,7 @@ const Features = () => {
 						<Col xs={24} sm={12} md={12} lg={12} xl={6}>
 							<Card className="feature-item" bordered={false}>
 								<Title level={4} className="feature-heading">
-									Mock Interviews
+									Interview Prep & Mock
 								</Title>
 								<AntText className="feature-content">
 									Tailored for each research lab and company. Receive the latest

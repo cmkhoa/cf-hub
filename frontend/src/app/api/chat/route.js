@@ -1,46 +1,39 @@
 import OpenAI from "openai";
 import { DataAPIClient } from "@datastax/astra-db-ts";
 
-// Check for required environment variables
-if (!process.env.OPENAI_API_KEY) {
-	throw new Error("OPENAI_API_KEY is not set in environment variables");
-}
-
-if (
-	!process.env.ASTRA_DB_APPLICATION_TOKEN ||
-	!process.env.ASTRA_DB_API_ENDPOINT ||
-	!process.env.ASTRA_DB_NAMESPACE ||
-	!process.env.ASTRA_DB_COLLECTION
-) {
-	throw new Error(
-		"One or more required Astra DB environment variables are not set"
-	);
-}
-
-console.log(process.env.ASTRA_DB_APPLICATION_TOKEN);
-console.log(process.env.ASTRA_DB_API_ENDPOINT);
-console.log(process.env.ASTRA_DB_NAMESPACE);
-console.log(process.env.ASTRA_DB_COLLECTION);
-console.log(process.env.OPENAI_API_KEY);
-
-// Initialize OpenAI API client
-const openai = new OpenAI({
-	apiKey: process.env.OPENAI_API_KEY,
-});
-
-// Initialize Astra DB client
-const client = new DataAPIClient(process.env.ASTRA_DB_APPLICATION_TOKEN);
-
-// Get database and collection
-const db = client.db(process.env.ASTRA_DB_API_ENDPOINT, {
-	namespace: process.env.ASTRA_DB_NAMESPACE,
-});
-
 // Specify runtime for better performance
 export const runtime = "edge";
 
 export async function POST(req) {
 	try {
+		// Validate required environment variables at request time (avoid build-time failure)
+		const {
+			OPENAI_API_KEY,
+			ASTRA_DB_APPLICATION_TOKEN,
+			ASTRA_DB_API_ENDPOINT,
+			ASTRA_DB_NAMESPACE,
+			ASTRA_DB_COLLECTION,
+		} = process.env;
+
+		if (
+			!OPENAI_API_KEY ||
+			!ASTRA_DB_APPLICATION_TOKEN ||
+			!ASTRA_DB_API_ENDPOINT ||
+			!ASTRA_DB_NAMESPACE ||
+			!ASTRA_DB_COLLECTION
+		) {
+			return new Response(
+				JSON.stringify({
+					error: "Server not configured. Missing required environment variables.",
+				}),
+				{ status: 500, headers: { "Content-Type": "application/json" } }
+			);
+		}
+
+		// Initialize clients lazily after validation
+		const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
+		const dataClient = new DataAPIClient(ASTRA_DB_APPLICATION_TOKEN);
+		const db = dataClient.db(ASTRA_DB_API_ENDPOINT, { namespace: ASTRA_DB_NAMESPACE });
 		const { messages } = await req.json();
 
 		// Get the last user message
@@ -55,7 +48,7 @@ export async function POST(req) {
 		});
 
 		try {
-			const collection = db.collection(process.env.ASTRA_DB_COLLECTION);
+			const collection = db.collection(ASTRA_DB_COLLECTION);
 			const cursor = collection.find(null, {
 				sort: {
 					$vector: embedding.data[0].embedding,

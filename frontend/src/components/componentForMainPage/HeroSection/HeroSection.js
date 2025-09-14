@@ -1,171 +1,87 @@
 import React from 'react';
-import { Row, Col, Button, Typography } from 'antd';
-import { PlayCircleOutlined, ArrowRightOutlined } from '@ant-design/icons';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/authContext/authContext';
 import Image from 'next/image';
 import './HeroSection.css';
 
-const { Title, Paragraph } = Typography;
+/*
+ * Redesigned Hero inspired by provided template image:
+ *  - Clean white upper canvas with left-aligned heading
+ *  - Two-line headline: blue then coral
+ *  - Brand logo on the right
+ *  - Wave divider leading into solid brand blue area
+ *  - Coral call-to-action pill button on blue area (Vietnamese text)
+ */
 
 const HeroSection = () => {
+  const router = useRouter();
+  const { userLoggedIn } = useAuth();
+  const handleGetStarted = () => {
+    if(userLoggedIn){
+      router.push('/apply');
+    } else {
+      router.push('/register?next=/apply');
+    }
+  };
   return (
-    <div className="hero-section">
-      {/* Main Hero Content */}
-      <div className="hero-main">
-        <Row gutter={[48, 48]} align="middle">
-          <Col xs={24} lg={12}>
-            <div className="hero-content">
-              <div className="hero-badge">
-                <span>🚀 NEW PROGRAM</span>
-              </div>
-              
-              <Title level={1} className="hero-title">
-                EMPOWER VIETNAMESE STUDENTS & PROFESSIONALS IN THE U.S.
-              </Title>
-              
-              <Paragraph className="hero-description">
-                Join our comprehensive mentorship program designed specifically for Vietnamese students and professionals 
-                seeking to advance their careers in the United States. Get personalized guidance from industry experts 
-                and build your professional network.
-              </Paragraph>
-              
-              <div className="hero-actions">
-                <Button 
-                  type="primary" 
-                  size="large"
-                  className="cta-button"
-                  icon={<ArrowRightOutlined />}
-                >
-                  Start Your Journey
-                </Button>
-                
-                <Button 
-                  size="large"
-                  className="secondary-button"
-                  icon={<PlayCircleOutlined />}
-                >
-                  Watch Demo
-                </Button>
-              </div>
-              
-              <div className="hero-stats">
-                <div className="stat-item">
-                  <div className="stat-number">500+</div>
-                  <div className="stat-label">Students Helped</div>
-                </div>
-                <div className="stat-item">
-                  <div className="stat-number">50+</div>
-                  <div className="stat-label">Industry Mentors</div>
-                </div>
-                <div className="stat-item">
-                  <div className="stat-number">95%</div>
-                  <div className="stat-label">Success Rate</div>
-                </div>
-              </div>
-            </div>
-          </Col>
-          
-          <Col xs={24} lg={12}>
-            <div className="hero-image-container">
-              <div className="hero-image-wrapper">
-                <Image
-                  src="/assets/bg.jpg"
-                  alt="Vietnamese professionals networking"
-                  fill
-                  className="hero-image"
-                  priority
-                />
-                <div className="hero-image-overlay">
-                  <div className="floating-card">
-                    <div className="card-icon">💼</div>
-                    <div className="card-content">
-                      <div className="card-title">Career Success</div>
-                      <div className="card-subtitle">Join 500+ successful graduates</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Col>
-        </Row>
-      </div>
-      
-      {/* Featured Articles Preview */}
-      <div className="featured-articles">
-        <div className="container">
-          <Title level={3} className="section-title">Latest Insights</Title>
-          <Row gutter={[24, 24]}>
-            <Col xs={24} md={8}>
-              <div className="article-card">
-                <div className="article-image">
-                  <Image
-                    src="/assets/mentors/linh_nguyen.jpg"
-                    alt="Referral discussion"
-                    width={300}
-                    height={200}
-                    className="article-img"
-                  />
-                  <div className="article-tag">BLOG</div>
-                </div>
-                <div className="article-content">
-                  <Title level={4} className="article-title">
-                    Một chút bàn luận về Referral
-                  </Title>
-                  <Paragraph className="article-excerpt">
-                    Tìm hiểu cách tận dụng mạng lưới referral để thăng tiến trong sự nghiệp...
-                  </Paragraph>
-                </div>
-              </div>
-            </Col>
-            
-            <Col xs={24} md={8}>
-              <div className="article-card">
-                <div className="article-image">
-                  <Image
-                    src="/assets/mentors/tribui.jpg"
-                    alt="Resources and projects"
-                    width={300}
-                    height={200}
-                    className="article-img"
-                  />
-                  <div className="article-tag">BLOG</div>
-                </div>
-                <div className="article-content">
-                  <Title level={4} className="article-title">
-                    Resources, project, và những câu chuyện chưa kể
-                  </Title>
-                  <Paragraph className="article-excerpt">
-                    Khám phá các tài nguyên và dự án giúp bạn phát triển kỹ năng...
-                  </Paragraph>
-                </div>
-              </div>
-            </Col>
-            
-            <Col xs={24} md={8}>
-              <div className="article-card">
-                <div className="article-image">
-                  <Image
-                    src="/assets/mentors/winnie.jpg"
-                    alt="Job search strategy"
-                    width={300}
-                    height={200}
-                    className="article-img"
-                  />
-                  <div className="article-tag">BLOG</div>
-                </div>
-                <div className="article-content">
-                  <Title level={4} className="article-title">
-                    JOB SEARCH TIMELINE & STRATEGY FOR RECRUITING SEASON
-                  </Title>
-                  <Paragraph className="article-excerpt">
-                    Chiến lược tìm việc hiệu quả cho mùa tuyển dụng...
-                  </Paragraph>
-                </div>
-              </div>
-            </Col>
-          </Row>
+  <section className="cf-hero" aria-labelledby="cf-hero-heading">
+      <div className="cf-hero__inner">
+        <div className="cf-hero__text">
+          <p className="cf-hero__eyebrow">Career Foundation Hub</p>
+          <h1 id="cf-hero-heading" className="cf-hero__heading">
+            <span className="cf-hero__line cf-hero__line--blue">Build the foundation</span>
+            <span className="cf-hero__line cf-hero__line--coral">take the first step</span>
+          </h1>
+          <p className="cf-hero__subtext">
+            Join our comprehensive mentorship program designed specifically for Vietnamese students and professionals
+            seeking to advance their careers in the United States. Get personalized guidance from industry experts
+            and build your professional network.
+          </p>
+        </div>
+        <div className="cf-hero__brand">
+          <div className="cf-hero__logo-wrap">
+            <Image
+              src="/images/cfhub-logo.jpg"
+              alt="CF Hub logo"
+              width={160}
+              height={160}
+              priority
+            />
+          </div>
+          <p className="cf-hero__tagline">career foundation</p>
         </div>
       </div>
-    </div>
+
+  <div className="cf-hero__wave-wrapper">
+        <svg className="cf-hero__wave" viewBox="0 0 1440 320" preserveAspectRatio="none" aria-hidden="true">
+          <path fill="var(--brand-blue)" d="M0,192 C120,160 240,96 360,96 C480,96 600,160 720,181.3 C840,203 960,181 1080,160 C1200,139 1320,117 1380,106.7 L1440,96 L1440,320 L1380,320 C1320,320 1200,320 1080,320 C960,320 840,320 720,320 C600,320 480,320 360,320 C240,320 120,320 60,320 L0,320 Z" />
+        </svg>
+        <div className="cf-hero__blue-section">
+          <div className="cf-hero__stats-bar" aria-label="Program statistics">
+            <div className="cf-hero__stat">
+              <div className="cf-hero__stat-number">500+</div>
+              <div className="cf-hero__stat-label">Students Helped</div>
+            </div>
+            <div className="cf-hero__stat">
+              <div className="cf-hero__stat-number">50+</div>
+              <div className="cf-hero__stat-label">Industry Mentors</div>
+            </div>
+            <div className="cf-hero__stat">
+              <div className="cf-hero__stat-number">95%</div>
+              <div className="cf-hero__stat-label">Success Rate</div>
+            </div>
+          </div>
+          <div className="cf-hero__cta-row">
+            <button className="cf-hero__cta" type="button" onClick={handleGetStarted}>Get Started</button>
+            <button className="cf-hero__cta cf-hero__cta--secondary" type="button">Watch Demo</button>
+          </div>
+        </div>
+      </div>
+      {/* Section divider at bottom of hero, constrained to hero content width */}
+      <div className="cf-hero__container">
+        <div className="section-divider" aria-hidden="true" />
+      </div>
+    </section>
   );
 };
 

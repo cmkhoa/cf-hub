@@ -129,6 +129,11 @@
 	transform: translateY(-2px);
 }
 
+/* Override heading color just for this showcase section */
+.mentor-showcase-container .section-title {
+	color: var(--brand-blue) !important;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
 	.mentor-card {

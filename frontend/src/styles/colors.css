@@ -1,22 +1,29 @@
 :root {
+	/* Brand Override */
+	--brand-blue: rgb(12, 30, 114); /* #0C1E72 */
+	--brand-blue-light: #18328f;
+	--brand-blue-lighter: #2647c0;
+	--brand-blue-soft: #e6ebf9;
+	--primary-blue: var(--brand-blue);
+
 	/* Primary Colors */
-	--cf-hub-blue: #1e3b8b;
+	--cf-hub-blue: var(--brand-blue);
 	--cf-hub-coral: #f47458;
-	--cf-hub-blue-light: #e5ebf4;
+	--cf-hub-blue-light: var(--brand-blue-soft);
 	--cf-hub-coral-light: #ffe8e3;
 	--cf-hub-pink: #ff3b84;
 	--cf-hub-purple: #4b0082;
 
 	/* Secondary Colors */
-	--cf-hub-blue-dark: #152c68;
+	--cf-hub-blue-dark: #071245;
 	--cf-hub-coral-dark: #e85c3d;
 	--cf-hub-blue-lighter: #f5f8fc;
 	--cf-hub-coral-lighter: #fff5f2;
 
 	/* Accent Colors */
-	--cf-hub-accent-1: #2e5ca0;
-	--cf-hub-accent-2: #4b6ba8;
-	--cf-hub-accent-3: #5c89c7;
+	--cf-hub-accent-1: var(--brand-blue-light);
+	--cf-hub-accent-2: #2d4cb2;
+	--cf-hub-accent-3: #4a6de0;
 
 	/* Text Colors */
 	--cf-hub-text-primary: #2c3e50;
@@ -29,15 +36,15 @@
 	--cf-hub-bg-tertiary: #f5f8fc;
 
 	/* Border Colors */
-	--cf-hub-border: rgba(30, 59, 139, 0.1);
+	--cf-hub-border: rgba(12, 30, 114, 0.15);
 
 	/* Shadow Colors */
-	--cf-hub-shadow-light: rgba(30, 59, 139, 0.08);
-	--cf-hub-shadow-medium: rgba(30, 59, 139, 0.12);
-	--cf-hub-shadow-dark: rgba(30, 59, 139, 0.16);
+	--cf-hub-shadow-light: rgba(12, 30, 114, 0.08);
+	--cf-hub-shadow-medium: rgba(12, 30, 114, 0.14);
+	--cf-hub-shadow-dark: rgba(12, 30, 114, 0.2);
 
 	/* Gradient Colors */
-	--cf-hub-gradient-1: linear-gradient(145deg, #1e3b8b, #2e5ca0);
+	--cf-hub-gradient-1: linear-gradient(145deg, #0c1e72 0%, #18328f 50%, #2647c0 100%);
 	--cf-hub-gradient-2: linear-gradient(145deg, #f47458, #e85c3d);
 	--cf-hub-gradient-3: linear-gradient(145deg, #e5ebf4, #ffffff);
 	--cf-hub-gradient-pink-purple: linear-gradient(

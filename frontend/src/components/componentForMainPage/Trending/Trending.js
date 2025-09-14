@@ -1,83 +1,33 @@
-import React from 'react';
-import { Row, Col, Typography, Card, Tag, Avatar } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Row, Col, Typography, Card, Tag, Avatar, Spin } from 'antd';
 import { FireOutlined, EyeOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import Image from 'next/image';
 import Link from 'next/link';
 import './Trending.css';
+import { API_ENDPOINTS } from '@/config/api';
 
 const { Title, Paragraph } = Typography;
 
 const Trending = () => {
-  const trendingPosts = [
-    {
-      id: 1,
-      title: "Machine Learning Engineer at Google: Công Việc Thực Sự Là Gì?",
-      author: "Anh Van Dong Nguyen",
-      date: "August 28, 2025",
-      category: "BIG TECH, FORTUNE 500 & TOP COMPANIES",
-      image: "/assets/mentors/linh_nguyen.jpg",
-      views: 1250,
-      trending: true,
-      tags: ["Machine Learning", "Google", "Career"]
-    },
-    {
-      id: 2,
-      title: "Pricing Job Sharing",
-      author: "Ashley Hoang",
-      date: "August 27, 2025",
-      category: "BLOG",
-      image: "/assets/mentors/tribui.jpg",
-      views: 890,
-      trending: true,
-      tags: ["Job Search", "Pricing", "Strategy"]
-    },
-    {
-      id: 3,
-      title: "SDE Amazon Interview Review",
-      author: "Bach Nguyen",
-      date: "August 28, 2025",
-      category: "BIG TECH, FORTUNE 500 & TOP COMPANIES",
-      image: "/assets/mentors/winnie.jpg",
-      views: 2100,
-      trending: true,
-      tags: ["Amazon", "Interview", "SDE"]
-    },
-    {
-      id: 4,
-      title: "Career Mapping & Assessment Guide",
-      author: "Mai Anh Pham",
-      date: "September 5, 2025",
-      category: "CAREER DEVELOPMENT",
-      image: "/assets/mentors/hoanguyen.jpg",
-      views: 1560,
-      trending: false,
-      tags: ["Career Mapping", "Assessment", "Development"]
-    },
-    {
-      id: 5,
-      title: "Resume Workshop: From Zero to Hero",
-      author: "Linh Nguyen",
-      date: "September 3, 2025",
-      category: "WORKSHOP",
-      image: "/assets/mentors/linhnguyen.jpg",
-      views: 980,
-      trending: false,
-      tags: ["Resume", "Workshop", "Career"]
-    },
-    {
-      id: 6,
-      title: "Networking Strategies for International Students",
-      author: "Tri Bui",
-      date: "September 1, 2025",
-      category: "NETWORKING",
-      image: "/assets/mentors/tribui.jpg",
-      views: 1340,
-      trending: false,
-      tags: ["Networking", "International Students", "Strategy"]
-    }
-  ];
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const featuredPost = trendingPosts[0];
+  useEffect(()=>{
+    let cancelled = false;
+    async function load(){
+      setLoading(true);
+      try {
+        const res = await fetch(`${API_ENDPOINTS.blog.posts}?status=published&sort=views&limit=7`);
+        const data = await res.json();
+        if(!cancelled){ setPosts(data.items || []); }
+      } catch(err){ if(!cancelled) console.error('Load trending failed', err); }
+      finally { if(!cancelled) setLoading(false); }
+    }
+    load();
+    return ()=>{ cancelled = true; };
+  },[]);
+
+  const featuredPost = posts[0];
 
   return (
     <div className="trending-section">
@@ -94,51 +44,49 @@ const Trending = () => {
         </div>
 
         {/* Featured Trending Post */}
-        <div className="featured-trending">
-          <Card className="featured-trending-card">
+  {loading && <div style={{textAlign:'center', padding:40}}><Spin /></div>}
+  {!loading && featuredPost && <div className="featured-trending">
+          <Card className="featured-trending-card" onClick={()=> window.location.href=`/blog/${featuredPost.slug}`} style={{ cursor:'pointer' }}>
             <Row gutter={[48, 48]} align="middle">
-              <Col xs={24} lg={12}>
+              <Col xs={24} lg={12} onClick={()=> window.location.href=`/blog/${featuredPost.slug}` } style={{ cursor:'pointer' }}>
                 <div className="featured-content">
                   <div className="featured-badge">
                     <FireOutlined />
                     <span>TRENDING NOW</span>
                   </div>
-                  <div className="featured-category">{featuredPost.category}</div>
+                  <div className="featured-category">{featuredPost.categories?.[0]?.name || 'Blog'}</div>
                   <Title level={3} className="featured-title">
                     {featuredPost.title}
                   </Title>
                   <div className="featured-meta">
                     <div className="author-info">
-                      <Avatar size="small" src={featuredPost.image} />
-                      <span className="author-name">BY {featuredPost.author.toUpperCase()}</span>
+                      <Avatar size="small" src={'/assets/blank-profile-picture.jpg'} />
+                      <span className="author-name">BY {(featuredPost.author?.name || '').toUpperCase()}</span>
                     </div>
-                    <div className="post-date">{featuredPost.date}</div>
+                    <div className="trending-post-date">{featuredPost.publishedAt ? new Date(featuredPost.publishedAt).toLocaleDateString() : ''}</div>
                   </div>
                   <div className="featured-stats">
                     <div className="stat-item">
                       <EyeOutlined />
-                      <span>{featuredPost.views} views</span>
+                      <span>{featuredPost.views || 0} views</span>
                     </div>
                     <div className="stat-item">
                       <ClockCircleOutlined />
-                      <span>5 min read</span>
+                      <span>{featuredPost.readingTimeMins || 1} min read</span>
                     </div>
                   </div>
-                  <div className="featured-tags">
-                    {featuredPost.tags.map((tag, index) => (
-                      <Tag key={index} className="trending-tag">{tag}</Tag>
-                    ))}
-                  </div>
+                  {featuredPost.tags?.length > 0 && (
+                    <div className="featured-tags">
+                      {featuredPost.tags.slice(0,4).map(t => (
+                        <Tag key={t._id || t.name} className="trending-tag">{t.name || t}</Tag>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </Col>
-              <Col xs={24} lg={12}>
+              <Col xs={24} lg={12} onClick={()=> window.location.href=`/blog/${featuredPost.slug}` } style={{ cursor:'pointer' }}>
                 <div className="featured-image">
-                  <Image
-                    src={featuredPost.image}
-                    alt={featuredPost.title}
-                    fill
-                    className="featured-img"
-                  />
+                  <Image src={featuredPost.coverImageData ? `${API_ENDPOINTS.blog.posts}/${featuredPost._id}/cover` : '/assets/blank-profile-picture.jpg'} alt={featuredPost.title} fill className="featured-img" />
                   <div className="image-overlay">
                     <div className="overlay-content">
                       <FireOutlined className="overlay-icon" />
@@ -149,29 +97,23 @@ const Trending = () => {
               </Col>
             </Row>
           </Card>
-        </div>
+        </div>}
 
         {/* Trending Posts Grid */}
-        <div className="trending-grid">
+        {!loading && posts.length > 1 && <div className="trending-grid">
           <Row gutter={[24, 24]}>
-            {trendingPosts.slice(1).map((post) => (
-              <Col xs={24} md={12} lg={8} key={post.id}>
-                <Card className="trending-card">
+            {posts.slice(1).map((post) => (
+              <Col xs={24} md={12} lg={8} key={post._id} onClick={()=> window.location.href=`/blog/${post.slug}` } style={{ cursor:'pointer' }}>
+                <Card className="trending-card" hoverable>
                   <div className="trending-card-image">
-                    <Image
-                      src={post.image}
-                      alt={post.title}
-                      width={300}
-                      height={200}
-                      className="trending-img"
-                    />
-                    {post.trending && (
+                    <Image src={post.coverImageData ? `${API_ENDPOINTS.blog.posts}/${post._id}/cover` : '/assets/blank-profile-picture.jpg'} alt={post.title} width={300} height={200} className="trending-img" />
+                    {posts.indexOf(post) < 6 && (
                       <div className="trending-badge">
                         <FireOutlined />
                         <span>TRENDING</span>
                       </div>
                     )}
-                    <div className="category-badge">{post.category}</div>
+                    <div className="category-badge">{post.categories?.[0]?.name || 'Blog'}</div>
                   </div>
                   <div className="trending-card-content">
                     <Title level={4} className="trending-card-title">
@@ -179,24 +121,24 @@ const Trending = () => {
                     </Title>
                     <div className="trending-card-meta">
                       <div className="author-info">
-                        <Avatar size="small" src={post.image} />
-                        <span className="author-name">BY {post.author.toUpperCase()}</span>
+                        <Avatar size="small" src={'/assets/blank-profile-picture.jpg'} />
+                        <span className="author-name">BY {(post.author?.name || '').toUpperCase()}</span>
                       </div>
-                      <div className="post-date">{post.date}</div>
+                      <div className="trending-post-date">{post.publishedAt ? new Date(post.publishedAt).toLocaleDateString() : ''}</div>
                     </div>
                     <div className="trending-card-stats">
                       <div className="stat-item">
                         <EyeOutlined />
-                        <span>{post.views}</span>
+                        <span>{post.views || 0}</span>
                       </div>
                       <div className="stat-item">
                         <ClockCircleOutlined />
-                        <span>3 min</span>
+                        <span>{post.readingTimeMins || 1} min</span>
                       </div>
                     </div>
                     <div className="trending-card-tags">
-                      {post.tags.slice(0, 2).map((tag, index) => (
-                        <Tag key={index} className="trending-tag-small">{tag}</Tag>
+                      {post.tags?.slice(0,2).map(t => (
+                        <Tag key={t._id || t.name} className="trending-tag-small">{t.name || t}</Tag>
                       ))}
                     </div>
                   </div>
@@ -204,7 +146,7 @@ const Trending = () => {
               </Col>
             ))}
           </Row>
-        </div>
+        </div>}
 
         {/* View All Button */}
         <div className="trending-actions">

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Form,
   Input,
@@ -11,6 +11,8 @@ import {
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import "./ApplySection.css";
+import { API_ENDPOINTS, getAuthHeader } from '@/config/api';
+import { useAuth } from '@/contexts/authContext/authContext';
 
 const { Title, Text, Link } = Typography;
 const { TextArea } = Input;
@@ -76,6 +78,7 @@ const ApplySection = () => {
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState([]);
   const [waitlistSelection, setWaitlistSelection] = useState("No");
+  const { currentUser, userLoggedIn } = useAuth();
 
   // Fetch the backend URL from the environment variable
   const apiBaseUrl = "https://pathwise-website-server.onrender.com";
@@ -97,13 +100,15 @@ const ApplySection = () => {
     }
 
     try {
-      const res = await fetch(`${apiBaseUrl}/api/forms/submit`, {
+      const res = await fetch(API_ENDPOINTS.applications.submit, {
         method: "POST",
+        headers: { ...getAuthHeader() },
         body: formData,
       });
 
       if (!res.ok) {
-        throw new Error("Failed to submit the form. Please try again later.");
+        const errJson = await res.json().catch(()=>({ message:'Submission failed'}));
+        throw new Error(errJson.message || "Failed to submit the form. Please try again later.");
       }
 
       const data = await res.json();
@@ -115,9 +120,7 @@ const ApplySection = () => {
           message.success({
             content: (
               <span>
-                Form submitted successfully! Since you opted for the waitlist
-                for the July 2025 batch (applying for Summer 2026 only), please
-                message{" "}
+                Application submitted! Since you opted for the waitlist for the July 2025 batch (applying for Summer 2026 only), please message {" "}
                 <a
                   href="https://www.facebook.com/tribuidinh0901/"
                   target="_blank"
@@ -134,7 +137,7 @@ const ApplySection = () => {
         } else {
           message.success({
             content:
-              "Form submitted successfully! We will review your application and get back to you shortly.",
+              "Application submitted! We will review your application and get back to you shortly.",
             duration: 5,
             className: "success-message",
           });
@@ -164,6 +167,18 @@ const ApplySection = () => {
       className: "error-message",
     });
   };
+
+  // Prefill form with logged-in user info
+  useEffect(()=>{
+    if(userLoggedIn && currentUser){
+      const defaults = {
+        fullName: currentUser.name || '',
+        email: currentUser.email || '',
+        phoneNumber: currentUser.profile?.phone || '',
+      };
+      form.setFieldsValue(defaults);
+    }
+  }, [userLoggedIn, currentUser, form]);
 
   return (
     <div className="form-section">

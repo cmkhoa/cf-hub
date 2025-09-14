@@ -2,7 +2,7 @@ import { auth } from "../firebase/firebase";
 import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 
 const BACKEND_URL =
-	process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
+	process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8008";
 
 /**
  * Login with Google using Firebase
@@ -11,22 +11,24 @@ const BACKEND_URL =
 export const loginWithGoogle = async () => {
 	try {
 		const provider = new GoogleAuthProvider();
-		// Force account selection every time
-		provider.setCustomParameters({
-			prompt: "select_account",
-		});
+		provider.setCustomParameters({ prompt: 'select_account' });
 		const result = await signInWithPopup(auth, provider);
 		const user = result.user;
-
-		return {
-			email: user.email,
-			name: user.displayName,
-			photoURL: user.photoURL,
-			uid: user.uid,
-			isGoogle: true,
-		};
-	} catch (error) {
-		console.error("Google login error:", error);
+		const idToken = await user.getIdToken();
+		// Exchange with backend for role-bearing JWT
+		const res = await fetch(`${BACKEND_URL}/api/auth/firebase`, {
+			method:'POST',
+			headers:{ 'Content-Type':'application/json' },
+			body: JSON.stringify({ idToken })
+		});
+		if(!res.ok){
+			const err = await res.json().catch(()=>({}));
+			throw new Error(err.message || 'Backend exchange failed');
+		}
+		const data = await res.json();
+		return { ...data.user, token: data.token, isGoogle:true };
+	} catch(error){
+		console.error('Google login error:', error);
 		throw error;
 	}
 };
@@ -108,4 +110,16 @@ export const logout = async () => {
 		console.error("Logout error:", error);
 		throw error;
 	}
+};
+
+// Refresh backend JWT to pick up updated role (e.g., after promotion)
+export const refreshToken = async () => {
+	const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+	if(!token) throw new Error('No existing token');
+	const res = await fetch(`${BACKEND_URL}/api/auth/refresh-token`, {
+		method:'POST',
+		headers: { 'Content-Type':'application/json', Authorization: `Bearer ${token}` }
+	});
+	if(!res.ok) throw new Error('Refresh failed');
+	return res.json();
 };
