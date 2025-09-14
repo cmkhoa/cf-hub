@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Input, Button, Row, Col, Typography } from "antd";
 import { 
 	FacebookOutlined, 
@@ -14,6 +14,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import './Footer.css';
+import { API_ENDPOINTS } from '@/config/api';
 
 const { Title, Paragraph, Text: AntText } = Typography;
 
@@ -22,6 +23,32 @@ const Footer = () => {
 		e.preventDefault();
 		// TODO: Implement subscription logic
 	};
+
+	const [news, setNews] = useState([]);
+	const [loadingNews, setLoadingNews] = useState(false);
+
+	useEffect(()=>{
+		let cancelled = false;
+		const fetchNews = async ()=>{
+			try {
+				setLoadingNews(true);
+				const params = new URLSearchParams();
+				params.set('limit','3');
+				params.set('postType','blog');
+				// public endpoint returns only published by default
+				const res = await fetch(`${API_ENDPOINTS.blog.posts}?${params.toString()}`);
+				if(!res.ok) throw new Error('Failed to load news');
+				const data = await res.json();
+				const items = Array.isArray(data?.items) ? data.items : [];
+				if(!cancelled) setNews(items);
+			} catch(e){ if(!cancelled) setNews([]); }
+			finally { if(!cancelled) setLoadingNews(false); }
+		};
+		fetchNews();
+		return ()=>{ cancelled = true; };
+	},[]);
+
+	const backendApiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8008/api';
 
 	return (
 		<footer className="footer">
@@ -126,52 +153,37 @@ const Footer = () => {
 							<div className="news-section">
 								<Title level={5} className="links-title">Recent News</Title>
 								<div className="news-list">
-									<div className="news-item">
-										<div className="news-image">
-											<Image
-												src="/assets/mentors/linh_nguyen.jpg"
-												alt="Referral discussion"
-												width={60}
-												height={40}
-												className="news-img"
-											/>
-										</div>
-										<div className="news-content">
-											<div className="news-title">Một chút bàn luận về Referral</div>
-											<div className="news-date">SEPTEMBER 7, 2025</div>
-										</div>
+										{news.length === 0 && !loadingNews && (
+											<div className="news-item">
+												<div className="news-content">
+													<div className="news-title">No recent posts yet</div>
+												</div>
+											</div>
+										)}
+										{news.map((post)=>{
+											const coverUrl = `${backendApiBase}/blog/posts/${post._id}/cover`;
+											const date = post.publishedAt || post.createdAt;
+											const formatted = date ? new Date(date).toLocaleDateString(undefined, { year:'numeric', month:'short', day:'2-digit' }).toUpperCase() : '';
+											return (
+												<Link key={post._id} href={`/blog/${post.slug}`} className="news-item" prefetch={false}>
+													<div className="news-image">
+														<Image
+															src={coverUrl}
+															alt={post.title}
+															width={60}
+															height={40}
+															className="news-img"
+															onError={(e)=>{ e.currentTarget.src = '/assets/reference_image_1.jpg'; }}
+														/>
+													</div>
+													<div className="news-content">
+														<div className="news-title">{post.title}</div>
+														<div className="news-date">{formatted}</div>
+													</div>
+												</Link>
+											);
+										})}
 									</div>
-									<div className="news-item">
-										<div className="news-image">
-											<Image
-												src="/assets/mentors/tribui.jpg"
-												alt="Resources and projects"
-												width={60}
-												height={40}
-												className="news-img"
-											/>
-										</div>
-										<div className="news-content">
-											<div className="news-title">Resources, project, và những câu chuyện chưa kể</div>
-											<div className="news-date">SEPTEMBER 5, 2025</div>
-										</div>
-									</div>
-									<div className="news-item">
-										<div className="news-image">
-											<Image
-												src="/assets/mentors/winnie.jpg"
-												alt="Job search strategy"
-												width={60}
-												height={40}
-												className="news-img"
-											/>
-										</div>
-										<div className="news-content">
-											<div className="news-title">TIMELINE & JOB SEARCH STRATEGY FOR RECRUITING SEASON</div>
-											<div className="news-date">SEPTEMBER 3, 2025</div>
-										</div>
-									</div>
-								</div>
 							</div>
 						</Col>
 					</Row>
