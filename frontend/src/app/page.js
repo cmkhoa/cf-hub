@@ -2,7 +2,7 @@
 import { Layout, Row, Col, Typography, Button } from "antd";
 import { useState } from "react";
 import HeaderComponent from "@/components/header/header";
-import SuccessStory from "@/components/componentForMainPage/SuccessStory/SuccessStory";
+import CareerStories from "@/components/componentForMainPage/CareerStories/CareerStories";
 import Features from "@/components/componentForMainPage/Features/Features";
 import FeedbackGallery from "@/components/componentForMainPage/FeedbackGallery/FeedbackGallery";
 import MenteeShowcase from "@/components/componentForMainPage/MenteeShowcase/MenteeShowcase";
@@ -92,8 +92,8 @@ export default function Home() {
 			<HeaderComponent current={current} handleClick={handleClick} />
 			<Content>
 				<div className="site-layout-content">
+					<section id="career-stories"><CareerStories /></section>
 					<section id="news"><BlogGrid /></section>
-					<section id="success"><SuccessStory /></section>
 					<section id="trending"><Trending /></section>
 					<section id="hero"><HeroSection /></section>
 

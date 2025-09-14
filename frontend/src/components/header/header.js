@@ -82,7 +82,7 @@ const HeaderComponent = ({ current, handleClick }) => {
 		{ key:'resume-job-search-interview-tips', label:'Resume, Job Search & Interview Tips' },
 		{ key:'industry-insights', label:'Industry Insights' },
 		{ key:'networking-tips', label:'Networking Tips' },
-		{ key:'success-stories', label:'Success Stories' },
+		{ key:'success-stories', label:'Career Stories' },
 		{ key:'viet-career-conference', label:'Viet Career Conference' },
 		{ key:'webinars-workshops', label:'Webinars & Workshops' },
 	];

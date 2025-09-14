@@ -17,7 +17,7 @@ const PRESET_CATEGORIES = [
   { key:'resume-job-search-interview-tips', label:'Resume, Job Search & Interview Tips' },
   { key:'industry-insights', label:'Industry Insights' },
   { key:'networking-tips', label:'Networking Tips' },
-  { key:'success-stories', label:'Success Stories' },
+  { key:'success-stories', label:'Career Stories' },
   { key:'viet-career-conference', label:'Viet Career Conference' },
   { key:'webinars-workshops', label:'Webinars & Workshops' }
 ];
@@ -256,7 +256,7 @@ export default function AdminDashboard(){
           <Menu theme="dark" mode="inline" selectedKeys={[activeSection]} onClick={(e)=> setActiveSection(e.key)}
             items={[
               { key:'blogs', label:'Blog Posts' },
-              { key:'success', label:'Success Stories' },
+              { key:'success', label:'Career Stories' },
               { key:'applications', label:'Applications' },
               { key:'consultations', label:'Consultation Requests' },
               { key:'userSubmissions', label:'User Blog Submissions' },
@@ -330,9 +330,9 @@ export default function AdminDashboard(){
             )}
             {activeSection==='success' && (
               <div>
-                <Title level={2}>Success Stories</Title>
+                <Title level={2}>Career Stories</Title>
                 <div style={{ marginBottom:32, padding:24, background:'#fff', border:'1px solid #eee', borderRadius:8 }}>
-                  <Title level={4} style={{ marginTop:0 }}>Create New Success Story</Title>
+                  <Title level={4} style={{ marginTop:0 }}>Create New Career Story</Title>
                   <Form layout="vertical" form={form} onFinish={(vals)=> onCreate({ ...vals, postType:'success' })} disabled={createLoading}>
                     <Form.Item name="title" label="Title" rules={[{ required:true, message:'Title required'}]}><Input placeholder="Title" /></Form.Item>
                     <Form.Item name="categories" label="Categories">
@@ -379,7 +379,7 @@ export default function AdminDashboard(){
                   </Form>
                 </div>
                 <div style={{ padding:24, background:'#fff', border:'1px solid #eee', borderRadius:8 }}>
-                  <Title level={4} style={{ marginTop:0 }}>Manage Success Stories</Title>
+                  <Title level={4} style={{ marginTop:0 }}>Manage Career Stories</Title>
                   <div style={{ overflowX:'auto' }}>
                     <Table rowKey="_id" dataSource={successStories} columns={postColumns} loading={fetching} pagination={{ pageSize:20 }} />
                   </div>

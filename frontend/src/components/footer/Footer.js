@@ -120,7 +120,7 @@ const Footer = () => {
 									<div className="category-column">
 										<Link href="/industry-insights">Industry Insights</Link>
 										<Link href="/networking">Networking Tips</Link>
-										<Link href="/success-stories">Success Stories</Link>
+										<Link href="/success-stories">Career Stories</Link>
 										<Link href="/conference">Viet Career Conference</Link>
 										<Link href="/webinars">Webinars & Workshops</Link>
 									</div>
