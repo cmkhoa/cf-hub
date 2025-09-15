@@ -157,7 +157,7 @@ const HeaderComponent = ({ current, handleClick }) => {
 								<a href="/#features">FEATURES</a>
 							</Menu.Item>
 						</Menu>
-						<div className="nav-dropdowns inline">
+						{/* <div className="nav-dropdowns inline">
 							<Dropdown
 								menu={{ items: categoriesItems, onClick: handleCategorySelect }}
 								placement="bottomLeft"
@@ -167,7 +167,7 @@ const HeaderComponent = ({ current, handleClick }) => {
 									Categories <DownOutlined />
 								</Button>
 							</Dropdown>
-						</div>
+						</div> */}
 					</div>
 					<div className="nav-right">
 						<div className="header-right">
@@ -203,13 +203,13 @@ const HeaderComponent = ({ current, handleClick }) => {
 									>
 										Login
 									</Button>
-									<Button 
+									{/* <Button 
 										icon={<UserAddOutlined />} 
 										className="register-btn"
 										onClick={()=> router.push('/register')}
 									>
 										Sign Up
-									</Button>
+									</Button> */}
 								</div>
 							)}
 							<Button

@@ -71,7 +71,7 @@ const Footer = () => {
 				<div className="container">
 					<Row gutter={[48, 48]}>
 						{/* Brand Section */}
-						<Col xs={24} md={8} lg={6}>
+						<Col xs={24} md={12} lg={12}>
 							<div className="brand-section">
 								<div className="brand-logo">
 									<div className="logo-icon">CFH</div>
@@ -104,52 +104,10 @@ const Footer = () => {
 							</div>
 						</Col>
 
-						{/* Categories */}
-						<Col xs={12} md={8} lg={6}>
-							<div className="links-section">
-								<Title level={5} className="links-title">Categories</Title>
-								<div className="categories-grid">
-									<div className="category-column">
-										<Link href="/big-tech">Big Tech, Fortune 500 & Top Companies</Link>
-										<Link href="/events">Events & Community</Link>
-										<Link href="/blog">Main Blog</Link>
-										<Link href="/professional-development">Professional Development</Link>
-										<Link href="/resume-tips">Resume, Job Search & Interview Tips</Link>
-										<Link href="/immigration">Immigration & Visas</Link>
-									</div>
-									<div className="category-column">
-										<Link href="/industry-insights">Industry Insights</Link>
-										<Link href="/networking">Networking Tips</Link>
-										<Link href="/success-stories">Career Stories</Link>
-										<Link href="/conference">Viet Career Conference</Link>
-										<Link href="/webinars">Webinars & Workshops</Link>
-									</div>
-								</div>
-							</div>
-						</Col>
-
-						{/* Tags */}
-						<Col xs={12} md={8} lg={6}>
-							<div className="links-section">
-								<Title level={5} className="links-title">Tags</Title>
-								<div className="tags-cloud">
-									{[
-										'application', 'behavioral interview', 'career', 'career review', 
-										'challenge', 'computer science', 'conference', 'connection', 'cpt', 
-										'google', 'infrastructure engineer', 'interview', 'interview preparation', 
-										'job', 'job market', 'job search', 'networking', 'opt', 'preparing', 
-										'project', 'promotion', 'referral', 'resume', 'sde', 'sharing', 
-										'stem-opt', 'strategies', 'strength', 'viet-career-conference', 
-										'vietnamese', 'visa', 'weakness'
-									].map((tag, index) => (
-										<span key={index} className="tag-item">{tag}</span>
-									))}
-								</div>
-							</div>
-						</Col>
+						{/* Categories and Tags removed */}
 
 						{/* Recent News */}
-						<Col xs={24} md={24} lg={6}>
+						<Col xs={24} md={12} lg={12}>
 							<div className="news-section">
 								<Title level={5} className="links-title">Recent News</Title>
 								<div className="news-list">

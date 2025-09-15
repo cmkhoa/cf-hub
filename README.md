@@ -68,26 +68,34 @@ Promote an admin (optional utility):
 node backend/scripts/createAdmin.js user@example.com --create
 ```
 
+
 ## Frontend notes
 
-- Configure `NEXT_PUBLIC_API_URL` to point at backend (defaults to http://localhost:8008/api).
-- Next/Image config allows `localhost` and remote patterns for backend‑served images.
+- Configure `NEXT_PUBLIC_API_URL` to point at backend (defaults to http://localhost:8008/api). All API calls now use this env.
+- Next/Image config allows `localhost` and remote patterns for backend‑served images and Vercel Blob.
 - Navbar search and category picker route into Blogs with filters pre‑applied.
 - Blogs page includes search + multi‑category filters (slug or ID supported by API).
 - Mentee Showcase (home): dynamically fetches from `/api/mentees`, supports external URLs or `/uploads/...` images, with placeholder fallback.
+- Header: Sign Up button removed.
+- Footer: Now only Brand and Recent News columns (categories/tags removed).
 
 ## Admin
 
 - Visit `/admin` (must be logged in and have role=admin).
 - Manage: Blog Posts, Career Stories, Applications, Consultation Requests, User Blog Submissions, and Mentees.
 
+
 ## Troubleshooting
 
 - If images fail to render, ensure:
   - Backend is reachable at `NEXT_PUBLIC_API_URL`.
-  - Next.js image config includes `localhost` (provided in repo).
+  - Next.js image config includes `localhost` and your backend/blob domains.
   - For local files, place under `backend/uploads` and reference as `/uploads/...`.
 - If 401/403 on admin endpoints, verify JWT and that the user is admin.
+- If API calls fail locally ("Failed to fetch"), check:
+  - Frontend and backend ports match your envs (e.g., 3000/8008 or 3001/8009).
+  - Backend `.env` has correct `FRONTEND_URL` and `ADDITIONAL_ORIGINS` for your frontend port.
+  - Restart both servers after env changes.
 
 ## Scripts (root)
 
@@ -98,47 +106,47 @@ npm run dev:backend   # run backend only
 npm run dev:frontend  # run frontend only
 ```
 
+
 ## Deploying on Vercel (frontend + backend) with Vercel Blob + MongoDB
 
-This repo can run both the Next.js frontend and the Express API on Vercel. Images are uploaded to Vercel Blob; data lives in MongoDB Atlas.
+This repo runs both Next.js frontend and Express API on Vercel. Images are uploaded to Vercel Blob; data lives in MongoDB Atlas.
 
 1) MongoDB Atlas (free)
-- Create M0 cluster, DB user, allow network (0.0.0.0/0 for quick start), copy MONGODB_URI and include a DB name.
+  - Create M0 cluster, DB user, allow network (0.0.0.0/0 for quick start), copy MONGODB_URI and include a DB name.
 
 2) Backend on Vercel
-- The serverless entry is `backend/api/index.js` (exports the Express app). No build needed.
-- In Vercel: Add New → Project → Import this repo.
-- Project settings:
-  - Framework Preset: Other
-  - Root Directory: `backend`
-  - Build Command: (empty)
-  - Output Directory: (empty)
-- Environment Variables:
-  - MONGODB_URI=...
-  - JWT_SECRET=...
-  - FRONTEND_URL=https://your-frontend.vercel.app
-  - ADDITIONAL_ORIGINS=https://your-custom.com
-  - API_BASE_PATH=/api (optional)
-  - BLOB_READ_WRITE_TOKEN=... (from Vercel Blob)
-- Deploy and note the backend URL: https://<backend>.vercel.app (API = + `/api`).
+  - Serverless entry: `backend/api/index.js` (exports Express app). No build needed.
+  - Vercel project settings:
+    - Framework Preset: Other
+    - Root Directory: `backend`
+    - Build Command: (empty)
+    - Output Directory: (empty)
+  - Environment Variables:
+    - MONGODB_URI=...
+    - JWT_SECRET=...
+    - FRONTEND_URL=https://your-frontend.vercel.app
+    - ADDITIONAL_ORIGINS=https://your-custom.com
+    - API_BASE_PATH=/api (optional)
+    - BLOB_READ_WRITE_TOKEN=... (from Vercel Blob)
+  - Deploy and note backend URL: https://<backend>.vercel.app (API = + `/api`).
 
 3) Vercel Blob (uploads)
-- Vercel dashboard → Storage → Blob → Create store.
-- Generate a READ/WRITE server token and set it as `BLOB_READ_WRITE_TOKEN` on the backend project.
-- Upload endpoint: POST `/api/uploads` (multipart field: `file`), returns a public `url`.
+  - Vercel dashboard → Storage → Blob → Create store.
+  - Generate a READ/WRITE server token and set as `BLOB_READ_WRITE_TOKEN` on backend project.
+  - Upload endpoint: POST `/api/uploads` (multipart field: `file`), returns a public `url`.
 
 4) Frontend on Vercel
-- Add New → Project → Import this repo → Framework Preset: Next.js.
-- Root Directory: `frontend`.
-- Environment Variables:
-  - NEXT_PUBLIC_API_URL=https://<backend>.vercel.app/api
-  - Firebase NEXT_PUBLIC_* keys
-- Next/Image config must allow your backend URL and your blob domain; redeploy after edits.
+  - Framework Preset: Next.js
+  - Root Directory: `frontend`
+  - Environment Variables:
+    - NEXT_PUBLIC_API_URL=https://<backend>.vercel.app/api
+    - Firebase NEXT_PUBLIC_* keys
+  - Next/Image config must allow your backend URL and blob domain; redeploy after edits.
 
 5) Admin and content
-- Promote admin via Atlas or `node backend/scripts/createAdmin.js` (using prod MONGODB_URI locally).
-- Use `/admin` to manage blogs, stories, consultations, and mentees. For images, upload to Blob (future UI) or via console and paste URLs.
+  - Promote admin via Atlas or `node backend/scripts/createAdmin.js` (using prod MONGODB_URI locally).
+  - Use `/admin` to manage blogs, stories, consultations, and mentees. For images, upload to Blob (future UI) or via console and paste URLs.
 
 Notes:
-- Avoid local filesystem on serverless—use Blob for uploads.
-- MongoDB connection is lazy in serverless (`backend/app.js`).
+  - Avoid local filesystem on serverless—use Blob for uploads.
+  - MongoDB connection is lazy in serverless (`backend/app.js`).
