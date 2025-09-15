@@ -67,8 +67,8 @@ export const AuthProvider = ({ children }) => {
 			try {
 				const idToken = await user.getIdToken();
 				// Exchange for backend JWT + role
-				const backendBase = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8008';
-				const resp = await fetch(`${backendBase}/api/auth/firebase`, {
+				const apiBase = process.env.NEXT_PUBLIC_API_URL || `${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8008'}/api`;
+				const resp = await fetch(`${apiBase}/auth/firebase`, {
 					method: 'POST',
 					headers: { 'Content-Type': 'application/json' },
 					body: JSON.stringify({ idToken })

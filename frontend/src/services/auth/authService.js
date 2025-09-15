@@ -1,8 +1,9 @@
 import { auth } from "../firebase/firebase";
 import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 
-const BACKEND_URL =
-	process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8008";
+// Prefer NEXT_PUBLIC_API_URL (should include /api). Fallback to NEXT_PUBLIC_BACKEND_URL + /api or localhost.
+const API_BASE =
+	process.env.NEXT_PUBLIC_API_URL || `${process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8008"}/api`;
 
 /**
  * Login with Google using Firebase
@@ -16,7 +17,7 @@ export const loginWithGoogle = async () => {
 		const user = result.user;
 		const idToken = await user.getIdToken();
 		// Exchange with backend for role-bearing JWT
-		const res = await fetch(`${BACKEND_URL}/api/auth/firebase`, {
+	const res = await fetch(`${API_BASE}/auth/firebase`, {
 			method:'POST',
 			headers:{ 'Content-Type':'application/json' },
 			body: JSON.stringify({ idToken })
@@ -42,7 +43,7 @@ export const loginWithGoogle = async () => {
  */
 export const registerWithEmail = async (email, password, name) => {
 	try {
-		const response = await fetch(`${BACKEND_URL}/api/auth/register`, {
+	const response = await fetch(`${API_BASE}/auth/register`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -70,7 +71,7 @@ export const registerWithEmail = async (email, password, name) => {
  */
 export const loginWithEmail = async (email, password) => {
 	try {
-		const response = await fetch(`${BACKEND_URL}/api/auth/login`, {
+	const response = await fetch(`${API_BASE}/auth/login`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -102,7 +103,7 @@ export const logout = async () => {
 		}
 
 		// Clear backend session
-		await fetch(`${BACKEND_URL}/api/auth/logout`, {
+	await fetch(`${API_BASE}/auth/logout`, {
 			method: "POST",
 			credentials: "include",
 		});
@@ -116,7 +117,7 @@ export const logout = async () => {
 export const refreshToken = async () => {
 	const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
 	if(!token) throw new Error('No existing token');
-	const res = await fetch(`${BACKEND_URL}/api/auth/refresh-token`, {
+	const res = await fetch(`${API_BASE}/auth/refresh-token`, {
 		method:'POST',
 		headers: { 'Content-Type':'application/json', Authorization: `Bearer ${token}` }
 	});

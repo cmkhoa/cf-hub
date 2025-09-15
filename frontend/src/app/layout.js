@@ -22,6 +22,9 @@ export default function RootLayout({ children }) {
 					href="https://fonts.gstatic.com"
 					crossOrigin="true"
 				/>
+				{/* Favicon */}
+				<link rel="icon" href="/images/cfhub-logo.jpg" type="image/jpeg" />
+				<link rel="shortcut icon" href="/images/cfhub-logo.jpg" type="image/jpeg" />
 				<link
 					href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;700&display=swap"
 					rel="stylesheet"
