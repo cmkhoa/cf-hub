@@ -47,6 +47,12 @@ export const API_ENDPOINTS = {
 		get: (id) => `${API_BASE_URL}/applications/${id}`,
 		resume: (id) => `${API_BASE_URL}/applications/${id}/resume`,
 		updateStatus: (id) => `${API_BASE_URL}/applications/${id}/status`,
+	},
+	mentees: {
+		list: `${API_BASE_URL}/mentees`,
+		create: `${API_BASE_URL}/mentees`,
+		update: (id) => `${API_BASE_URL}/mentees/${id}`,
+		remove: (id) => `${API_BASE_URL}/mentees/${id}`,
 	}
 };
 

@@ -339,14 +339,40 @@ router.get('/posts/slug/:slug', async (req,res)=>{
     res.json(post); } catch(err){ res.status(500).json({ message:'Error fetching post', error: err.message }); }
 });
 
-// Serve cover image by post id
+// Serve cover image by post id (fallback to placeholder when missing)
 router.get('/posts/:id/cover', async (req,res)=>{
   try {
-    const post = await Post.findById(req.params.id).select('coverImageData coverImageMime');
-    if(!post || !post.coverImageData) return res.status(404).end();
-    res.setHeader('Content-Type', post.coverImageMime || 'image/jpeg');
-    res.setHeader('Cache-Control','public, max-age=3600');
-    res.send(post.coverImageData);
+    const post = await Post.findById(req.params.id).select('coverImageData coverImageMime coverImage');
+    // If binary is stored in DB, serve it directly
+    if(post && post.coverImageData){
+      res.setHeader('Content-Type', post.coverImageMime || 'image/jpeg');
+      res.setHeader('Cache-Control','public, max-age=3600');
+      return res.send(post.coverImageData);
+    }
+    // If there's a file path stored (e.g., from /uploads), try to serve it
+    if(post && post.coverImage){
+      try {
+        // Absolute URL: redirect
+        if(/^https?:\/\//i.test(post.coverImage)){
+          return res.redirect(post.coverImage);
+        }
+        // Local path: stream if exists
+        const relPath = post.coverImage.startsWith('/') ? post.coverImage : `/${post.coverImage}`;
+        const filePath = path.join(__dirname, '..', relPath);
+        if(fs.existsSync(filePath)){
+          return res.sendFile(filePath);
+        }
+        const uploadsTry = path.join(__dirname, '..', 'uploads', post.coverImage.replace(/^.*\//,''));
+        if(fs.existsSync(uploadsTry)){
+          return res.sendFile(uploadsTry);
+        }
+      } catch(e){ /* fall through to placeholder */ }
+    }
+    // Fallback: 1x1 transparent PNG placeholder
+    const png = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9WmK+S8AAAAASUVORK5CYII=';
+    res.setHeader('Content-Type','image/png');
+    res.setHeader('Cache-Control','public, max-age=300');
+    return res.send(Buffer.from(png,'base64'));
   } catch(err){ res.status(500).json({ message:'Error fetching cover image' }); }
 });
 

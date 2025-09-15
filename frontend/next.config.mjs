@@ -11,6 +11,11 @@ const nextConfig = {
 				port: '8008',
 				pathname: '/api/blog/posts/*/cover',
 			},
+			// Vercel Blob public URLs
+			{
+				protocol: 'https',
+				hostname: '**.public.blob.vercel-storage.com',
+			},
 		],
 	},
 	webpack: (config) => {

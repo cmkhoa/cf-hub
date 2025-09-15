@@ -96,11 +96,10 @@ export default function Home() {
 					<section id="news"><BlogGrid /></section>
 					<section id="trending"><Trending /></section>
 					<section id="hero"><HeroSection /></section>
-
-					<section id="features"><Features /></section>
+					{/* <section id="features"><Features /></section> */}
 					<section id="achievements"><Achievements /></section>
 					<section id="showcase"><MenteeShowcase /></section>
-					<section id="feedback"><FeedbackGallery /></section>
+					{/* <section id="feedback"><FeedbackGallery /></section> */}
 					<section id="community"><Community /></section>
 					<FooterComponent />
 				</div>

@@ -33,9 +33,7 @@ const HeroSection = () => {
             <span className="cf-hero__line cf-hero__line--coral">take the first step</span>
           </h1>
           <p className="cf-hero__subtext">
-            Join our comprehensive mentorship program designed specifically for Vietnamese students and professionals
-            seeking to advance their careers in the United States. Get personalized guidance from industry experts
-            and build your professional network.
+            Join our community designed specifically for Vietnamese students and professionals seeking to advance their careers in the United States. Get personalized guidance from industry experts and build your professional network.
           </p>
         </div>
         <div className="cf-hero__brand">
@@ -60,20 +58,16 @@ const HeroSection = () => {
           <div className="cf-hero__stats-bar" aria-label="Program statistics">
             <div className="cf-hero__stat">
               <div className="cf-hero__stat-number">500+</div>
-              <div className="cf-hero__stat-label">Students Helped</div>
+              <div className="cf-hero__stat-label">Community Members</div>
             </div>
             <div className="cf-hero__stat">
-              <div className="cf-hero__stat-number">50+</div>
-              <div className="cf-hero__stat-label">Industry Mentors</div>
-            </div>
-            <div className="cf-hero__stat">
-              <div className="cf-hero__stat-number">95%</div>
-              <div className="cf-hero__stat-label">Success Rate</div>
+              <div className="cf-hero__stat-number">100+</div>
+              <div className="cf-hero__stat-label">Industry Professionals</div>
             </div>
           </div>
           <div className="cf-hero__cta-row">
-            <button className="cf-hero__cta" type="button" onClick={handleGetStarted}>Get Started</button>
-            <button className="cf-hero__cta cf-hero__cta--secondary" type="button">Watch Demo</button>
+            <button className="cf-hero__cta" type="button" onClick={handleGetStarted}>Join Now</button>
+            {/* <button className="cf-hero__cta cf-hero__cta--secondary" type="button">Watch Demo</button> */}
           </div>
         </div>
       </div>

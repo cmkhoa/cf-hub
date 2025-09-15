@@ -1,52 +1,41 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import { Card, Typography, Carousel } from "antd";
 import "./MenteeShowcase.css";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { API_ENDPOINTS } from "@/config/api";
 
 const { Title, Text: AntText } = Typography;
 const { Meta } = Card;
 
-const mentees = [
-	{
-		name: "Mentee",
-		image: "/assets/blank-profile-picture.jpg",
-		company: "JP Morgan Chase",
-		position: "Investment Banking Analyst",
-		location: "New York, NY",
-	},
-	{
-		name: "Mentee",
-		company: "Uber",
-		position: "Senior Analyst, Financial Risk Management",
-		location: "San Francisco, CA",
-		image: "/assets/blank-profile-picture.jpg",
-	},
-	{
-		name: "Mentee",
-		company: "Unilever",
-		position: "Brand Manager",
-		location: "New York, NY",
-		image: "/assets/blank-profile-picture.jpg",
-	},
-	{
-		name: "Mentee",
-		company: "Capital One",
-		position: "Senior Business Manager",
-		location: "Richmond, VA",
-		image: "/assets/blank-profile-picture.jpg",
-	},
-	{
-		name: "Mentee",
-		company: "Amazon",
-		position: "Software Development Engineer",
-		location: "Seattle, WA",
-		image: "/assets/blank-profile-picture.jpg",
-	},
-];
+const PLACEHOLDER = "/assets/blank-profile-picture.jpg";
 
 const MenteeShowcase = () => {
 	const router = useRouter();
+	const [mentees, setMentees] = useState([]);
+
+	useEffect(() => {
+		let ignore = false;
+		(async () => {
+			try {
+				const res = await fetch(API_ENDPOINTS.mentees.list, { next: { revalidate: 60 } });
+				const data = await res.json();
+				if (!ignore && Array.isArray(data)) setMentees(data);
+			} catch (err) {
+				console.error("Failed to load mentees", err);
+			}
+		})();
+		return () => {
+			ignore = true;
+		};
+	}, []);
+
+	const imgSrc = (url) => {
+		if (!url) return PLACEHOLDER;
+		if (url.startsWith("http://") || url.startsWith("https://")) return url;
+		return url.startsWith("/") ? url : `/uploads/${url}`;
+	};
 	return (
 		<div className="mentor-showcase-container">
 			<Title
@@ -75,12 +64,18 @@ const MenteeShowcase = () => {
 					{ breakpoint: 768, settings: { slidesToShow: 1 } },
 				]}
 			>
-				{mentees.map((mentee, index) => (
+				{(mentees.length ? mentees : Array.from({ length: 5 }, (_, i) => ({
+					name: "Mentee",
+					image: PLACEHOLDER,
+					company: "",
+					position: "",
+					location: "",
+				}))).map((mentee, index) => (
 					<div key={index} className="carousel-slide">
 						<Card hoverable className="mentor-card">
 							<div className="mentor-image-container">
 								<Image
-									src={mentee.image}
+									src={imgSrc(mentee.image)}
 									alt={mentee.name}
 									width={100}
 									height={100}

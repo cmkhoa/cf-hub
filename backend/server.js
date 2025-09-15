@@ -35,8 +35,18 @@ app.use(helmet({
 // Behind proxies (e.g., Render/Heroku/NGINX)
 app.set('trust proxy', 1);
 
-// Basic rate limiting
-const apiLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 600 });
+// Basic rate limiting (skip heavy image proxy endpoint)
+const apiLimiter = rateLimit({
+	windowMs: 15 * 60 * 1000,
+	max: Number(process.env.RATE_LIMIT_MAX || 1200),
+	standardHeaders: true,
+	legacyHeaders: false,
+	skip: (req) => {
+		// Allow cover images to bypass limiter to avoid 429s when many cards load
+		const url = req.originalUrl || req.url || '';
+		return /\/api\/blog\/posts\/[0-9a-fA-F]{24}\/cover(?:\?|$)/.test(url);
+	}
+});
 app.use('/api/', apiLimiter);
 
 // Tighter limits for auth endpoints
@@ -84,6 +94,14 @@ app.use(`${API_BASE}/applications`, applicationRoutes);
 // Consultation requests routes
 const consultationRoutes = require('./routes/consultations');
 app.use(`${API_BASE}/consultations`, consultationRoutes);
+
+// Mentees routes
+const menteeRoutes = require('./routes/mentees');
+app.use(`${API_BASE}/mentees`, menteeRoutes);
+
+// Uploads to Vercel Blob (for local dev parity with serverless app)
+const uploadRoutes = require('./routes/uploads');
+app.use(`${API_BASE}/uploads`, uploadRoutes);
 
 // Static file serving for uploaded images
 const path = require('path');

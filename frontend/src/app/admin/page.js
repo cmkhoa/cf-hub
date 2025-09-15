@@ -45,6 +45,12 @@ export default function AdminDashboard(){
   const [appsQuery, setAppsQuery] = useState('');
   const [appsStatusFilter, setAppsStatusFilter] = useState('');
   const [navCurrent, setNavCurrent] = useState('admin');
+  // Mentees state
+  const [mentees, setMentees] = useState([]);
+  const [menteesLoading, setMenteesLoading] = useState(false);
+  const [menteeModalOpen, setMenteeModalOpen] = useState(false);
+  const [menteeForm] = Form.useForm();
+  const [editingMentee, setEditingMentee] = useState(null);
 
   // New: consultation requests state
   const [consults, setConsults] = useState([]);
@@ -76,6 +82,7 @@ export default function AdminDashboard(){
   };
   useEffect(()=>{ if(userLoggedIn && currentUser?.role === 'admin') loadPosts(); },[userLoggedIn, currentUser]);
   useEffect(()=>{ if(userLoggedIn && currentUser?.role==='admin') loadMeta(); },[userLoggedIn, currentUser]);
+  useEffect(()=>{ if(activeSection==='mentees' && userLoggedIn && currentUser?.role==='admin') fetchMentees(); },[activeSection, userLoggedIn, currentUser]);
 
   const loadMeta = async ()=>{
     setMetaLoading(true);
@@ -101,6 +108,51 @@ export default function AdminDashboard(){
   setCoverBase64(null);
       loadPosts();
     } catch(err){ message.error(err.message); } finally { setCreateLoading(false); }
+  };
+
+  // Mentees API
+  const fetchMentees = async ()=>{
+    setMenteesLoading(true);
+    try {
+      const res = await fetch(API_ENDPOINTS.mentees.list);
+      const data = await res.json();
+      setMentees(Array.isArray(data) ? data : []);
+    } catch(err){ console.error(err); message.error('Failed to load mentees'); }
+    finally { setMenteesLoading(false); }
+  };
+
+  const openMenteeModal = (record=null)=>{
+    setEditingMentee(record);
+    if(record){
+      menteeForm.setFieldsValue({ name: record.name, company: record.company, position: record.position, location: record.location, image: record.image, featured: !!record.featured, order: record.order||0 });
+    } else {
+      menteeForm.resetFields();
+      menteeForm.setFieldsValue({ featured:false, order:0 });
+    }
+    setMenteeModalOpen(true);
+  };
+
+  const submitMentee = async ()=>{
+    try {
+      const values = await menteeForm.validateFields();
+      const method = editingMentee ? 'PUT' : 'POST';
+      const url = editingMentee ? API_ENDPOINTS.mentees.update(editingMentee._id) : API_ENDPOINTS.mentees.create;
+      const res = await fetch(url, { method, headers:{ 'Content-Type':'application/json', ...getAuthHeader() }, body: JSON.stringify(values) });
+      if(!res.ok) throw new Error('Save failed');
+      message.success('Saved');
+      setMenteeModalOpen(false);
+      setEditingMentee(null);
+      fetchMentees();
+    } catch(err){ message.error(err.message||'Save failed'); }
+  };
+
+  const deleteMentee = async (id)=>{
+    try {
+      const res = await fetch(API_ENDPOINTS.mentees.remove(id), { method:'DELETE', headers:{ ...getAuthHeader() } });
+      if(!res.ok) throw new Error('Delete failed');
+      message.success('Deleted');
+      fetchMentees();
+    } catch(err){ message.error(err.message); }
   };
 
   const publish = async (id, publish=true)=>{
@@ -260,6 +312,7 @@ export default function AdminDashboard(){
               { key:'applications', label:'Applications' },
               { key:'consultations', label:'Consultation Requests' },
               { key:'userSubmissions', label:'User Blog Submissions' },
+              { key:'mentees', label:'Mentees' },
             ]}
           />
         </Sider>
@@ -326,6 +379,59 @@ export default function AdminDashboard(){
                     <Table rowKey="_id" dataSource={blogPosts} columns={postColumns} loading={fetching} pagination={{ pageSize:20 }} />
                   </div>
                 </div>
+              </div>
+            )}
+            {activeSection==='mentees' && (
+              <div>
+                <Title level={2}>Mentees</Title>
+                <div style={{ marginBottom:12 }}>
+                  <Button type="primary" onClick={()=> openMenteeModal(null)}>Add Mentee</Button>
+                </div>
+                <Table rowKey="_id" dataSource={mentees} loading={menteesLoading}
+                  columns={[
+                    { title:'#', dataIndex:'order', key:'order', width:60, sorter:(a,b)=> (a.order||0)-(b.order||0) },
+                    { title:'Name', dataIndex:'name', key:'name' },
+                    { title:'Company', dataIndex:'company', key:'company' },
+                    { title:'Position', dataIndex:'position', key:'position' },
+                    { title:'Location', dataIndex:'location', key:'location' },
+                    { title:'Image', dataIndex:'image', key:'image', render: v=> <span style={{fontSize:12, color:'#999'}}>{v? (v.length>24? (v.slice(0,24)+'…'): v): ''}</span> },
+                    { title:'Featured', dataIndex:'featured', key:'featured', render: v=> v? <AntTag color="blue">Yes</AntTag>: <AntTag>No</AntTag> },
+                    { title:'Actions', key:'actions', render:(_,r)=> (
+                      <Space size="small">
+                        <Button size="small" onClick={()=> openMenteeModal(r)}>Edit</Button>
+                        <Popconfirm title="Delete?" onConfirm={()=> deleteMentee(r._id)}>
+                          <Button danger size="small">Delete</Button>
+                        </Popconfirm>
+                      </Space>
+                    ) }
+                  ]}
+                  pagination={false}
+                />
+                <Modal title={editingMentee? 'Edit Mentee':'Add Mentee'} open={menteeModalOpen} onCancel={()=> { setMenteeModalOpen(false); setEditingMentee(null); }} onOk={submitMentee} okText="Save">
+                  <Form layout="vertical" form={menteeForm}>
+                    <Form.Item name="name" label="Name" rules={[{ required:true }]}>
+                      <Input placeholder="Full name" />
+                    </Form.Item>
+                    <Form.Item name="company" label="Company">
+                      <Input placeholder="Company" />
+                    </Form.Item>
+                    <Form.Item name="position" label="Position">
+                      <Input placeholder="Position" />
+                    </Form.Item>
+                    <Form.Item name="location" label="Location">
+                      <Input placeholder="City, State" />
+                    </Form.Item>
+                    <Form.Item name="image" label="Image URL or /uploads path">
+                      <Input placeholder="https://… or /uploads/…" />
+                    </Form.Item>
+                    <Form.Item name="order" label="Order" initialValue={0}>
+                      <Input type="number" min={0} style={{width:120}} />
+                    </Form.Item>
+                    <Form.Item name="featured" label="Featured" valuePropName="checked">
+                      <Switch />
+                    </Form.Item>
+                  </Form>
+                </Modal>
               </div>
             )}
             {activeSection==='success' && (

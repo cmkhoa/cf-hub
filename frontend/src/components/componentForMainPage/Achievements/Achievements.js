@@ -79,10 +79,10 @@ const Achievements = () => {
 					<div className="achievement-item">
 						<TeamOutlined className="achievement-icon" />
 						<h3 className="achievement-number">
-							<AnimatedNumber value={100} hasAnimated={hasAnimated} />
+							<AnimatedNumber value={500} hasAnimated={hasAnimated} />
 							<span className="achievement-plus">+</span>
 						</h3>
-						<p className="achievement-label">Successful Mentees</p>
+						<p className="achievement-label">Community members</p>
 					</div>
 
 					<div className="achievement-item">
@@ -91,7 +91,7 @@ const Achievements = () => {
 							<AnimatedNumber value={100} hasAnimated={hasAnimated} />
 							<span className="achievement-plus">+</span>
 						</h3>
-						<p className="achievement-label">Mentors across the U.S.</p>
+						<p className="achievement-label">Professionals across the U.S.</p>
 					</div>
 
 					<div className="achievement-item">
@@ -106,11 +106,11 @@ const Achievements = () => {
 
 				<div className="achievements-info">
 					<div className="info-section">
-						<h3>Mentee Success</h3>
+						<h3>Representation</h3>
 						<p>
-							We have successfully guided and mentored over 100+ students and
-							professionals in their career journeys, helping them achieve their
-							professional goals.
+                            Our community includes over 500 members from diverse backgrounds
+                            across various industries and organizations, and we make sure 
+                            that everybody is welcomed.
 						</p>
 					</div>
 
@@ -118,7 +118,7 @@ const Achievements = () => {
 						<h3>Mentor Network</h3>
 						<p>
 							Our platform is powered by a diverse network of 100+ experienced
-							mentors across the United States, bringing expertise from various
+							professionals across the United States, bringing expertise from various
 							industries and backgrounds.
 						</p>
 					</div>

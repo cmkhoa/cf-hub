@@ -33,7 +33,7 @@ const CareerStories = () => {
       <div className="container">
         <div className="success-story-header">
           <Title level={2} className="success-story-title">Career Stories</Title>
-          <p className="success-story-subtitle">Real journeys, real results. See how CF Hub mentees landed their dream jobs and overcame career challenges.</p>
+          <p className="success-story-subtitle">Real journeys, real results. See how CF Hub members landed their dream jobs and overcame career challenges.</p>
         </div>
         {loading && <div style={{textAlign:'center', padding:40}}><Spin /></div>}
         {!loading && (
