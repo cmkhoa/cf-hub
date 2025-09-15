@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Input } from 'antd';
 import { Layout, Pagination, Select, Tag, Space, Button, Radio, Tooltip } from "antd";
@@ -22,7 +22,9 @@ const PRESET_CATEGORIES = [
   { key:'webinars-workshops', label:'Webinars & Workshops' }
 ];
 
-export default function BlogPage() {
+export const dynamic = 'force-dynamic';
+
+function BlogPageInner() {
   const [current, setCurrent] = useState("blog");
   const handleClick = (e) => setCurrent(e.key);
   const searchParams = useSearchParams();
@@ -192,5 +194,13 @@ export default function BlogPage() {
         <FooterComponent />
       </Content>
     </Layout>
+  );
+}
+
+export default function BlogPage(){
+  return (
+    <Suspense fallback={<div />}>
+      <BlogPageInner />
+    </Suspense>
   );
 }

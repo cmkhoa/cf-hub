@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import {
 	Button,
 	Form,
@@ -23,7 +23,9 @@ import { useAuth } from "@/contexts/authContext/authContext";
 
 const { Title, Text } = Typography;
 
-const RegisterPage = () => {
+export const dynamic = 'force-dynamic';
+
+const RegisterPageInner = () => {
 	const router = useRouter();
 	const search = useSearchParams();
 	const nextPath = search?.get('next') || '/';
@@ -203,4 +205,10 @@ const RegisterPage = () => {
 	);
 };
 
-export default RegisterPage;
+export default function RegisterPage(){
+	return (
+		<Suspense fallback={<div />}> 
+			<RegisterPageInner />
+		</Suspense>
+	);
+}
