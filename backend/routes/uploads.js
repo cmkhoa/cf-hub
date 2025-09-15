@@ -21,9 +21,10 @@ router.post('/', auth, async (req, res, next) => {
       const original = sanitizeName(req.file.originalname || 'upload');
       const key = `uploads/${Date.now()}-${original}`;
       const contentType = req.file.mimetype || 'application/octet-stream';
-      // Upload to Vercel Blob (requires BLOB_READ_WRITE_TOKEN in env on Vercel project)
+  // Upload to Vercel Blob (requires BLOB_READ_WRITE_TOKEN in env on Vercel project)
   const { put } = await import('@vercel/blob');
-  const result = await put(key, req.file.buffer, { access: 'public', contentType, addRandomSuffix: false });
+  const token = process.env.BLOB_READ_WRITE_TOKEN;
+  const result = await put(key, req.file.buffer, { access: 'public', contentType, addRandomSuffix: false, token });
       return res.json({ url: result.url, pathname: result.pathname, contentType, size: req.file.size });
     } catch (e) {
       console.error('Blob upload failed:', e);
