@@ -119,3 +119,6 @@ public/uploads/
 *.pem
 *.cert
 *.key 
+
+# Firebase service account (keep local only)
+serviceAccount.json
