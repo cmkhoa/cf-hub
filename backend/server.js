@@ -103,6 +103,11 @@ app.use(`${API_BASE}/mentees`, menteeRoutes);
 const uploadRoutes = require('./routes/uploads');
 app.use(`${API_BASE}/uploads`, uploadRoutes);
 
+// Health check (lightweight, no DB query to remain fast even if DB down)
+app.get(`${API_BASE}/health`, (req, res) => {
+	res.json({ status: 'ok', uptime: process.uptime(), timestamp: Date.now() });
+});
+
 // Static file serving for uploaded images
 const path = require('path');
 app.use('/uploads', express.static(path.join(__dirname,'uploads')));
