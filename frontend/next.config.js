@@ -1,50 +1,30 @@
 /** @type {import('next').NextConfig} */
 const isNetlify = process.env.NETLIFY === 'true';
+const r2PublicHost = process.env.R2_PUBLIC_HOST; // e.g. cdn.cf-hub.example.com
 
-// Common image config (augmented with unoptimized flag on Netlify)
-const imageConfig = {
-  domains: ['images.unsplash.com', 'localhost'],
-  remotePatterns: [
-    {
-      protocol: 'http',
-      hostname: 'localhost',
-      port: '8008',
-      pathname: '/api/blog/posts/**/cover',
-    },
-       // Vercel Blob public URLs
-       {
-         protocol: 'https',
-         hostname: '*.public.blob.vercel-storage.com',
-       },
-       // Backend on Vercel (serverless Express export)
-       {
-         protocol: 'https',
-         hostname: '*.vercel.app',
-         pathname: '/api/blog/posts/**/cover',
-       },
-    // Allow any https host when on Netlify export (can refine later)
-    ...(isNetlify
-      ? [
-          {
-            protocol: 'https',
-            hostname: '**',
-          },
-        ]
-      : []),
-  ],
-  ...(isNetlify ? { unoptimized: true } : {}),
-};
+const remotePatterns = [
+  { protocol: 'http', hostname: 'localhost', port: '8008', pathname: '/api/blog/posts/**/cover' },
+];
+
+if (r2PublicHost) {
+  remotePatterns.push({ protocol: 'https', hostname: r2PublicHost });
+}
+
+// Allow broader https sources in Netlify preview contexts if needed
+if (isNetlify) {
+  remotePatterns.push({ protocol: 'https', hostname: '**' });
+}
 
 const nextConfig = {
-  images: imageConfig,
-  ...(isNetlify && { output: 'export' }),
+  images: {
+    domains: ['images.unsplash.com', 'localhost', ...(r2PublicHost ? [r2PublicHost] : [])],
+    remotePatterns,
+    ...(isNetlify ? { unoptimized: true } : {}),
+  },
   eslint: { ignoreDuringBuilds: true },
   webpack: (config) => {
     config.resolve = config.resolve || {};
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      '@': './src',
-    };
+    config.resolve.alias = { ...config.resolve.alias, '@': './src' };
     return config;
   },
 };

@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-// @vercel/blob is ESM-only; import dynamically when needed
 const auth = require('../middleware/auth');
+const { uploadBufferToR2 } = require('../config/r2');
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 8 * 1024 * 1024 } }); // 8MB
 
@@ -18,17 +18,14 @@ router.post('/', auth, async (req, res, next) => {
     try {
       if(!req.user || req.user.role !== 'admin') return res.status(403).json({ message:'Admin only' });
       if (!req.file) return res.status(400).json({ message: 'file is required' });
-      const original = sanitizeName(req.file.originalname || 'upload');
-      const key = `uploads/${Date.now()}-${original}`;
-      const contentType = req.file.mimetype || 'application/octet-stream';
-  // Upload to Vercel Blob (requires BLOB_READ_WRITE_TOKEN in env on Vercel project)
-  const { put } = await import('@vercel/blob');
-  const token = process.env.BLOB_READ_WRITE_TOKEN;
-  const result = await put(key, req.file.buffer, { access: 'public', contentType, addRandomSuffix: false, token });
-      return res.json({ url: result.url, pathname: result.pathname, contentType, size: req.file.size });
+  const original = sanitizeName(req.file.originalname || 'upload');
+  const key = `uploads/${Date.now()}-${original}`;
+  const contentType = req.file.mimetype || 'application/octet-stream';
+  const result = await uploadBufferToR2({ Key: key, Body: req.file.buffer, ContentType: contentType });
+  return res.json({ url: result.url, pathname: result.key || key, contentType, size: req.file.size });
     } catch (e) {
-      console.error('Blob upload failed:', e);
-      return res.status(500).json({ message: 'Upload failed' });
+  console.error('R2 upload failed:', e);
+  return res.status(500).json({ message: 'Upload failed', error: e.message });
     }
   });
 });

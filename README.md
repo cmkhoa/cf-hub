@@ -2,38 +2,39 @@ CF Hub – Monorepo (Next.js + Express + MongoDB)
 
 ## Overview
 
-Full‑stack app for Career Foundation Hub:
-- Frontend: Next.js 14 (App Router), React 18, Ant Design
-- Backend: Express, MongoDB/Mongoose, JWT, Firebase Admin (token exchange)
+Full‑stack app for Career Foundation Hub using a multi‑service deployment stack:
+- Frontend: Next.js 14 (App Router) deployed on Netlify
+- Backend: Express + MongoDB (Mongoose) deployed on Koyeb (container/node service)
+- Storage: Cloudflare R2 (S3 compatible) for uploaded images/assets
+- Auth: Firebase (client) + Firebase Admin (backend token verification) + JWT roles
 
 Key features:
-- Blogs with search, categories (multi-select), tags, and admin publish/unpublish
-- Robust image covers with backend fallbacks and Next/Image compatibility
-- User 1‑1 consultation requests with admin management
-- User blog submissions with admin moderation
-- Admin‑managed Mentee Showcase (public list + admin CRUD)
+- Blogs with search, multi‑category filter, tags, admin publish/unpublish
+- Resilient blog cover image pipeline (DB binary → local file → external URL → placeholder)
+- 1‑1 consultation requests with admin management UI
+- User blog submissions with admin moderation workflow
+- Admin‑managed Mentee Showcase (CRUD + public listing)
 
-## Quick start
+## Quick start (Local Dev)
 
 1) Prerequisites
 - Node.js 18+
 - A MongoDB connection string
 
 2) Environment
-- Backend (`backend/.env`):
+Backend (`backend/.env` – copy from `.env.example`):
   - MONGODB_URI=mongodb+srv://...
   - JWT_SECRET=your-strong-secret
-  - CORS_ORIGIN=http://localhost:3000 (optional; comma‑separated for multiple)
-  - RATE_LIMIT_MAX=1000 (optional)
-- Frontend (`frontend/.env.local`):
+  - FRONTEND_URL=http://localhost:3000
+  - ADDITIONAL_ORIGINS=http://localhost:5173
+  - API_BASE_PATH=/api
+  - (Firebase) FIREBASE_SERVICE_ACCOUNT_B64=... or FIREBASE_SERVICE_ACCOUNT_FILE=...
+  - (R2) R2_ACCOUNT_ID=..., R2_ACCESS_KEY_ID=..., R2_SECRET_ACCESS_KEY=..., R2_BUCKET=cf-hub-uploads, R2_PUBLIC_BASE_URL=https://<your-cdn-domain>
+  - MAX_UPLOAD_MB=8
+
+Frontend (`frontend/.env.local`):
   - NEXT_PUBLIC_API_URL=http://localhost:8008/api
-  - NEXT_PUBLIC_FIREBASE_API_KEY=...
-  - NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=...
-  - NEXT_PUBLIC_FIREBASE_PROJECT_ID=...
-  - NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=...
-  - NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=...
-  - NEXT_PUBLIC_FIREBASE_APP_ID=...
-  - NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=...
+  - Firebase NEXT_PUBLIC_* keys
 
 3) Install and run
 
@@ -72,7 +73,7 @@ node backend/scripts/createAdmin.js user@example.com --create
 ## Frontend notes
 
 - Configure `NEXT_PUBLIC_API_URL` to point at backend (defaults to http://localhost:8008/api). All API calls now use this env.
-- Next/Image config allows `localhost` and remote patterns for backend‑served images and Vercel Blob.
+- Next/Image config allows `localhost` plus optional Cloudflare R2 public host (set `R2_PUBLIC_HOST` at build time for Netlify if needed).
 - Navbar search and category picker route into Blogs with filters pre‑applied.
 - Blogs page includes search + multi‑category filters (slug or ID supported by API).
 - Mentee Showcase (home): dynamically fetches from `/api/mentees`, supports external URLs or `/uploads/...` images, with placeholder fallback.
@@ -107,46 +108,64 @@ npm run dev:frontend  # run frontend only
 ```
 
 
-## Deploying on Vercel (frontend + backend) with Vercel Blob + MongoDB
+## Deployment (Current Stack)
 
-This repo runs both Next.js frontend and Express API on Vercel. Images are uploaded to Vercel Blob; data lives in MongoDB Atlas.
+### 1. MongoDB Atlas
+Create free M0 cluster → DB user → Network Access (IP allowlist) → grab `MONGODB_URI`.
 
-1) MongoDB Atlas (free)
-  - Create M0 cluster, DB user, allow network (0.0.0.0/0 for quick start), copy MONGODB_URI and include a DB name.
+### 2. Cloudflare R2 (Images)
+1. Create an R2 bucket (e.g. `cf-hub-uploads`).
+2. Generate an API token (S3 write permissions) and note Access Key / Secret.
+3. (Optional) Set up a custom domain or use the default public bucket URL.
+4. Populate backend env: `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET`, `R2_PUBLIC_BASE_URL` (if custom domain/CDN).
 
-2) Backend on Vercel
-  - Serverless entry: `backend/api/index.js` (exports Express app). No build needed.
-  - Vercel project settings:
-    - Framework Preset: Other
-    - Root Directory: `backend`
-    - Build Command: (empty)
-    - Output Directory: (empty)
-  - Environment Variables:
-    - MONGODB_URI=...
-    - JWT_SECRET=...
-    - FRONTEND_URL=https://your-frontend.vercel.app
-    - ADDITIONAL_ORIGINS=https://your-custom.com
-    - API_BASE_PATH=/api (optional)
-    - BLOB_READ_WRITE_TOKEN=... (from Vercel Blob)
-  - Deploy and note backend URL: https://<backend>.vercel.app (API = + `/api`).
+Upload endpoint: `POST /api/uploads` (multipart field: `file`) → response `{ url, pathname, contentType, size }`.
 
-3) Vercel Blob (uploads)
-  - Vercel dashboard → Storage → Blob → Create store.
-  - Generate a READ/WRITE server token and set as `BLOB_READ_WRITE_TOKEN` on backend project.
-  - Upload endpoint: POST `/api/uploads` (multipart field: `file`), returns a public `url`.
+### 3. Backend on Koyeb
+1. Create new Service → GitHub repo → select `backend/` directory.
+2. Build & run (Koyeb auto-detects Node). Ensure Start command: `node server.js` (or provided in package.json scripts).
+3. Set Environment Variables (from `.env.example`). Include CORS `FRONTEND_URL` once Netlify domain known.
+4. Deploy; note the public base URL (e.g. `https://cf-hub-api-<hash>.koyeb.app`). Set frontend `NEXT_PUBLIC_API_URL` to `${BASE}/api`.
 
-4) Frontend on Vercel
-  - Framework Preset: Next.js
-  - Root Directory: `frontend`
-  - Environment Variables:
-    - NEXT_PUBLIC_API_URL=https://<backend>.vercel.app/api
-    - Firebase NEXT_PUBLIC_* keys
-  - Next/Image config must allow your backend URL and blob domain; redeploy after edits.
+### 4. Frontend on Netlify
+1. Connect repo → base directory left root; `netlify.toml` handles build.
+2. Environment variables (Netlify UI):
+  - NEXT_PUBLIC_API_URL=https://cf-hub-api-<hash>.koyeb.app/api
+  - R2_PUBLIC_HOST=<your R2 public host> (optional for image config)
+  - Firebase NEXT_PUBLIC_* keys
+3. Deploy. Netlify plugin handles Next.js (SSR). Preview URLs auto-add—append them to backend `ADDITIONAL_ORIGINS` if needed.
 
-5) Admin and content
-  - Promote admin via Atlas or `node backend/scripts/createAdmin.js` (using prod MONGODB_URI locally).
-  - Use `/admin` to manage blogs, stories, consultations, and mentees. For images, upload to Blob (future UI) or via console and paste URLs.
+### 5. Firebase Auth Setup
+1. Add Netlify domain + local dev domain to Firebase Auth Authorized Domains.
+2. Backend: supply Firebase Admin credentials (B64 or file). For B64: `base64 serviceAccount.json | pbcopy` then paste.
 
-Notes:
-  - Avoid local filesystem on serverless—use Blob for uploads.
-  - MongoDB connection is lazy in serverless (`backend/app.js`).
+### 6. Admin User Provisioning
+Use existing script locally with production `MONGODB_URI`:
+```bash
+MONGODB_URI=... JWT_SECRET=... node backend/scripts/createAdmin.js admin@example.com --create
+```
+
+### 7. Image Handling After Migration
+- All new uploads go to R2, returning a stable public URL.
+- Existing blog cover fallback chain unchanged.
+
+### 8. CORS Checklist
+Backend env:
+```
+FRONTEND_URL=https://your-site.netlify.app
+ADDITIONAL_ORIGINS=https://deploy-preview-123--your-site.netlify.app,http://localhost:3000
+```
+
+### 9. Zero-Downtime Updates
+Push to main; Koyeb & Netlify deploy independently. Add health endpoint (`/api/health`) if desired (future enhancement).
+
+## Environment Variable Reference
+
+Backend (Koyeb): MONGODB_URI, JWT_SECRET, FRONTEND_URL, ADDITIONAL_ORIGINS, API_BASE_PATH, FIREBASE_SERVICE_ACCOUNT_B64 or FILE, R2_* vars, MAX_UPLOAD_MB.
+Frontend (Netlify): NEXT_PUBLIC_API_URL, NEXT_PUBLIC_FIREBASE_* keys, (optional) R2_PUBLIC_HOST.
+
+## Future Enhancements
+- Add signed URL generation for private objects.
+- Implement image resizing lambda/worker cached via CDN.
+- Add health & readiness probes for backend.
+- Provide admin UI for upload management.
