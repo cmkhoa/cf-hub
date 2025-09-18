@@ -253,11 +253,24 @@ router.get('/posts', [
         isAdmin = decoded.role === 'admin';
       } catch(e){ /* ignore invalid token */ }
     }
-    if(status && isAdmin){
-      filter.status = status;
+    if(status){
+      // If status explicitly requested, honor only if admin; else restrict to published
+      if(isAdmin){
+        filter.status = status;
+      } else {
+        filter.status = 'published';
+      }
     } else {
-      // Public default: only published
-      filter.status = 'published';
+      // No status param: admins get all except archived unless ?all=1; public only published
+      if(isAdmin){
+        if(req.query.all === '1') {
+          // do not constrain status (returns all)
+        } else {
+          filter.status = { $in: ['draft','submitted','published','archived'] };
+        }
+      } else {
+        filter.status = 'published';
+      }
     }
     if(typeof featured === 'boolean') filter.featured = featured;
     // Single category (slug or id)
