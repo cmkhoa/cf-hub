@@ -1,0 +1,15 @@
+# Netlify config (relocated into frontend per Option B)
+# Base directory now implicit (site base is already this folder in Netlify settings).
+[build]
+  command = "npm install && npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "18"
+  NEXT_TELEMETRY_DISABLED = "1"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# API routes & SSR are handled automatically by the plugin; no manual redirects required.
+# If you later need custom rewrites/redirects, add them here.
