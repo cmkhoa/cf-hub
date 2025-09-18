@@ -2,7 +2,6 @@
 [build]
   base = "frontend"
   command = "npm install && npm run build"
-  publish = "frontend/.next" # Plugin will adjust
 
 [build.environment]
   NODE_VERSION = "18"
