@@ -3,8 +3,8 @@ CF Hub – Monorepo (Next.js + Express + MongoDB)
 ## Overview
 
 Full‑stack app for Career Foundation Hub using a multi‑service deployment stack:
-- Frontend: Next.js 14 (App Router) deployed on Netlify
-- Backend: Express + MongoDB (Mongoose) deployed on Koyeb (container/node service)
+- Frontend: Next.js 14 (App Router) deployed on Netlify (or Render Web Service alternative)
+- Backend: Express + MongoDB (Mongoose) deployed on Render (Node Web Service)
 - Storage: Cloudflare R2 (S3 compatible) for uploaded images/assets
 - Auth: Firebase (client) + Firebase Admin (backend token verification) + JWT roles
 
@@ -108,7 +108,7 @@ npm run dev:frontend  # run frontend only
 ```
 
 
-## Deployment (Current Stack)
+## Deployment (Current Stack – Render + Netlify + R2)
 
 ### 1. MongoDB Atlas
 Create free M0 cluster → DB user → Network Access (IP allowlist) → grab `MONGODB_URI`.
@@ -121,16 +121,34 @@ Create free M0 cluster → DB user → Network Access (IP allowlist) → grab `M
 
 Upload endpoint: `POST /api/uploads` (multipart field: `file`) → response `{ url, pathname, contentType, size }`.
 
-### 3. Backend on Koyeb
-1. Create new Service → GitHub repo → select `backend/` directory.
-2. Build & run (Koyeb auto-detects Node). Ensure Start command: `node server.js` (or provided in package.json scripts).
-3. Set Environment Variables (from `.env.example`). Include CORS `FRONTEND_URL` once Netlify domain known.
-4. Deploy; note the public base URL (e.g. `https://cf-hub-api-<hash>.koyeb.app`). Set frontend `NEXT_PUBLIC_API_URL` to `${BASE}/api`.
+### 3. Backend on Render
+1. Dashboard → New → Web Service → Connect GitHub repo.
+2. Root directory: `backend`.
+3. Runtime: Node 18+ (auto-detected).
+4. Build Command: `npm install` (Render defaults ok). Start Command: `npm start` (runs `node server.js`).
+5. Environment Variables (copy from `.env.example`):
+```
+MONGODB_URI=...
+JWT_SECRET=...
+FRONTEND_URL=https://your-site.netlify.app
+ADDITIONAL_ORIGINS=https://deploy-preview-**--your-site.netlify.app,http://localhost:3000
+API_BASE_PATH=/api
+FIREBASE_SERVICE_ACCOUNT_B64=...
+R2_ACCOUNT_ID=...
+R2_ACCESS_KEY_ID=...
+R2_SECRET_ACCESS_KEY=...
+R2_BUCKET=cf-hub-uploads
+R2_PUBLIC_BASE_URL=https://<cdn-or-r2-public-domain>
+MAX_UPLOAD_MB=8
+```
+6. Deploy. Note backend URL: `https://<service-name>.onrender.com`.
+7. Set frontend `NEXT_PUBLIC_API_URL=https://<service-name>.onrender.com/api`.
+8. (Cold Start) Free tier sleeps—first request incurs delay. Consider a ping cron (Render offers cron or external uptime ping) if needed.
 
-### 4. Frontend on Netlify
+### 4. Frontend on Netlify (or Render Alternative)
 1. Connect repo → base directory left root; `netlify.toml` handles build.
 2. Environment variables (Netlify UI):
-  - NEXT_PUBLIC_API_URL=https://cf-hub-api-<hash>.koyeb.app/api
+  - NEXT_PUBLIC_API_URL=https://<service-name>.onrender.com/api
   - R2_PUBLIC_HOST=<your R2 public host> (optional for image config)
   - Firebase NEXT_PUBLIC_* keys
 3. Deploy. Netlify plugin handles Next.js (SSR). Preview URLs auto-add—append them to backend `ADDITIONAL_ORIGINS` if needed.
@@ -161,11 +179,11 @@ Push to main; Koyeb & Netlify deploy independently. Add health endpoint (`/api/h
 
 ## Environment Variable Reference
 
-Backend (Koyeb): MONGODB_URI, JWT_SECRET, FRONTEND_URL, ADDITIONAL_ORIGINS, API_BASE_PATH, FIREBASE_SERVICE_ACCOUNT_B64 or FILE, R2_* vars, MAX_UPLOAD_MB.
+Backend (Render): MONGODB_URI, JWT_SECRET, FRONTEND_URL, ADDITIONAL_ORIGINS, API_BASE_PATH, FIREBASE_SERVICE_ACCOUNT_B64 or FILE, R2_* vars, MAX_UPLOAD_MB.
 Frontend (Netlify): NEXT_PUBLIC_API_URL, NEXT_PUBLIC_FIREBASE_* keys, (optional) R2_PUBLIC_HOST.
 
 ## Future Enhancements
 - Add signed URL generation for private objects.
 - Implement image resizing lambda/worker cached via CDN.
-- Add health & readiness probes for backend.
+- Add health & readiness probes for backend (Render health checks can query `/api/health`).
 - Provide admin UI for upload management.

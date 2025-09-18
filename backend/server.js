@@ -99,7 +99,7 @@ app.use(`${API_BASE}/consultations`, consultationRoutes);
 const menteeRoutes = require('./routes/mentees');
 app.use(`${API_BASE}/mentees`, menteeRoutes);
 
-// Uploads to Vercel Blob (for local dev parity with serverless app)
+// Uploads route (now backed by Cloudflare R2 storage)
 const uploadRoutes = require('./routes/uploads');
 app.use(`${API_BASE}/uploads`, uploadRoutes);
 
