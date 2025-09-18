@@ -38,29 +38,32 @@ services:
         value: "8"
     healthCheckPath: /api/health
 
-# Optional: Deploy frontend on Render instead of Netlify (uncomment to use)
-#  - type: web
-#    name: cf-hub-frontend
-#    env: node
-#    rootDir: frontend
-#    plan: free
-#    buildCommand: npm install && npm run build
-#    startCommand: npm start
-#    autoDeploy: true
-#    envVars:
-#      - key: NEXT_PUBLIC_API_URL
-#        value: https://cf-hub-backend.onrender.com/api
-#      - key: NEXT_PUBLIC_FIREBASE_API_KEY
-#        sync: false
-#      - key: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
-#        sync: false
-#      - key: NEXT_PUBLIC_FIREBASE_PROJECT_ID
-#        sync: false
-#      - key: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
-#        sync: false
-#      - key: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
-#        sync: false
-#      - key: NEXT_PUBLIC_FIREBASE_APP_ID
-#        sync: false
-#      - key: NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
-#        sync: false
+  - type: web
+    name: cf-hub-frontend
+    env: node
+    rootDir: frontend
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    autoDeploy: true
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        value: https://cf-hub-backend.onrender.com/api
+      - key: NEXT_PUBLIC_FIREBASE_API_KEY
+        sync: false
+      - key: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+        sync: false
+      - key: NEXT_PUBLIC_FIREBASE_PROJECT_ID
+        sync: false
+      - key: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+        sync: false
+      - key: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+        sync: false
+      - key: NEXT_PUBLIC_FIREBASE_APP_ID
+        sync: false
+      - key: NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
+        sync: false
+      - key: R2_PUBLIC_HOST
+        sync: false
+      - key: NODE_ENV
+        value: production
