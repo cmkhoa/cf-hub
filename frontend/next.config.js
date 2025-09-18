@@ -16,6 +16,8 @@ if (isNetlify) {
 }
 
 const nextConfig = {
+  // Ensure server output (not static export). Standalone works well with Netlify Next plugin.
+  output: 'standalone',
   images: {
     domains: ['images.unsplash.com', 'localhost', ...(r2PublicHost ? [r2PublicHost] : [])],
     remotePatterns,

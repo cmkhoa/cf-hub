@@ -8,9 +8,8 @@
     "setup": "npm install && npm run install:all",
     "dev:frontend": "cd frontend && npm run dev",
     "dev:backend": "cd backend && npm run dev",
-    "build": "next build",
-    "export": "next build && next export",
-    "start": "next start"
+  "build": "echo 'Use frontend/package.json build script instead'",
+  "start": "echo 'Use frontend/package.json start script instead'"
   },
   "keywords": [],
   "author": "",

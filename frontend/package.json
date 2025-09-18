@@ -12,7 +12,7 @@
 		"load-cfhub-data": "ts-node --project tsconfig.json src/scripts/loadDB.ts",
 		"read-cfhub-info": "ts-node --project tsconfig.json src/scripts/readCFHubInfo.ts",
 		"seed": "node --loader ts-node/esm src/scripts/loadDB.ts",
-		"export": "next export"
+		"_deprecated-export": "echo 'Removed next export to prevent static export mode on Netlify'"
 	},
 	"dependencies": {
 		"@ant-design/icons": "^5.3.7",
