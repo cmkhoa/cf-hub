@@ -328,15 +328,35 @@ router.get('/posts', [
 });
 
 // Get single post by slug
+// Public: published posts
+// Authenticated owner or admin: can view own/unpublished post by slug
 router.get('/posts/slug/:slug', async (req,res)=>{
-  try { const post = await Post.findOne({ slug: req.params.slug, status:'published' })
-    .populate('author','name profile')
-    .populate('categories','name slug')
-    .populate('tags','name');
+  try {
+    let tokenUser = null;
+    const authHeader = req.header('Authorization');
+    if(authHeader){
+      try {
+        const jwt = require('jsonwebtoken');
+        tokenUser = jwt.verify(authHeader.replace('Bearer ', ''), process.env.JWT_SECRET);
+      } catch(e){ /* ignore invalid token */ }
+    }
+    const baseFilter = { slug: req.params.slug };
+    if(!tokenUser){
+      baseFilter.status = 'published';
+    }
+    const post = await Post.findOne(baseFilter)
+      .populate('author','name profile')
+      .populate('categories','name slug')
+      .populate('tags','name');
     if(!post) return res.status(404).json({ message:'Post not found' });
-    // Increment view count (non-blocking)
+    const isOwner = tokenUser && String(post.author._id) === tokenUser.userId;
+    const isAdmin = tokenUser && tokenUser.role === 'admin';
+    if(post.status !== 'published' && !isOwner && !isAdmin){
+      return res.status(403).json({ message:'Not allowed'});
+    }
     Post.updateOne({ _id: post._id }, { $inc: { views: 1 } }).exec();
-    res.json(post); } catch(err){ res.status(500).json({ message:'Error fetching post', error: err.message }); }
+    res.json(post);
+  } catch(err){ res.status(500).json({ message:'Error fetching post', error: err.message }); }
 });
 
 // Serve cover image by post id (fallback to placeholder when missing)
@@ -394,6 +414,17 @@ router.get('/posts/:id', auth, async (req,res)=>{
 // Delete post
 router.delete('/posts/:id', auth, async (req,res)=>{
   try { const post = await Post.findById(req.params.id); if(!post) return res.status(404).json({ message:'Post not found'}); const isOwner = String(post.author) === req.user.userId; const isAdmin = req.user.role === 'admin'; if(!isOwner && !isAdmin) return res.status(403).json({ message:'Not allowed'}); await post.deleteOne(); res.json({ message:'Deleted' }); } catch(err){ res.status(500).json({ message:'Error deleting post', error: err.message }); }
+});
+
+// List current user's posts (any status)
+router.get('/posts/mine', auth, async (req,res)=>{
+  try {
+    const posts = await Post.find({ author: req.user.userId })
+      .sort({ createdAt: -1 })
+      .populate('categories','name slug')
+      .populate('tags','name');
+    res.json(posts);
+  } catch(err){ res.status(500).json({ message:'Error fetching user posts', error: err.message }); }
 });
 
 module.exports = router;
