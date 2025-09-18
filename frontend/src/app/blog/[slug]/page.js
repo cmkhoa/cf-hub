@@ -1,4 +1,6 @@
 "use client";
+// Force dynamic rendering so Netlify/Next won't attempt static exporting for this dynamic slug page
+export const dynamic = 'force-dynamic';
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Layout, Spin, Tag, Button } from 'antd';
