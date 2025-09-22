@@ -165,9 +165,9 @@ router.put('/posts/:id', auth, [
     const isAdmin = req.user.role === 'admin';
     if(!isOwner && !isAdmin) return res.status(403).json({ message:'Not allowed' });
     const data = req.body || {};
-    const updates = {};
-    if(updates.coverImageBase64){
-      let base64 = updates.coverImageBase64;
+    // Handle cover image replacement when provided
+    if(data.coverImageBase64){
+      let base64 = data.coverImageBase64;
       let mime = 'image/jpeg';
       const match = /^data:(.*?);base64,(.*)$/.exec(base64);
       if(match){ mime = match[1] || mime; base64 = match[2]; }
@@ -179,8 +179,10 @@ router.put('/posts/:id', auth, [
       try {
         post.coverImageData = Buffer.from(base64,'base64');
         post.coverImageMime = mime;
+        // If replacing with embedded image, clear any file path field
+        post.coverImage = undefined;
       } catch(e){ /* ignore invalid */ }
-      delete updates.coverImageBase64;
+      delete data.coverImageBase64;
     }
     // categories update
     if(Array.isArray(data.categories)){
@@ -426,7 +428,30 @@ router.get('/posts/:id', auth, async (req,res)=>{
 
 // Delete post
 router.delete('/posts/:id', auth, async (req,res)=>{
-  try { const post = await Post.findById(req.params.id); if(!post) return res.status(404).json({ message:'Post not found'}); const isOwner = String(post.author) === req.user.userId; const isAdmin = req.user.role === 'admin'; if(!isOwner && !isAdmin) return res.status(403).json({ message:'Not allowed'}); await post.deleteOne(); res.json({ message:'Deleted' }); } catch(err){ res.status(500).json({ message:'Error deleting post', error: err.message }); }
+  try {
+    const post = await Post.findById(req.params.id);
+    if(!post) return res.status(404).json({ message:'Post not found'});
+    const isOwner = String(post.author) === req.user.userId;
+    const isAdmin = req.user.role === 'admin';
+    if(!isOwner && !isAdmin) return res.status(403).json({ message:'Not allowed'});
+
+    // Attempt to remove any local cover image file if present and local
+    if(post.coverImage && !/^https?:\/\//i.test(post.coverImage)){
+      try {
+        const relPath = post.coverImage.startsWith('/') ? post.coverImage : `/${post.coverImage}`;
+        const filePath = path.join(__dirname, '..', relPath);
+        if(fs.existsSync(filePath)){
+          fs.unlinkSync(filePath);
+        } else {
+          const uploadsTry = path.join(__dirname, '..', 'uploads', post.coverImage.replace(/^.*\//,''));
+          if(fs.existsSync(uploadsTry)) fs.unlinkSync(uploadsTry);
+        }
+      } catch(e){ /* ignore fs errors */ }
+    }
+
+    await Post.deleteOne({ _id: post._id });
+    res.json({ message:'Deleted', id: String(post._id) });
+  } catch(err){ res.status(500).json({ message:'Error deleting post', error: err.message }); }
 });
 
 // List current user's posts (any status)

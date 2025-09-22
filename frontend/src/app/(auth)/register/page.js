@@ -20,6 +20,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import styles from "./register.module.css";
 import { useAuth } from "@/contexts/authContext/authContext";
+import HeaderComponent from "@/components/header/header";
 
 const { Title, Text } = Typography;
 
@@ -33,6 +34,8 @@ const RegisterPageInner = () => {
 	const [error, setError] = useState(null);
 	const [form] = Form.useForm();
 	const { userLoggedIn, register, loginWithGoogle } = useAuth();
+	const [navCurrent, setNavCurrent] = useState('register');
+	const handleClick = (e)=> setNavCurrent(e.key);
 
 	// Check if user is already logged in
 	useEffect(() => {
@@ -78,7 +81,9 @@ const RegisterPageInner = () => {
 	};
 
 	return (
-		<div className={styles.container}>
+		<>
+			<HeaderComponent current={navCurrent} handleClick={handleClick} />
+			<div className={styles.container}>
 			<Card className={styles.registerCard}>
 				<Title level={2} className={styles.title}>
 					Create Account
@@ -201,7 +206,8 @@ const RegisterPageInner = () => {
 					<Link href="/login">Sign in</Link>
 				</div>
 			</Card>
-		</div>
+			</div>
+		</>
 	);
 };
 

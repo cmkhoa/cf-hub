@@ -15,7 +15,7 @@ const CareerStories = () => {
     async function load(){
       setLoading(true);
       try {
-        const res = await fetch(`${API_ENDPOINTS.blog.posts}?status=published&postType=success&limit=9`);
+  const res = await fetch(`${API_ENDPOINTS.blog.posts}?status=published&postType=success&limit=6`);
         const data = await res.json();
         if(!cancelled){ setStories(data.items || []); }
       } catch(err){ if(!cancelled){ console.error('Load career stories failed', err); } }

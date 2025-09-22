@@ -30,11 +30,9 @@ export default function AdminDashboard(){
   const [posts, setPosts] = useState([]);
   const [fetching, setFetching] = useState(false);
   const [coverBase64, setCoverBase64] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
   const [editingPost, setEditingPost] = useState(null);
-  const [editCoverBase64, setEditCoverBase64] = useState(null);
-  const [editVisible, setEditVisible] = useState(false);
-  const [editLoading, setEditLoading] = useState(false);
-  const [editForm] = Form.useForm();
+  // Legacy modal edit state removed; using inline edit form
   const [tags, setTags] = useState([]);
   const [metaLoading, setMetaLoading] = useState(false);
   const [activeSection, setActiveSection] = useState('blogs');
@@ -98,14 +96,21 @@ export default function AdminDashboard(){
   };
 
   const onCreate = async (values)=>{
-  setCreateLoading(true);
+    setCreateLoading(true);
     try {
-  const body = { postType: values.postType || 'blog', title: values.title, content: values.content, excerpt: values.excerpt || '', featured: !!values.featured, categories: values.categories || [], tags: values.tags || [], coverImageBase64: coverBase64 };
-      const res = await fetch(API_ENDPOINTS.blog.posts, { method:'POST', headers:{ 'Content-Type':'application/json', ...getAuthHeader() }, body: JSON.stringify(body) });
-      if(!res.ok) throw new Error('Create failed');
-      message.success('Post created (draft).');
+      const body = { postType: values.postType || 'blog', title: values.title, content: values.content, excerpt: values.excerpt || '', featured: !!values.featured, categories: values.categories || [], tags: values.tags || [], coverImageBase64: coverBase64 };
+      // If editing, send PUT to overwrite existing post
+      const res = isEditing && editingPost? (
+        await fetch(`${API_ENDPOINTS.blog.posts}/${editingPost._id}`, { method:'PUT', headers:{ 'Content-Type':'application/json', ...getAuthHeader() }, body: JSON.stringify(body) })
+      ) : (
+        await fetch(API_ENDPOINTS.blog.posts, { method:'POST', headers:{ 'Content-Type':'application/json', ...getAuthHeader() }, body: JSON.stringify(body) })
+      );
+      if(!res.ok) throw new Error(isEditing? 'Update failed':'Create failed');
+      message.success(isEditing? 'Post updated' : 'Post created (draft).');
       form.resetFields();
-  setCoverBase64(null);
+      setCoverBase64(null);
+      setIsEditing(false);
+      setEditingPost(null);
       loadPosts();
     } catch(err){ message.error(err.message); } finally { setCreateLoading(false); }
   };
@@ -196,8 +201,10 @@ export default function AdminDashboard(){
 
   const openEdit = (post)=>{
     setEditingPost(post);
-    setEditCoverBase64(null); // reset new cover (keep existing unless changed)
-    editForm.setFieldsValue({
+    setIsEditing(true);
+  // no separate edit cover buffer; using coverBase64 inline
+    // Populate the main form for inline editing
+    form.setFieldsValue({
       postType: post.postType || 'blog',
       title: post.title,
       excerpt: post.excerpt,
@@ -206,24 +213,16 @@ export default function AdminDashboard(){
       categories: (post.categories || []).map(c=> c._id || c),
       tags: (post.tags || []).map(t=> t.name || t)
     });
-    setEditVisible(true);
   };
 
-  const submitEdit = async ()=>{
-    try {
-      const values = await editForm.validateFields();
-      setEditLoading(true);
-  const body = { ...values };
-      if(editCoverBase64) body.coverImageBase64 = editCoverBase64; // only send new image if changed
-      const res = await fetch(`${API_ENDPOINTS.blog.posts}/${editingPost._id}`, { method:'PUT', headers:{ 'Content-Type':'application/json', ...getAuthHeader() }, body: JSON.stringify(body) });
-      if(!res.ok) throw new Error('Update failed');
-      message.success('Post updated');
-      setEditVisible(false);
-      setEditingPost(null);
-      loadPosts();
-    } catch(err){ if(err.message!=='Update failed') console.error(err); message.error(err.message||'Update failed'); }
-    finally { setEditLoading(false); }
+  const cancelEdit = ()=>{
+    setIsEditing(false);
+    setEditingPost(null);
+    setCoverBase64(null);
+    form.resetFields();
   };
+
+  // Removed old submitEdit (modal) - using onCreate to handle both create and update flows
 
   const fetchApplications = async (page=1, q=appsQuery, status=appsStatusFilter)=>{
     setAppsLoading(true);
@@ -322,8 +321,26 @@ export default function AdminDashboard(){
               <div>
                 <Title level={2}>Blog Posts</Title>
                 {/* Create form */}
-                <div style={{ marginBottom:32, padding:24, background:'#fff', border:'1px solid #eee', borderRadius:8 }}>
-                  <Title level={4} style={{ marginTop:0 }}>Create New Post</Title>
+                <div
+                  style={{ marginBottom:32, padding:24, background:'#fff', border:'1px solid #eee', borderRadius:8 }}
+                  onPaste={async (e)=>{
+                    try {
+                      const items = e.clipboardData?.items || [];
+                      for(const item of items){
+                        if(item.kind === 'file' && item.type.startsWith('image/')){
+                          const file = item.getAsFile();
+                          if(file){
+                            const reader = new FileReader();
+                            reader.onload = ev => { setCoverBase64(ev.target.result); message.success('Pasted image captured'); };
+                            reader.readAsDataURL(file);
+                            break;
+                          }
+                        }
+                      }
+                    } catch(err){ /* ignore */ }
+                  }}
+                >
+                  <Title level={4} style={{ marginTop:0 }}>{isEditing? 'Edit Post' : 'Create New Post'}</Title>
                   {/* reuse existing create form */}
                   <Form layout="vertical" form={form} onFinish={onCreate} disabled={createLoading}>
                     <Form.Item name="postType" label="Post Type" initialValue="blog" rules={[{ required:true }]}> 
@@ -350,7 +367,7 @@ export default function AdminDashboard(){
                       />
                     </Form.Item>
                     <Form.Item name="excerpt" label="Excerpt (optional)"><Input.TextArea rows={2} placeholder="Short summary" /></Form.Item>
-                    <Form.Item label="Cover Image (stored in DB)">
+                    <Form.Item label={isEditing? 'Replace Cover Image (optional)' : 'Cover Image (stored in DB)'}>
                       <Upload
                         beforeUpload={(file)=>{
                           const isImg = file.type.startsWith('image/');
@@ -366,11 +383,19 @@ export default function AdminDashboard(){
                       >
                         <Button icon={<UploadOutlined />}>Select Image</Button>
                       </Upload>
+                      {isEditing && !coverBase64 && editingPost?.coverImage && (
+                        <div style={{ marginTop:8, fontSize:12, color:'#666' }}>Existing cover in use. Selecting a new image will replace it.</div>
+                      )}
                       {coverBase64 && <div style={{ marginTop:8, fontSize:12, wordBreak:'break-all' }}>Embedded (base64) size: {Math.round((coverBase64.length*3/4)/1024)} KB</div>}
                     </Form.Item>
                     <Form.Item name="content" label="Content" rules={[{ required:true, message:'Content required'}]}><Input.TextArea rows={8} placeholder="Markdown or plain text content" /></Form.Item>
                     <Form.Item name="featured" label="Featured" valuePropName="checked"><Switch /></Form.Item>
-                    <Form.Item><Button type="primary" htmlType="submit" loading={createLoading}>Save Draft</Button></Form.Item>
+                    <Form.Item>
+                      <Space>
+                        <Button type="primary" htmlType="submit" loading={createLoading}>{isEditing? 'Save Changes' : 'Save Draft'}</Button>
+                        {isEditing && <Button onClick={cancelEdit} disabled={createLoading}>Cancel</Button>}
+                      </Space>
+                    </Form.Item>
                   </Form>
                 </div>
                 <div style={{ padding:24, background:'#fff', border:'1px solid #eee', borderRadius:8 }}>

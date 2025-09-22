@@ -18,7 +18,7 @@ const BlogGrid = () => {
       try {
         setLoading(true);
         const base = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8008/api';
-        const res = await fetch(`${base}/blog/posts?status=published&limit=5&page=1`);
+  const res = await fetch(`${base}/blog/posts?status=published&postType=blog&limit=5&page=1`);
         if(!res.ok) throw new Error('Failed to load posts');
         const data = await res.json();
         if(active) setPosts(data.items || []);

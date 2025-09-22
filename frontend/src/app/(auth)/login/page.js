@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import styles from "./login.module.css";
 import { useAuth } from "@/contexts/authContext/authContext";
+import HeaderComponent from "@/components/header/header";
 
 const { Title, Text } = Typography;
 
@@ -24,6 +25,8 @@ const LoginPage = () => {
 	const [error, setError] = useState(null);
 	const [form] = Form.useForm();
 	const { userLoggedIn, login, loginWithGoogle } = useAuth();
+	const [navCurrent, setNavCurrent] = useState('login');
+	const handleClick = (e)=> setNavCurrent(e.key);
 
 	// Check if user is already logged in
 	useEffect(() => {
@@ -69,7 +72,9 @@ const LoginPage = () => {
 	};
 
 	return (
-		<div className={styles.container}>
+		<>
+			<HeaderComponent current={navCurrent} handleClick={handleClick} />
+			<div className={styles.container}>
 			<Card className={styles.loginCard}>
 				<Title level={2} className={styles.title}>
 					Welcome Back
@@ -152,7 +157,8 @@ const LoginPage = () => {
 					<Link href="/register">Sign up</Link>
 				</div>
 			</Card>
-		</div>
+			</div>
+		</>
 	);
 };
 
