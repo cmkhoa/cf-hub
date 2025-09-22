@@ -11,5 +11,8 @@
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
+# Ensure Next runs in server mode; images are unoptimized by plugin if needed
+
+
 # API routes & SSR are handled automatically by the plugin; no manual redirects required.
 # If you later need custom rewrites/redirects, add them here.
