@@ -2,18 +2,23 @@ CF Hub – Monorepo (Next.js + Express + MongoDB)
 
 ## Overview
 
-Full‑stack app for Career Foundation Hub using a multi‑service deployment stack:
-- Frontend: Next.js 14 (App Router) deployed on Netlify (or Render Web Service alternative)
-- Backend: Express + MongoDB (Mongoose) deployed on Render (Node Web Service)
-- Storage: Cloudflare R2 (S3 compatible) for uploaded images/assets
-- Auth: Firebase (client) + Firebase Admin (backend token verification) + JWT roles
+Full‑stack platform for Career Foundation Hub.
 
-Key features:
-- Blogs with search, multi‑category filter, tags, admin publish/unpublish
-- Resilient blog cover image pipeline (DB binary → local file → external URL → placeholder)
-- 1‑1 consultation requests with admin management UI
-- User blog submissions with admin moderation workflow
-- Admin‑managed Mentee Showcase (CRUD + public listing)
+Current deployment stack:
+- Frontend: Next.js 14 (App Router) on Netlify
+- Backend API: Express + MongoDB (Mongoose) on Fly.io
+- Object Storage: Cloudflare R2 (S3‑compatible) for uploaded / persistent assets
+- Auth: Firebase (client SDK) + Firebase Admin (token verification) + app‑level JWT roles
+
+Core feature areas:
+- Blog & Career Stories (postType classification: `blog`, `success`, others) with publish/unpublish, tags, multi‑category filtering, search
+- Inline Admin Post Editing (single create form doubles as edit form; legacy modal removed)
+- Paste‑to‑Upload Cover Images (clipboard image pasting supported as base64)
+- Resilient cover image resolution (DB binary → local file path → remote absolute URL → placeholder) to avoid broken images / 404 loops
+- User blog submissions with moderation workflow
+- Consultation & Application requests management
+- Mentee Showcase (CRUD + ordered listing)
+- Basic Chat / AI helper endpoint (/api/chat) placeholder
 
 ## Quick start (Local Dev)
 
@@ -22,15 +27,18 @@ Key features:
 - A MongoDB connection string
 
 2) Environment
-Backend (`backend/.env` – copy from `.env.example`):
-  - MONGODB_URI=mongodb+srv://...
-  - JWT_SECRET=your-strong-secret
+Backend (`backend/.env.local` or `.env` – copy from template you create):
+  - MONGODB_URI=mongodb://localhost:27017/cf_hub (or Atlas URI)
+  - JWT_SECRET=change-me-in-prod
+  - PORT=8008
+  - API_BASE_PATH=/api
   - FRONTEND_URL=http://localhost:3000
   - ADDITIONAL_ORIGINS=http://localhost:5173
-  - API_BASE_PATH=/api
-  - (Firebase) FIREBASE_SERVICE_ACCOUNT_B64=... or FIREBASE_SERVICE_ACCOUNT_FILE=...
-  - (R2) R2_ACCOUNT_ID=..., R2_ACCESS_KEY_ID=..., R2_SECRET_ACCESS_KEY=..., R2_BUCKET=cf-hub-uploads, R2_PUBLIC_BASE_URL=https://<your-cdn-domain>
+  - LOG_LEVEL=info
+  - (Firebase Admin) FIREBASE_SERVICE_ACCOUNT_FILE=./serviceAccount.json  (or FIREBASE_SERVICE_ACCOUNT_B64=...)
+  - (R2) R2_ACCOUNT_ID=..., R2_ACCESS_KEY_ID=..., R2_SECRET_ACCESS_KEY=..., R2_BUCKET=cf-hub-uploads, R2_PUBLIC_BASE_URL=https://<r2-or-cdn-domain>
   - MAX_UPLOAD_MB=8
+  - (Optional) BLOB_READ_WRITE_TOKEN=... (only if using Vercel Blob prototype; treat as secret)
 
 Frontend (`frontend/.env.local`):
   - NEXT_PUBLIC_API_URL=http://localhost:8008/api
@@ -54,14 +62,26 @@ frontend/  # Next.js app (App Router), components, pages, contexts
 
 ## Backend notes
 
-- Image covers: GET /api/blog/posts/:id/cover
-  - Serves DB binary if present, or local file from `/uploads`, or redirects to absolute URL.
-  - Final fallback is a tiny PNG placeholder to avoid 404/429 image optimizer errors.
-- Rate limiting: configured and excludes the cover endpoint.
-- Mentees API:
-  - Public: GET `/api/mentees` (sorted by `order`, then `createdAt`)
-  - Admin: POST `/api/mentees`, PUT `/api/mentees/:id`, DELETE `/api/mentees/:id`
-  - Requires Authorization: Bearer <JWT> with admin role.
+Image / cover flow (`GET /api/blog/posts/:id/cover`):
+1. If binary stored in Mongo (legacy) → stream it.
+2. Else if local file path (migrating) → serve from disk.
+3. Else if absolute URL (R2 or external) → 302 redirect.
+4. Else → tiny inlined PNG placeholder.
+
+Post classification:
+- `postType=blog` powers News section.
+- `postType=success` powers Career Stories (limited to 3 on homepage).
+
+DELETE endpoint fully removes the post and (if applicable) cleans up local cover file.
+
+Mentees API:
+- Public: `GET /api/mentees`
+- Admin: `POST /api/mentees`, `PUT /api/mentees/:id`, `DELETE /api/mentees/:id`
+
+Admin promotion utility:
+```bash
+node backend/scripts/createAdmin.js user@example.com --create
+```
 
 Promote an admin (optional utility):
 
@@ -72,18 +92,19 @@ node backend/scripts/createAdmin.js user@example.com --create
 
 ## Frontend notes
 
-- Configure `NEXT_PUBLIC_API_URL` to point at backend (defaults to http://localhost:8008/api). All API calls now use this env.
-- Next/Image config allows `localhost` plus optional Cloudflare R2 public host (set `R2_PUBLIC_HOST` at build time for Netlify if needed).
-- Navbar search and category picker route into Blogs with filters pre‑applied.
-- Blogs page includes search + multi‑category filters (slug or ID supported by API).
-- Mentee Showcase (home): dynamically fetches from `/api/mentees`, supports external URLs or `/uploads/...` images, with placeholder fallback.
-- Header: Sign Up button removed.
-- Footer: Now only Brand and Recent News columns (categories/tags removed).
+- All API calls derive from `NEXT_PUBLIC_API_URL`.
+- Paste cover image: On `/admin`, when creating/editing a post you can Ctrl/Cmd+V an image from clipboard.
+- Inline edit mode: Clicking Edit loads post data into the create form; Save issues PUT; Cancel resets.
+- News & Career Stories sections now query with `postType` filters, reducing client filtering.
+- Next/Image remotePatterns / domains must include backend host and any R2 public host.
+- Homepage Mentee Showcase: pulls from `/api/mentees`; placeholder shown if missing.
 
 ## Admin
 
 - Visit `/admin` (must be logged in and have role=admin).
 - Manage: Blog Posts, Career Stories, Applications, Consultation Requests, User Blog Submissions, and Mentees.
+- Unified post editor (create + edit) reduces duplicated state & code.
+- Cover image upload supports file select & paste (base64 converted before send).
 
 
 ## Troubleshooting
@@ -108,7 +129,7 @@ npm run dev:frontend  # run frontend only
 ```
 
 
-## Deployment (Current Stack – Render + Netlify + R2)
+## Deployment (Current Stack – Fly.io + Netlify + R2)
 
 ### 1. MongoDB Atlas
 Create free M0 cluster → DB user → Network Access (IP allowlist) → grab `MONGODB_URI`.
@@ -121,31 +142,17 @@ Create free M0 cluster → DB user → Network Access (IP allowlist) → grab `M
 
 Upload endpoint: `POST /api/uploads` (multipart field: `file`) → response `{ url, pathname, contentType, size }`.
 
-### 3. Backend on Render
-1. Dashboard → New → Web Service → Connect GitHub repo.
-2. Root directory: `backend`.
-3. Runtime: Node 18+ (auto-detected).
-4. Build Command: `npm install` (Render defaults ok). Start Command: `npm start` (runs `node server.js`).
-5. Environment Variables (copy from `.env.example`):
+### 3. Backend on Fly.io
+1. Install Fly CLI & login.
+2. From `backend/`: `fly launch` (already configured if `fly.toml` exists).
+3. Set secrets (Fly treats env vars as secrets):
+```bash
+fly secrets set MONGODB_URI=... JWT_SECRET=... FRONTEND_URL=https://<netlify-app>.netlify.app ADDITIONAL_ORIGINS=https://deploy-preview-**--<netlify-app>.netlify.app API_BASE_PATH=/api FIREBASE_SERVICE_ACCOUNT_B64=... R2_ACCOUNT_ID=... R2_ACCESS_KEY_ID=... R2_SECRET_ACCESS_KEY=... R2_BUCKET=cf-hub-uploads R2_PUBLIC_BASE_URL=https://<cdn-domain> MAX_UPLOAD_MB=8
 ```
-MONGODB_URI=...
-JWT_SECRET=...
-FRONTEND_URL=https://your-site.netlify.app
-ADDITIONAL_ORIGINS=https://deploy-preview-**--your-site.netlify.app,http://localhost:3000
-API_BASE_PATH=/api
-FIREBASE_SERVICE_ACCOUNT_B64=...
-R2_ACCOUNT_ID=...
-R2_ACCESS_KEY_ID=...
-R2_SECRET_ACCESS_KEY=...
-R2_BUCKET=cf-hub-uploads
-R2_PUBLIC_BASE_URL=https://<cdn-or-r2-public-domain>
-MAX_UPLOAD_MB=8
-```
-6. Deploy. Note backend URL: `https://<service-name>.onrender.com`.
-7. Set frontend `NEXT_PUBLIC_API_URL=https://<service-name>.onrender.com/api`.
-8. (Cold Start) Free tier sleeps—first request incurs delay. Consider a ping cron (Render offers cron or external uptime ping) if needed.
+4. `fly deploy`.
+5. Note Fly hostname: `https://<app>.fly.dev` (or custom domain). Set `NEXT_PUBLIC_API_URL=https://<app>.fly.dev/api` in Netlify.
 
-### 4. Frontend on Netlify (or Render Alternative)
+### 4. Frontend on Netlify
 1. Connect repo → base directory left root; `netlify.toml` handles build.
 2. Environment variables (Netlify UI):
   - NEXT_PUBLIC_API_URL=https://<service-name>.onrender.com/api
@@ -175,15 +182,24 @@ ADDITIONAL_ORIGINS=https://deploy-preview-123--your-site.netlify.app,http://loca
 ```
 
 ### 9. Zero-Downtime Updates
-Push to main; Koyeb & Netlify deploy independently. Add health endpoint (`/api/health`) if desired (future enhancement).
+Push to main; Fly & Netlify deploy independently. Health endpoint (`/api/health`) exists for monitoring.
 
 ## Environment Variable Reference
 
 Backend (Render): MONGODB_URI, JWT_SECRET, FRONTEND_URL, ADDITIONAL_ORIGINS, API_BASE_PATH, FIREBASE_SERVICE_ACCOUNT_B64 or FILE, R2_* vars, MAX_UPLOAD_MB.
 Frontend (Netlify): NEXT_PUBLIC_API_URL, NEXT_PUBLIC_FIREBASE_* keys, (optional) R2_PUBLIC_HOST.
 
+Backend (Fly.io) secrets (mirrors above) should be set via `fly secrets set` (never committed).
+
+Security notes:
+- Never commit real `JWT_SECRET`, Firebase service account JSON, Blob/R2 credentials, or tokens (rotate immediately if leaked).
+- Add `*.env*` to `.gitignore` (confirm already present) and purge any accidentally committed secrets from git history & rotate keys.
+- Treat `BLOB_READ_WRITE_TOKEN` as production secret (rotate if it appears in public history).
+
 ## Future Enhancements
 - Add signed URL generation for private objects.
 - Implement image resizing lambda/worker cached via CDN.
 - Add health & readiness probes for backend (Render health checks can query `/api/health`).
 - Provide admin UI for upload management.
+- Add integration tests for critical CRUD flows.
+- Migrate residual binary covers in Mongo to R2 with a one‑time script.

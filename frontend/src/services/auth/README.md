@@ -101,4 +101,4 @@ The following environment variables are required:
 - `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`: Firebase messaging sender ID
 - `NEXT_PUBLIC_FIREBASE_APP_ID`: Firebase app ID
 - `NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID`: Firebase measurement ID
-- `BACKEND_URL`: Backend API URL
+- `NEXT_PUBLIC_API_URL`: Backend API base URL (e.g. https://api.example.com/api)
