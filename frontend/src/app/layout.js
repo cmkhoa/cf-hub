@@ -7,9 +7,9 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
 	title: "CF Hub Mentorship",
-	title: "Career Foudnation Hub",
+	title: "Career Foundation Hub",
 	description:
-		"This is a mentorship program for students/new graduates looking for internships/jobs in the US.",
+		"CF Hub empowers young professionals to secure jobs and build successful careers in finance, operations, strategy, marketing, management, and beyond through dedicated mentorship and support.",
 };
 
 export default function RootLayout({ children }) {
