@@ -264,6 +264,31 @@ export default function AdminDashboard(){
 
   const postColumns = columns; // reuse
 
+  // Google Drive integration state
+  const [driveFiles, setDriveFiles] = useState([]);
+  const [driveLoading, setDriveLoading] = useState(false);
+  const fetchDriveFiles = async ()=>{
+    setDriveLoading(true);
+    try {
+      const res = await fetch(API_ENDPOINTS.google.files, { headers:{ ...getAuthHeader() } });
+      if(res.status===401){ message.error('Link Google Drive first'); return; }
+      const data = await res.json();
+      setDriveFiles(data.files||[]);
+    } catch(err){ console.error(err); message.error('Failed to load Drive files'); }
+    finally { setDriveLoading(false); }
+  };
+  const importDocAsHtml = async (id)=>{
+    try {
+      const res = await fetch(API_ENDPOINTS.google.exportHtml(id), { headers:{ ...getAuthHeader() } });
+      if(!res.ok) throw new Error('Export failed');
+      const html = await res.text();
+      // Simple strip of head/body wrappers for insertion
+      const cleaned = html.replace(/^[\s\S]*<body[^>]*>/i,'').replace(/<\/body>[\s\S]*$/i,'').trim();
+      form.setFieldsValue({ content: (form.getFieldValue('content')||'') + '\n\n' + cleaned });
+      message.success('Imported content from Google Doc');
+    } catch(err){ message.error(err.message); }
+  };
+
   const applicationsColumns = [
     { title:'Name', dataIndex:'fullName', key:'fullName' },
     { title:'Email', dataIndex:'email', key:'email' },
@@ -367,6 +392,26 @@ export default function AdminDashboard(){
                       />
                     </Form.Item>
                     <Form.Item name="excerpt" label="Excerpt (optional)"><Input.TextArea rows={2} placeholder="Short summary" /></Form.Item>
+                    {/* Google Drive Import Section (moved here) */}
+                    <Form.Item label="Import Content (Google Drive)">
+                      <Space wrap>
+                        <Button onClick={()=> { window.location = API_ENDPOINTS.google.oauthStart; }}>Link / Refresh Google Drive</Button>
+                        <Button onClick={fetchDriveFiles} loading={driveLoading}>Load Drive Docs</Button>
+                      </Space>
+                      {driveFiles.length>0 && (
+                        <div style={{ marginTop:12, background:'#fafafa', padding:12, border:'1px solid #eee', borderRadius:6 }}>
+                          <strong style={{ display:'block', marginBottom:8 }}>Google Docs (click to import HTML)</strong>
+                          <div style={{ maxHeight:180, overflowY:'auto', fontSize:12, lineHeight:1.4 }}>
+                            {driveFiles.map(f=> (
+                              <div key={f.id} style={{ padding:'4px 6px', cursor:'pointer' }} onClick={()=> importDocAsHtml(f.id)}>
+                                {f.name} <span style={{ color:'#666' }}>({f.modifiedTime?.slice(0,10)})</span>
+                              </div>
+                            ))}
+                          </div>
+                          <div style={{ marginTop:8, fontSize:11, color:'#666' }}>Imported HTML is appended to the Content field; review & clean before publishing.</div>
+                        </div>
+                      )}
+                    </Form.Item>
                     <Form.Item label={isEditing? 'Replace Cover Image (optional)' : 'Cover Image (stored in DB)'}>
                       <Upload
                         beforeUpload={(file)=>{

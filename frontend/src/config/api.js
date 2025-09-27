@@ -53,6 +53,11 @@ export const API_ENDPOINTS = {
 		create: `${API_BASE_URL}/mentees`,
 		update: (id) => `${API_BASE_URL}/mentees/${id}`,
 		remove: (id) => `${API_BASE_URL}/mentees/${id}`,
+	},
+	google: {
+		oauthStart: `${API_BASE_URL}/google-oauth`,
+		files: `${API_BASE_URL}/google-drive/files`,
+		exportHtml: (id) => `${API_BASE_URL}/google-drive/file/${id}/html`,
 	}
 };
 

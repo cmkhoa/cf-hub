@@ -203,3 +203,8 @@ Security notes:
 - Provide admin UI for upload management.
 - Add integration tests for critical CRUD flows.
 - Migrate residual binary covers in Mongo to R2 with a one‑time script.
+- Google Drive Import (new):
+  - GOOGLE_OAUTH_CLIENT_ID (OAuth 2.0 Web client)
+  - GOOGLE_OAUTH_CLIENT_SECRET
+  - GOOGLE_OAUTH_REDIRECT_URL (must exactly match https://<backend-domain>/api/google-oauth)
+  - Scopes currently: https://www.googleapis.com/auth/drive.readonly

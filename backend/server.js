@@ -99,6 +99,12 @@ app.use(`${API_BASE}/consultations`, consultationRoutes);
 const menteeRoutes = require('./routes/mentees');
 app.use(`${API_BASE}/mentees`, menteeRoutes);
 
+// Google OAuth flow (initiates & callback) and Drive access routes
+const googleOAuthRoutes = require('./routes/googleOAuth');
+app.use(`${API_BASE}/google-oauth`, googleOAuthRoutes);
+const googleDriveRoutes = require('./routes/googleDrive');
+app.use(`${API_BASE}/google-drive`, googleDriveRoutes);
+
 // Uploads route (now backed by Cloudflare R2 storage)
 const uploadRoutes = require('./routes/uploads');
 app.use(`${API_BASE}/uploads`, uploadRoutes);
