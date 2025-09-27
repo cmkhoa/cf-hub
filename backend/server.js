@@ -105,6 +105,10 @@ app.use(`${API_BASE}/google-oauth`, googleOAuthRoutes);
 const googleDriveRoutes = require('./routes/googleDrive');
 app.use(`${API_BASE}/google-drive`, googleDriveRoutes);
 
+// Admin management routes (promotions, etc.)
+const adminRoutes = require('./routes/admin');
+app.use(`${API_BASE}/admin`, adminRoutes);
+
 // Uploads route (now backed by Cloudflare R2 storage)
 const uploadRoutes = require('./routes/uploads');
 app.use(`${API_BASE}/uploads`, uploadRoutes);

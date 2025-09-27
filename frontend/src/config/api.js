@@ -59,6 +59,12 @@ export const API_ENDPOINTS = {
 		files: `${API_BASE_URL}/google-drive/files`,
 		exportHtml: (id) => `${API_BASE_URL}/google-drive/file/${id}/html`,
 	}
+,
+	admin: {
+		promote: `${API_BASE_URL}/admin/users/promote`,
+		demote: `${API_BASE_URL}/admin/users/demote`,
+		admins: `${API_BASE_URL}/admin/users/admins`
+	}
 };
 
 export const getAuthHeader = () => {

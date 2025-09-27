@@ -26,6 +26,54 @@ export default function AdminDashboard(){
   const { userLoggedIn, currentUser, loading } = useAuth();
   const router = useRouter();
   const [form] = Form.useForm();
+
+  // Google Drive integration state (place high to keep hook order stable)
+  const [driveFiles, setDriveFiles] = useState([]);
+  const [driveLoading, setDriveLoading] = useState(false);
+  const [driveLinked, setDriveLinked] = useState(true); // assume linked until a 401 tells us otherwise
+  const fetchDriveFiles = async ()=>{
+    setDriveLoading(true);
+    try {
+      const res = await fetch(API_ENDPOINTS.google.files, { headers:{ ...getAuthHeader() } });
+      if(res.status===401){
+        setDriveLinked(false);
+        message.info('Google Drive not linked yet');
+        return;
+      }
+      if(res.status===500){
+        // Attempt to parse message to see if it's a token issue
+        try { const errJson = await res.json(); if(/not linked|no google/i.test(errJson.message||'')){ setDriveLinked(false); return; } } catch(e) { /* ignore */ }
+        message.error('Server error loading Drive files');
+        return;
+      }
+      const data = await res.json();
+      setDriveFiles(data.files||[]);
+      setDriveLinked(true);
+    } catch(err){ console.error(err); message.error('Failed to load Drive files'); }
+    finally { setDriveLoading(false); }
+  };
+  const importDocAsHtml = async (id)=>{
+    try {
+      const res = await fetch(API_ENDPOINTS.google.exportHtml(id), { headers:{ ...getAuthHeader() } });
+      if(!res.ok) throw new Error('Export failed');
+      const html = await res.text();
+      const cleaned = html.replace(/^[\s\S]*<body[^>]*>/i,'').replace(/<\/body>[\s\S]*$/i,'').trim();
+      form.setFieldsValue({ content: (form.getFieldValue('content')||'') + '\n\n' + cleaned });
+      message.success('Imported content from Google Doc');
+    } catch(err){ message.error(err.message); }
+  };
+  // After returning from OAuth (?googleDriveLinked=1) auto-fetch once.
+  useEffect(()=>{
+    if(typeof window !== 'undefined'){
+      const url = new URL(window.location.href);
+      if(url.searchParams.get('googleDriveLinked')==='1'){
+        fetchDriveFiles();
+        url.searchParams.delete('googleDriveLinked');
+        window.history.replaceState({}, '', url.pathname + url.search);
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
   const [createLoading, setCreateLoading] = useState(false);
   const [posts, setPosts] = useState([]);
   const [fetching, setFetching] = useState(false);
@@ -57,6 +105,23 @@ export default function AdminDashboard(){
   const [consultsTotal, setConsultsTotal] = useState(0);
   const [consultsQuery, setConsultsQuery] = useState('');
   const [consultsStatusFilter, setConsultsStatusFilter] = useState('');
+  // Promote admin form state
+  const [promoteEmail, setPromoteEmail] = useState('');
+  const [promoteLoading, setPromoteLoading] = useState(false);
+  const [promoteResult, setPromoteResult] = useState(null);
+  const [admins, setAdmins] = useState([]);
+  const [adminsLoading, setAdminsLoading] = useState(false);
+  const fetchAdmins = async ()=>{
+    setAdminsLoading(true);
+    try {
+      const res = await fetch(API_ENDPOINTS.admin.admins, { headers:{ ...getAuthHeader() } });
+      if(!res.ok) throw new Error('Failed to load admins');
+      const data = await res.json();
+      setAdmins(data.admins||[]);
+    } catch(err){ message.error(err.message); }
+    finally { setAdminsLoading(false); }
+  };
+  useEffect(()=>{ if(activeSection==='adminMgmt') fetchAdmins(); },[activeSection]);
 
   // Consolidated redirect logic to avoid race conditions causing bounce
   useEffect(()=>{
@@ -264,30 +329,6 @@ export default function AdminDashboard(){
 
   const postColumns = columns; // reuse
 
-  // Google Drive integration state
-  const [driveFiles, setDriveFiles] = useState([]);
-  const [driveLoading, setDriveLoading] = useState(false);
-  const fetchDriveFiles = async ()=>{
-    setDriveLoading(true);
-    try {
-      const res = await fetch(API_ENDPOINTS.google.files, { headers:{ ...getAuthHeader() } });
-      if(res.status===401){ message.error('Link Google Drive first'); return; }
-      const data = await res.json();
-      setDriveFiles(data.files||[]);
-    } catch(err){ console.error(err); message.error('Failed to load Drive files'); }
-    finally { setDriveLoading(false); }
-  };
-  const importDocAsHtml = async (id)=>{
-    try {
-      const res = await fetch(API_ENDPOINTS.google.exportHtml(id), { headers:{ ...getAuthHeader() } });
-      if(!res.ok) throw new Error('Export failed');
-      const html = await res.text();
-      // Simple strip of head/body wrappers for insertion
-      const cleaned = html.replace(/^[\s\S]*<body[^>]*>/i,'').replace(/<\/body>[\s\S]*$/i,'').trim();
-      form.setFieldsValue({ content: (form.getFieldValue('content')||'') + '\n\n' + cleaned });
-      message.success('Imported content from Google Doc');
-    } catch(err){ message.error(err.message); }
-  };
 
   const applicationsColumns = [
     { title:'Name', dataIndex:'fullName', key:'fullName' },
@@ -337,6 +378,7 @@ export default function AdminDashboard(){
               { key:'consultations', label:'Consultation Requests' },
               { key:'userSubmissions', label:'User Blog Submissions' },
               { key:'mentees', label:'Mentees' },
+              { key:'adminMgmt', label:'Manage Admins' },
             ]}
           />
         </Sider>
@@ -395,10 +437,14 @@ export default function AdminDashboard(){
                     {/* Google Drive Import Section (moved here) */}
                     <Form.Item label="Import Content (Google Drive)">
                       <Space wrap>
-                        <Button onClick={()=> { window.location = API_ENDPOINTS.google.oauthStart; }}>Link / Refresh Google Drive</Button>
-                        <Button onClick={fetchDriveFiles} loading={driveLoading}>Load Drive Docs</Button>
+                        {!driveLinked && (
+                          <Button type="primary" onClick={()=> { window.location = API_ENDPOINTS.google.oauthStart; }}>Connect Google Drive</Button>
+                        )}
+                        {driveLinked && (
+                          <Button onClick={fetchDriveFiles} loading={driveLoading}>Load Drive Docs</Button>
+                        )}
                       </Space>
-                      {driveFiles.length>0 && (
+                      {driveLinked && driveFiles.length>0 && (
                         <div style={{ marginTop:12, background:'#fafafa', padding:12, border:'1px solid #eee', borderRadius:6 }}>
                           <strong style={{ display:'block', marginBottom:8 }}>Google Docs (click to import HTML)</strong>
                           <div style={{ maxHeight:180, overflowY:'auto', fontSize:12, lineHeight:1.4 }}>
@@ -408,9 +454,10 @@ export default function AdminDashboard(){
                               </div>
                             ))}
                           </div>
-                          <div style={{ marginTop:8, fontSize:11, color:'#666' }}>Imported HTML is appended to the Content field; review & clean before publishing.</div>
+                          <div style={{ marginTop:8, fontSize:11, color:'#666' }}>Imported HTML is appended to Content; review before publishing.</div>
                         </div>
                       )}
+                      {!driveLinked && <div style={{ marginTop:8, fontSize:11, color:'#666' }}>Connect to Google Drive to import Docs content.</div>}
                     </Form.Item>
                     <Form.Item label={isEditing? 'Replace Cover Image (optional)' : 'Cover Image (stored in DB)'}>
                       <Upload
@@ -448,6 +495,76 @@ export default function AdminDashboard(){
                   <div style={{ overflowX:'auto' }}>
                     <Table rowKey="_id" dataSource={blogPosts} columns={postColumns} loading={fetching} pagination={{ pageSize:20 }} />
                   </div>
+                </div>
+              </div>
+            )}
+            {activeSection==='adminMgmt' && (
+              <div style={{ background:'#fff', padding:24, border:'1px solid #eee', borderRadius:8 }}>
+                <Title level={2} style={{marginTop:0}}>Manage Admins</Title>
+                <p style={{ maxWidth:660 }}>Add or remove admin privileges. Demoting removes elevated access but keeps the user account intact. You cannot demote the only remaining admin.</p>
+                <Form layout="inline" onFinish={async ()=>{
+                  if(!promoteEmail) { message.error('Email required'); return; }
+                  setPromoteLoading(true); setPromoteResult(null);
+                  try {
+                    const res = await fetch(API_ENDPOINTS.admin.promote, { method:'POST', headers:{ 'Content-Type':'application/json', ...getAuthHeader() }, body: JSON.stringify({ email: promoteEmail }) });
+                    const data = await res.json();
+                    if(!res.ok){ throw new Error(data.message || 'Promotion failed'); }
+                    message.success(data.message || 'User promoted');
+                    setPromoteResult({ type:'success', text:`${promoteEmail} promoted.` });
+                    setPromoteEmail('');
+                    fetchAdmins();
+                  } catch(err){
+                    message.error(err.message); setPromoteResult({ type:'error', text: err.message });
+                  } finally { setPromoteLoading(false); }
+                }}>
+                  <Form.Item label="User Email" style={{ marginBottom:16 }}>
+                    <Input type="email" value={promoteEmail} placeholder="user@example.com" onChange={e=> setPromoteEmail(e.target.value)} style={{ width:320 }} />
+                  </Form.Item>
+                  <Form.Item style={{ marginBottom:16 }}>
+                    <Button type="primary" htmlType="submit" loading={promoteLoading} disabled={!promoteEmail}>Promote</Button>
+                  </Form.Item>
+                </Form>
+                {promoteResult && (
+                  <div style={{ marginTop:12, color: promoteResult.type==='success'? 'green':'#c00' }}>{promoteResult.text}</div>
+                )}
+                <div style={{ marginTop:32 }}>
+                  <strong>Current Admins</strong>
+                  <div style={{ marginTop:8, border:'1px solid #eee', borderRadius:6, padding:12, background:'#fafafa' }}>
+                    {adminsLoading && <div>Loading admins…</div>}
+                    {!adminsLoading && admins.length===0 && <div>No admins found.</div>}
+                    {!adminsLoading && admins.length>0 && (
+                      <div style={{ maxWidth:600 }}>
+                        {admins.map(a=> (
+                          <div key={a._id} style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'6px 4px', borderBottom:'1px solid #eee' }}>
+                            <div style={{ fontSize:13 }}>
+                              <strong>{a.name || a.email}</strong>
+                              <div style={{ color:'#666' }}>{a.email}</div>
+                            </div>
+                            <div>
+                              <Button size="small" danger onClick={async ()=>{
+                                Modal.confirm({
+                                  title:'Demote Admin',
+                                  content:`Remove admin privileges from ${a.email}?`,
+                                  okText:'Demote',
+                                  okButtonProps:{ danger:true },
+                                  onOk: async ()=>{
+                                    try {
+                                      const res = await fetch(API_ENDPOINTS.admin.demote, { method:'POST', headers:{ 'Content-Type':'application/json', ...getAuthHeader() }, body: JSON.stringify({ email: a.email }) });
+                                      const data = await res.json();
+                                      if(!res.ok) throw new Error(data.message||'Demotion failed');
+                                      message.success(data.message||'User demoted');
+                                      fetchAdmins();
+                                    } catch(err){ message.error(err.message); }
+                                  }
+                                });
+                              }}>Demote</Button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  <div style={{ marginTop:16, fontSize:12, color:'#555' }}>Newly promoted users must re-login (or call refresh-token) to receive updated JWT role. Audit log records all promotions/demotions.</div>
                 </div>
               </div>
             )}

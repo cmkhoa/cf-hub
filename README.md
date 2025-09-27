@@ -208,3 +208,25 @@ Security notes:
   - GOOGLE_OAUTH_CLIENT_SECRET
   - GOOGLE_OAUTH_REDIRECT_URL (must exactly match https://<backend-domain>/api/google-oauth)
   - Scopes currently: https://www.googleapis.com/auth/drive.readonly
+
+### Admin Promotion (New UI Feature)
+Existing admins can now promote another user directly in the `/admin` dashboard:
+
+1. Navigate to the "Promote Admin" section in the left sidebar.
+2. Enter the exact email of an existing account.
+3. Submit to elevate their `role` to `admin`.
+
+Notes:
+- If the user is already an admin, the API returns a benign message.
+- Newly promoted users must re-login (or use `/api/auth/refresh-token`) to receive a JWT reflecting the updated role.
+- Endpoint: `POST /api/admin/users/promote` `{ email: string }` (admin-auth protected).
+
+### Admin Demotion & Audit Logging
+Admin management actions are now logged:
+
+- Promote: `POST /api/admin/users/promote` → creates an `AdminAudit` document (`action=promote`).
+- Demote: `POST /api/admin/users/demote` → sets role back to `user` (cannot demote the only remaining admin) and logs `action=demote`.
+
+`AdminAudit` schema fields: `action`, `targetUser`, `targetEmail`, `performedBy`, `performedByEmail`, `previousRole`, `newRole`, `createdAt`.
+
+Use this for future reporting or exposing an audit trail UI. Retrieval endpoint not yet implemented (add read-only listing if needed).
