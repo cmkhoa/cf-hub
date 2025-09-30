@@ -17,11 +17,12 @@ const HeroSection = () => {
   const router = useRouter();
   const { userLoggedIn } = useAuth();
   const handleGetStarted = () => {
-    if(userLoggedIn){
-      router.push('/apply');
-    } else {
-      router.push('/register?next=/apply');
-    }
+    router.push('https://www.facebook.com/CareerFoundationHub');
+    // if(userLoggedIn){
+    //   router.push('/apply');
+    // } else {
+    //   router.push('/register?next=/apply');
+    // }
   };
   return (
   <section className="cf-hero" aria-labelledby="cf-hero-heading">

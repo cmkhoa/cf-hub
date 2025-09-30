@@ -2,168 +2,217 @@
 
 import React, { useEffect, useState } from "react";
 import { Input, Button, Row, Col, Typography } from "antd";
-import { 
-	FacebookOutlined, 
-	LinkedinOutlined, 
-	YoutubeOutlined, 
-	InstagramOutlined,
-	MailOutlined,
-	PhoneOutlined,
-	EnvironmentOutlined
+import {
+  FacebookOutlined,
+  LinkedinOutlined,
+  YoutubeOutlined,
+  InstagramOutlined,
+  MailOutlined,
+  PhoneOutlined,
+  EnvironmentOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
 // Using native <img> for small thumbnails to avoid Next/Image optimizer hitting backend multiple times (429)
-import './Footer.css';
-import { API_ENDPOINTS } from '@/config/api';
+import "./Footer.css";
+import { API_ENDPOINTS } from "@/config/api";
 
 const { Title, Paragraph, Text: AntText } = Typography;
 
 const Footer = () => {
-	const handleSubscribe = (e) => {
-		e.preventDefault();
-		// TODO: Implement subscription logic
-	};
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+    // TODO: Implement subscription logic
+  };
 
-	const [news, setNews] = useState([]);
-	const [loadingNews, setLoadingNews] = useState(false);
+  const [news, setNews] = useState([]);
+  const [loadingNews, setLoadingNews] = useState(false);
 
-	useEffect(()=>{
-		let cancelled = false;
-		const fetchNews = async ()=>{
-			try {
-				setLoadingNews(true);
-				const params = new URLSearchParams();
-				params.set('limit','3');
-				params.set('postType','blog');
-				// public endpoint returns only published by default
-				const res = await fetch(`${API_ENDPOINTS.blog.posts}?${params.toString()}`);
-				if(!res.ok) throw new Error('Failed to load news');
-				const data = await res.json();
-				const items = Array.isArray(data?.items) ? data.items : [];
-				if(!cancelled) setNews(items);
-			} catch(e){ if(!cancelled) setNews([]); }
-			finally { if(!cancelled) setLoadingNews(false); }
-		};
-		fetchNews();
-		return ()=>{ cancelled = true; };
-	},[]);
+  useEffect(() => {
+    let cancelled = false;
+    const fetchNews = async () => {
+      try {
+        setLoadingNews(true);
+        const params = new URLSearchParams();
+        params.set("limit", "3");
+        params.set("postType", "blog");
+        // public endpoint returns only published by default
+        const res = await fetch(
+          `${API_ENDPOINTS.blog.posts}?${params.toString()}`
+        );
+        if (!res.ok) throw new Error("Failed to load news");
+        const data = await res.json();
+        const items = Array.isArray(data?.items) ? data.items : [];
+        if (!cancelled) setNews(items);
+      } catch (e) {
+        if (!cancelled) setNews([]);
+      } finally {
+        if (!cancelled) setLoadingNews(false);
+      }
+    };
+    fetchNews();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
-	const backendApiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8008/api';
+  const backendApiBase =
+    process.env.NEXT_PUBLIC_API_URL || "http://localhost:8008/api";
 
-	return (
-		<footer className="footer">
-			{/* Top Section */}
-			<div className="footer-top">
-				<div className="container">
-					<Row justify="space-between" align="middle">
-						<Col>
-							<AntText className="footer-top-text">About Career Foundation Hub</AntText>
-						</Col>
-						<Col>
-							<AntText className="footer-top-text">Recent News</AntText>
-						</Col>
-					</Row>
-				</div>
-			</div>
+  return (
+    <footer className="footer">
+      {/* Top Section */}
+      <div className="footer-top">
+        <div className="container">
+          <Row justify="space-between" align="middle">
+            <Col>
+              <AntText className="footer-top-text">
+                About Career Foundation Hub
+              </AntText>
+            </Col>
+            <Col>
+              <AntText className="footer-top-text">Recent News</AntText>
+            </Col>
+          </Row>
+        </div>
+      </div>
 
-			{/* Main Footer Content */}
-			<div className="footer-main">
-				<div className="container">
-					<Row gutter={[48, 48]}>
-						{/* Brand Section */}
-						<Col xs={24} md={12} lg={12}>
-							<div className="brand-section">
-								<div className="brand-logo">
-									<div className="logo-icon">CFH</div>
-									<span className="logo-text">CF Hub</span>
-								</div>
-								<Paragraph className="brand-description">
-									CF Hub là tổ chức phi lợi nhuận 501(c)(3) được thành lập bởi các bạn trẻ 
+      {/* Main Footer Content */}
+      <div className="footer-main">
+        <div className="container">
+          <Row gutter={[48, 48]}>
+            {/* Brand Section */}
+            <Col xs={24} md={12} lg={12}>
+              <div className="brand-section">
+                <div className="brand-logo">
+                  <div className="logo-icon">CFH</div>
+                  <span className="logo-text">CF Hub</span>
+                </div>
+                <Paragraph className="brand-description">
+                  {/* CF Hub là tổ chức phi lợi nhuận 501(c)(3) được thành lập bởi các bạn trẻ 
 									sinh viên và chuyên gia người Việt tại Mỹ, nhằm trở thành nền tảng cộng đồng 
 									hỗ trợ sinh viên và các bạn trẻ trong quá trình chuyển đổi từ môi trường học 
-									thuật sang môi trường chuyên nghiệp, giúp các bạn kết nối và phát triển.
-								</Paragraph>
-								<Title level={5} className="follow-title">Follow Us</Title>
-								<div className="social-links">
-									<Button 
-										type="text" 
-										icon={<FacebookOutlined />}
-										className="social-btn facebook"
-									/>
-									<Button 
-										type="text" 
-										icon={<LinkedinOutlined />}
-										className="social-btn linkedin"
-									/>
-									<Button 
-										type="text" 
-										icon={<YoutubeOutlined />}
-										className="social-btn youtube"
-									/>
-								</div>
-							</div>
-						</Col>
+									thuật sang môi trường chuyên nghiệp, giúp các bạn kết nối và phát triển. */}
+                  VNPN là mạng lưới kết nối chuyên gia Việt tại Hoa Kỳ. Nhiệm vụ
+                  của VNPN là tạo ra cơ hội phát triển sự nghiệp cho mọi thành
+                  viên thông qua việc tiếp cận với các nguồn thông tin tuyển
+                  dụng có ưu thế, kiến thức chuyên ngành và kinh nghiệm cố vấn
+                  từ những người đi trước. VNPN mong muốn được góp phần xây dựng
+                  cộng đồng người Việt Nam ở nước ngoài gắn kết, tương trợ lẫn
+                  nhau.
+                </Paragraph>
+                <Paragraph
+                  className="brand-description"
+                  style={{ marginTop: 8 }}
+                >
+                  VNPN là dự án phi lợi nhuận, được triển khai với sự hỗ trợ từ
+                  Hội Thanh Niên, Sinh Viên Việt Nam ở Hoa Kỳ
+                  (www.sinhvienusa.org) và cuộc thi khởi nghiệp VietChallenge
+                  (www.vietchallenge.org). Dự án hiện tại đang được thử nghiệm ở
+                  giai đoạn Beta.
+                </Paragraph>
+                <Title level={5} className="follow-title">
+                  Follow Us
+                </Title>
+                <div className="social-links">
+                  <Button
+                    type="text"
+                    icon={<FacebookOutlined />}
+                    className="social-btn facebook"
+                  />
+                  <Button
+                    type="text"
+                    icon={<LinkedinOutlined />}
+                    className="social-btn linkedin"
+                  />
+                  <Button
+                    type="text"
+                    icon={<YoutubeOutlined />}
+                    className="social-btn youtube"
+                  />
+                </div>
+              </div>
+            </Col>
 
-						{/* Categories and Tags removed */}
+            {/* Categories and Tags removed */}
 
-						{/* Recent News */}
-						<Col xs={24} md={12} lg={12}>
-							<div className="news-section">
-								<Title level={5} className="links-title">Recent News</Title>
-								<div className="news-list">
-										{news.length === 0 && !loadingNews && (
-											<div className="news-item">
-												<div className="news-content">
-													<div className="news-title">No recent posts yet</div>
-												</div>
-											</div>
-										)}
-										{news.map((post)=>{
-											const coverUrl = `${backendApiBase}/blog/posts/${post._id}/cover`;
-											const date = post.publishedAt || post.createdAt;
-											const formatted = date ? new Date(date).toLocaleDateString(undefined, { year:'numeric', month:'short', day:'2-digit' }).toUpperCase() : '';
-											return (
-												<Link key={post._id} href={`/blog/${post.slug}`} className="news-item" prefetch={false}>
-													<div className="news-image">
-														<img
-															src={coverUrl}
-															alt={post.title}
-															width={60}
-															height={40}
-															className="news-img"
-															loading="lazy"
-															decoding="async"
-															onError={(e)=>{ e.currentTarget.src = '/assets/reference_image_1.jpg'; e.currentTarget.onerror = null; }}
-														/>
-													</div>
-													<div className="news-content">
-														<div className="news-title">{post.title}</div>
-														<div className="news-date">{formatted}</div>
-													</div>
-												</Link>
-											);
-										})}
-									</div>
-							</div>
-						</Col>
-					</Row>
-				</div>
-			</div>
+            {/* Recent News */}
+            <Col xs={24} md={12} lg={12}>
+              <div className="news-section">
+                <Title level={5} className="links-title">
+                  Recent News
+                </Title>
+                <div className="news-list">
+                  {news.length === 0 && !loadingNews && (
+                    <div className="news-item">
+                      <div className="news-content">
+                        <div className="news-title">No recent posts yet</div>
+                      </div>
+                    </div>
+                  )}
+                  {news.map((post) => {
+                    const coverUrl = `${backendApiBase}/blog/posts/${post._id}/cover`;
+                    const date = post.publishedAt || post.createdAt;
+                    const formatted = date
+                      ? new Date(date)
+                          .toLocaleDateString(undefined, {
+                            year: "numeric",
+                            month: "short",
+                            day: "2-digit",
+                          })
+                          .toUpperCase()
+                      : "";
+                    return (
+                      <Link
+                        key={post._id}
+                        href={`/blog/${post.slug}`}
+                        className="news-item"
+                        prefetch={false}
+                      >
+                        <div className="news-image">
+                          <img
+                            src={coverUrl}
+                            alt={post.title}
+                            width={60}
+                            height={40}
+                            className="news-img"
+                            loading="lazy"
+                            decoding="async"
+                            onError={(e) => {
+                              e.currentTarget.src =
+                                "/assets/reference_image_1.jpg";
+                              e.currentTarget.onerror = null;
+                            }}
+                          />
+                        </div>
+                        <div className="news-content">
+                          <div className="news-title">{post.title}</div>
+                          <div className="news-date">{formatted}</div>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            </Col>
+          </Row>
+        </div>
+      </div>
 
-			{/* Footer Bottom */}
-			<div className="footer-bottom">
-				<div className="container">
-					<Row justify="center" align="middle">
-						<Col>
-							<Paragraph className="copyright">
-								© 2025 CF Hub Corporation - Official website of CF Hub Corporation.
-							</Paragraph>
-						</Col>
-					</Row>
-				</div>
-			</div>
-		</footer>
-	);
+      {/* Footer Bottom */}
+      <div className="footer-bottom">
+        <div className="container">
+          <Row justify="center" align="middle">
+            <Col>
+              <Paragraph className="copyright">
+                © 2025 CF Hub Corporation - Official website of CF Hub
+                Corporation.
+              </Paragraph>
+            </Col>
+          </Row>
+        </div>
+      </div>
+    </footer>
+  );
 };
 
 export default Footer;
