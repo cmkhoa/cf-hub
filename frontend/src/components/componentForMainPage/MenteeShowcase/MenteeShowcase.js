@@ -12,103 +12,148 @@ const { Meta } = Card;
 const PLACEHOLDER = "/assets/blank-profile-picture.jpg";
 
 const MenteeShowcase = () => {
-	const router = useRouter();
-	const [mentees, setMentees] = useState([]);
+  const router = useRouter();
+  const [webinars, setWebinars] = useState([]);
+  const [containerWidth, setContainerWidth] = useState(0);
+  const [slidesToShow, setSlidesToShow] = useState(4);
 
-	useEffect(() => {
-		let ignore = false;
-		(async () => {
-			try {
-				const res = await fetch(API_ENDPOINTS.mentees.list, { next: { revalidate: 60 } });
-				const data = await res.json();
-				if (!ignore && Array.isArray(data)) setMentees(data);
-			} catch (err) {
-				console.error("Failed to load mentees", err);
-			}
-		})();
-		return () => {
-			ignore = true;
-		};
-	}, []);
+  useEffect(() => {
+    let ignore = false;
+    (async () => {
+      try {
+        const res = await fetch(API_ENDPOINTS.webinars.list, {
+          next: { revalidate: 60 },
+        });
+        const data = await res.json();
+        if (!ignore && Array.isArray(data)) setWebinars(data);
+      } catch (err) {
+        console.error("Failed to load webinars", err);
+      }
+    })();
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
-	const imgSrc = (url) => {
-		if (!url) return PLACEHOLDER;
-		if (url.startsWith("http://") || url.startsWith("https://")) return url;
-		return url.startsWith("/") ? url : `/uploads/${url}`;
-	};
-	return (
-		<div className="mentor-showcase-container">
-			<Title
-				level={2}
-				className="section-title"
-				style={{
-					fontWeight: 700,
-					fontSize: 40,
-					lineHeight: "65.35px",
-					textAlign: "center",
-				}}
-			>
-				Students of Career Foundation Hub
-			</Title>
-			{/* <AntText className="sub-title">Software Engineer and Data</AntText> */}
+  // Measure container width to decide slidesToShow and whether carousel is needed
+  useEffect(() => {
+    const onResize = () => {
+      const el = document.querySelector(
+        ".mentor-showcase-container .carousel-measure"
+      );
+      const w = el
+        ? el.clientWidth
+        : typeof window !== "undefined"
+        ? window.innerWidth
+        : 0;
+      setContainerWidth(w);
+      if (w >= 1200) setSlidesToShow(4);
+      else if (w >= 992) setSlidesToShow(3);
+      else if (w >= 768) setSlidesToShow(2);
+      else setSlidesToShow(1);
+    };
+    onResize();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
 
-			<Carousel
-				arrows
-				dots={false}
-				infinite
-				slidesToShow={4}
-				slidesToScroll={1}
-				responsive={[
-					{ breakpoint: 1200, settings: { slidesToShow: 3 } },
-					{ breakpoint: 992, settings: { slidesToShow: 2 } },
-					{ breakpoint: 768, settings: { slidesToShow: 1 } },
-				]}
-			>
-				{(mentees.length ? mentees : Array.from({ length: 5 }, (_, i) => ({
-					name: "Mentee",
-					image: PLACEHOLDER,
-					company: "",
-					position: "",
-					location: "",
-				}))).map((mentee, index) => (
-					<div key={index} className="carousel-slide">
-						<Card hoverable className="mentor-card">
-							<div className="mentor-image-container">
-								<Image
-									src={imgSrc(mentee.image)}
-									alt={mentee.name}
-									width={100}
-									height={100}
-									className="mentor-image"
-									style={{ borderRadius: "50%" }}
-								/>
-							</div>
-							<Meta
-								title={mentee.name}
-								description={
-									<div>
-										<div className="mentor-company">{mentee.company}</div>
-										<div className="mentor-position">{mentee.position}</div>
-										<div className="mentor-location">{mentee.location}</div>
-									</div>
-								}
-								className="mentor-meta"
-							/>
-						</Card>
-					</div>
-				))}
-			</Carousel>
+  const imgSrc = (url) => {
+    if (!url) return PLACEHOLDER;
+    if (url.startsWith("http://") || url.startsWith("https://")) return url;
+    return url.startsWith("/") ? url : `/uploads/${url}`;
+  };
+  return (
+    <div className="mentor-showcase-container">
+      <Title
+        level={2}
+        className="section-title"
+        style={{
+          fontWeight: 700,
+          fontSize: 40,
+          lineHeight: "65.35px",
+          textAlign: "center",
+        }}
+      >
+        Webinars & Workshops
+      </Title>
+      {/* <AntText className="sub-title">Software Engineer and Data</AntText> */}
 
-			<div className="call-to-action">
-				<button
-					className="custom-button"
-					onClick={() => router.push("/results")}
-				>
-					Learn More
-				</button>
-			</div>
-		</div>
-	);
+      {/* element used to measure container width */}
+      <div className="carousel-measure" style={{ width: "100%" }} />
+      {(() => {
+        const items = webinars.length ? webinars : Array.from({ length: 0 });
+        const needsCarousel = items.length > slidesToShow;
+        const renderCard = (webinar, index) => (
+          <div key={index} className="carousel-slide">
+            <Card hoverable className="mentor-card">
+              <div className="mentor-image-container">
+                <Image
+                  src={imgSrc(webinar.image)}
+                  alt={webinar.title}
+                  width={100}
+                  height={100}
+                  className="mentor-image"
+                  style={{ borderRadius: "50%" }}
+                />
+              </div>
+              <Meta
+                title={webinar.title}
+                description={
+                  <div>
+                    <div className="mentor-company">
+                      {webinar.speakerName}
+                      {webinar.speakerTitle ? ` — ${webinar.speakerTitle}` : ""}
+                    </div>
+                    <div className="mentor-position">{webinar.description}</div>
+                    <div className="mentor-location">
+                      {webinar.date
+                        ? new Date(webinar.date).toLocaleDateString()
+                        : ""}
+                    </div>
+                  </div>
+                }
+                className="mentor-meta"
+              />
+            </Card>
+          </div>
+        );
+        if (!needsCarousel) {
+          return <div className="webinar-list">{items.map(renderCard)}</div>;
+        }
+        return (
+          <Carousel
+            arrows
+            dots={false}
+            infinite
+            slidesToShow={slidesToShow}
+            slidesToScroll={1}
+            responsive={[
+              {
+                breakpoint: 1200,
+                settings: { slidesToShow: Math.min(3, items.length) },
+              },
+              {
+                breakpoint: 992,
+                settings: { slidesToShow: Math.min(2, items.length) },
+              },
+              { breakpoint: 768, settings: { slidesToShow: 1 } },
+            ]}
+          >
+            {items.map(renderCard)}
+          </Carousel>
+        );
+      })()}
+
+      <div className="call-to-action">
+        <button
+          className="custom-button"
+          onClick={() => router.push("/blog?category=webinars-workshops")}
+        >
+          See All Events
+        </button>
+      </div>
+    </div>
+  );
 };
 
 export default MenteeShowcase;
