@@ -94,6 +94,7 @@ node backend/scripts/createAdmin.js user@example.com --create
 
 - All API calls derive from `NEXT_PUBLIC_API_URL`.
 - Paste cover image: On `/admin`, when creating/editing a post you can Ctrl/Cmd+V an image from clipboard.
+- Rich text editing: Post content now uses a Quill (react-quill) editor and is stored as sanitized HTML. Legacy markdown/plain text posts continue to render; new edits produce HTML.
 - Inline edit mode: Clicking Edit loads post data into the create form; Save issues PUT; Cancel resets.
 - News & Career Stories sections now query with `postType` filters, reducing client filtering.
 - Next/Image remotePatterns / domains must include backend host and any R2 public host.
@@ -208,6 +209,9 @@ Security notes:
   - GOOGLE_OAUTH_CLIENT_SECRET
   - GOOGLE_OAUTH_REDIRECT_URL (must exactly match https://<backend-domain>/api/google-oauth)
   - Scopes currently: https://www.googleapis.com/auth/drive.readonly
+
+### Content HTML & Sanitization
+The backend now sanitizes incoming HTML (`sanitize-html`) allowing typical formatting tags (headings, lists, bold/italics, code, images, links) and strips unsafe script/event attributes. Links are forced to include `rel="noopener noreferrer"`. Reading time still derives from the HTML text content.
 
 ### Admin Promotion (New UI Feature)
 Existing admins can now promote another user directly in the `/admin` dashboard:

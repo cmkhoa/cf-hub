@@ -1,4 +1,6 @@
 "use client";
+import dynamic from 'next/dynamic';
+const RichTextEditor = dynamic(() => import('@/components/admin/RichTextEditor'), { ssr: false });
 import React, { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/authContext/authContext";
@@ -256,8 +258,18 @@ export default function AdminDashboard() {
   const onCreate = async (values) => {
     setCreateLoading(true);
     try {
+      // Determine postType: if editing keep original; else from active section (success) or default blog
+      const inferredType = isEditing && editingPost
+        ? (editingPost.postType || 'blog')
+        : (activeSection === 'success' ? 'success' : 'blog');
+      // Frontend enforcement: blog posts must have category
+      if (inferredType === 'blog' && !values.category) {
+        setCreateLoading(false);
+        message.error('Category is required for blog posts');
+        return;
+      }
       const body = {
-        postType: values.postType || "blog",
+        postType: inferredType,
         title: values.title,
         content: values.content,
         excerpt: values.excerpt || "",
@@ -557,7 +569,6 @@ export default function AdminDashboard() {
     // no separate edit cover buffer; using coverBase64 inline
     // Populate the main form for inline editing
     form.setFieldsValue({
-      postType: post.postType || "blog",
       title: post.title,
       excerpt: post.excerpt,
       content: post.content,
@@ -756,7 +767,7 @@ export default function AdminDashboard() {
   const handleNavClick = (e) => setNavCurrent(e.key);
 
   return (
-    <div style={{ overflowX: "hidden", width: "100%" }}>
+    <Layout style={{ overflowX: "hidden", width: "100%" }}>
       <HeaderComponent current={navCurrent} handleClick={handleNavClick} />
       <Layout style={{ minHeight: "100vh" }}>
         <Sider breakpoint="lg" collapsedWidth="0">
@@ -829,20 +840,7 @@ export default function AdminDashboard() {
                     onFinish={onCreate}
                     disabled={createLoading}
                   >
-                    <Form.Item
-                      name="postType"
-                      label="Post Type"
-                      initialValue="blog"
-                      rules={[{ required: true }]}
-                    >
-                      <Select
-                        options={[
-                          { value: "blog", label: "Blog Post" },
-                          { value: "success", label: "Success Story" },
-                        ]}
-                        style={{ maxWidth: 240 }}
-                      />
-                    </Form.Item>
+                    {/* Post Type selector removed: menu already chooses context */}
                     <Form.Item
                       name="title"
                       label="Title"
@@ -850,7 +848,11 @@ export default function AdminDashboard() {
                     >
                       <Input placeholder="Title" />
                     </Form.Item>
-                    <Form.Item name="category" label="Category">
+                    <Form.Item
+                      name="category"
+                      label="Category"
+                      rules={[{ required: true, message: 'Category required for blog posts' }]}
+                    >
                       <Select
                         placeholder="Select category"
                         options={PRESET_CATEGORIES.map((c) => ({
@@ -1016,22 +1018,21 @@ export default function AdminDashboard() {
                         {
                           validator: (_, value) => {
                             if (!value) return Promise.resolve();
-                            const len = String(value).trim().length;
-                            return len >= 20
+                            const stripped = String(value).replace(/<[^>]+>/g, '').trim();
+                            return stripped.length >= 20
                               ? Promise.resolve()
-                              : Promise.reject(
-                                  new Error(
-                                    "Content must be at least 20 characters"
-                                  )
-                                );
+                              : Promise.reject(new Error('Content must be at least 20 characters (min ~20 plain text chars)'));
                           },
                         },
                       ]}
                     >
-                      <Input.TextArea
-                        rows={8}
-                        placeholder="Markdown or plain text content"
-                      />
+                      <div style={{ border: '1px solid #d9d9d9', borderRadius: 6 }}>
+                        <RichTextEditor
+                          value={form.getFieldValue('content')}
+                          onChange={(html) => form.setFieldsValue({ content: html })}
+                          placeholder="Write your post... (formatted HTML will be stored)"
+                        />
+                      </div>
                     </Form.Item>
                     <Form.Item
                       name="featured"
@@ -1612,22 +1613,21 @@ export default function AdminDashboard() {
                         {
                           validator: (_, value) => {
                             if (!value) return Promise.resolve();
-                            const len = String(value).trim().length;
-                            return len >= 20
+                            const stripped = String(value).replace(/<[^>]+>/g, '').trim();
+                            return stripped.length >= 20
                               ? Promise.resolve()
-                              : Promise.reject(
-                                  new Error(
-                                    "Content must be at least 20 characters"
-                                  )
-                                );
+                              : Promise.reject(new Error('Content must be at least 20 characters (min ~20 plain text chars)'));
                           },
                         },
                       ]}
                     >
-                      <Input.TextArea
-                        rows={8}
-                        placeholder="Markdown or plain text content"
-                      />
+                      <div style={{ border: '1px solid #d9d9d9', borderRadius: 6 }}>
+                        <RichTextEditor
+                          value={form.getFieldValue('content')}
+                          onChange={(html) => form.setFieldsValue({ content: html })}
+                          placeholder="Write your post... (formatted HTML will be stored)"
+                        />
+                      </div>
                     </Form.Item>
                     <Form.Item
                       name="featured"
@@ -1907,6 +1907,6 @@ export default function AdminDashboard() {
           </Content>
         </Layout>
       </Layout>
-    </div>
+    </Layout>
   );
 }
