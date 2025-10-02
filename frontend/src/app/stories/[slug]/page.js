@@ -1,5 +1,4 @@
 "use client";
-// Force dynamic rendering so Netlify/Next won't attempt static exporting for this dynamic slug page
 export const dynamic = 'force-dynamic';
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
@@ -10,7 +9,7 @@ import PostContent from '@/components/post/PostContent';
 
 const { Content } = Layout;
 
-export default function BlogPostDetail(){
+export default function StoryDetail(){
   const { slug } = useParams();
   const router = useRouter();
   const [current, setCurrent] = useState('blog');
@@ -26,10 +25,10 @@ export default function BlogPostDetail(){
         const base = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8008/api';
         const res = await fetch(`${base}/blog/posts/slug/${slug}`);
         if(res.status === 404){ setError('Not found'); return; }
-        if(!res.ok) throw new Error('Failed to fetch post');
-  const data = await res.json();
-  if(data.postType !== 'blog'){ setError('Not found'); return; }
-  setPost(data);
+        if(!res.ok) throw new Error('Failed to fetch story');
+        const data = await res.json();
+        if(data.postType !== 'success'){ setError('Not found'); return; }
+        setPost(data);
       } catch(err){ setError(err.message); }
       finally { setLoading(false); }
     }

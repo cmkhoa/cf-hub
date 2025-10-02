@@ -255,3 +255,26 @@
 /* Ensure excerpt colors persist */
 .success-story-section .post-excerpt,
 .success-story-section .small-excerpt { color:#444d5a !important; }
+
+/* Blue button styling for stories CTA */
+.success-story-section .view-all-btn-stories {
+  background: var(--primary-blue) !important;
+  border-color: var(--primary-blue) !important;
+  color: #fff !important;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+  transition: background .25s ease, box-shadow .25s ease;
+}
+.success-story-section .view-all-btn-stories:hover,
+.success-story-section .view-all-btn-stories:focus {
+  background: #0b4fa8 !important; /* slightly darker */
+  border-color: #0b4fa8 !important;
+  color:#fff !important;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.18);
+}
+.success-story-section .view-all-btn-stories:active {
+  background: #093d82 !important;
+  border-color: #093d82 !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2) inset;
+}

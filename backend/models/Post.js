@@ -46,7 +46,12 @@ postSchema.pre("validate", function (next) {
     this.slug = slugify(this.title, { lower: true, strict: true });
   }
   if (this.isModified("content")) {
-    const words = this.content ? this.content.split(/\s+/).length : 0;
+    let text = this.content || '';
+    // Strip HTML tags if present to approximate plain word count
+    text = text.replace(/<style[\s\S]*?<\/style>/gi,'')
+               .replace(/<script[\s\S]*?<\/script>/gi,'')
+               .replace(/<[^>]+>/g,' ');
+    const words = text.trim() ? text.trim().split(/\s+/).length : 0;
     this.readingTimeMins = Math.max(1, Math.round(words / 200));
   }
   if (

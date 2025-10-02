@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Card, Row, Col, Spin } from "antd";
+import { Typography, Card, Row, Col, Spin, Button } from "antd";
+import { ArrowRightOutlined } from '@ant-design/icons';
+import Link from 'next/link';
 import { MoreOutlined } from "@ant-design/icons";
 import "./CareerStories.css";
 import { API_ENDPOINTS } from "@/config/api";
@@ -89,104 +91,115 @@ const CareerStories = () => {
           </div>
         )}
         {!loading && (
-          <Row gutter={[24, 24]}>
-            {categoryColumns.map((column, i) => (
-              <Col xs={24} md={8} key={i}>
-                <div className="category-column">
-                  <div className="category-header">
-                    <Title level={4} className="category-title">
-                      {column.title}
-                    </Title>
-                    <MoreOutlined
-                      className="more-icon"
-                      onClick={() => {
-                        window.location.href = `/blog?category=${encodeURIComponent(
-                          column.slug
-                        )}`;
-                      }}
-                    />
-                  </div>
-                  <div className="posts-container redesigned">
-                    {column.stories && column.stories.length > 0 ? (
-                      (() => {
-                        const story = column.stories[0];
-                        return (
-                          <Card
-                            key={story._id}
-                            className={`post-card small-card ${
-                              story.featured ? "featured-post" : "regular-post"
-                            }`}
-                            cover={
-                              <div
-                                className="post-image-container small-image"
-                                onClick={() =>
-                                  (window.location.href = `/blog/${story.slug}`)
-                                }
-                                style={{ cursor: "pointer" }}
-                              >
-                                <img
-                                  src={
-                                    story.coverImageData
-                                      ? `${API_ENDPOINTS.blog.posts}/${story._id}/cover`
-                                      : "/assets/blank-profile-picture.jpg"
+          <>
+            <Row gutter={[24, 24]}>
+              {categoryColumns.map((column, i) => (
+                <Col xs={24} md={8} key={i}>
+                  <div className="category-column">
+                    <div className="category-header">
+                      <Title level={4} className="category-title">
+                        {column.title}
+                      </Title>
+                      <MoreOutlined
+                        className="more-icon"
+                        onClick={() => {
+                          window.location.href = `/blog?category=${encodeURIComponent(
+                            column.slug
+                          )}`;
+                        }}
+                      />
+                    </div>
+                    <div className="posts-container redesigned">
+                      {column.stories && column.stories.length > 0 ? (
+                        (() => {
+                          const story = column.stories[0];
+                          return (
+                            <Card
+                              key={story._id}
+                              className={`post-card small-card ${
+                                story.featured ? "featured-post" : "regular-post"
+                              }`}
+                              cover={
+                                <div
+                                  className="post-image-container small-image"
+                                  onClick={() =>
+                                    (window.location.href = `/stories/${story.slug}`)
                                   }
-                                  alt={story.title}
-                                  className="post-image"
-                                />
-                                <div className="post-tag">
-                                  {column.title.toUpperCase()}
+                                  style={{ cursor: "pointer" }}
+                                >
+                                  <img
+                                    src={
+                                      story.coverImageData
+                                        ? `${API_ENDPOINTS.blog.posts}/${story._id}/cover`
+                                        : "/assets/blank-profile-picture.jpg"
+                                    }
+                                    alt={story.title}
+                                    className="post-image"
+                                  />
                                 </div>
-                              </div>
-                            }
-                            onClick={() =>
-                              (window.location.href = `/blog/${story.slug}`)
-                            }
-                            style={{ cursor: "pointer" }}
-                          >
-                            <div className="post-content small-content">
-                              <Title
-                                level={4}
-                                className="post-title small-title"
-                              >
-                                {story.title}
-                              </Title>
-                              <div className="post-meta small-meta">
-                                {story.author?.name && (
-                                  <AntText className="author">
-                                    BY {story.author.name.toUpperCase()}
+                              }
+                              onClick={() =>
+                                (window.location.href = `/stories/${story.slug}`)
+                              }
+                              style={{ cursor: "pointer" }}
+                            >
+                              <div className="post-content small-content">
+                                <Title
+                                  level={4}
+                                  className="post-title small-title"
+                                >
+                                  {story.title}
+                                </Title>
+                                <div className="post-meta small-meta">
+                                  {story.author?.name && (
+                                    <AntText className="author">
+                                      BY {story.author.name.toUpperCase()}
+                                    </AntText>
+                                  )}
+                                  <div className="meta-dot"></div>
+                                  <AntText className="date">
+                                    {story.publishedAt
+                                      ? new Date(
+                                          story.publishedAt
+                                        ).toLocaleDateString()
+                                      : ""}
+                                  </AntText>
+                                </div>
+                                {story.excerpt && (
+                                  <AntText className="post-excerpt small-excerpt">
+                                    {story.excerpt}
                                   </AntText>
                                 )}
-                                <div className="meta-dot"></div>
-                                <AntText className="date">
-                                  {story.publishedAt
-                                    ? new Date(
-                                        story.publishedAt
-                                      ).toLocaleDateString()
-                                    : ""}
-                                </AntText>
                               </div>
-                              {story.excerpt && (
-                                <AntText className="post-excerpt small-excerpt">
-                                  {story.excerpt}
-                                </AntText>
-                              )}
-                            </div>
-                          </Card>
-                        );
-                      })()
-                    ) : (
-                      <div
-                        className="no-posts"
-                        style={{ color: "#777", fontSize: 12 }}
-                      >
-                        No posts yet
-                      </div>
-                    )}
+                            </Card>
+                          );
+                        })()
+                      ) : (
+                        <div
+                          className="no-posts"
+                          style={{ color: "#777", fontSize: 12 }}
+                        >
+                          No posts yet
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </Col>
-            ))}
-          </Row>
+                </Col>
+              ))}
+            </Row>
+            <div className="view-all-section" style={{ marginTop:32 }}>
+              <Link href="/stories" legacyBehavior>
+                <Button
+                  type="primary"
+                  size="large"
+                  className="view-all-btn view-all-btn-stories"
+                  icon={<ArrowRightOutlined />}
+                >
+                  View All Stories
+                </Button>
+              </Link>
+            </div>
+          </>
         )}
       </div>
     </section>

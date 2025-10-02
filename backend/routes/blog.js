@@ -6,6 +6,7 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 const { body, query, param, validationResult } = require("express-validator");
+const { sanitizeContent } = require('../utils/sanitizeContent');
 
 // Ensure uploads dir exists
 const uploadDir = path.join(__dirname, "..", "uploads");
@@ -136,7 +137,7 @@ router.post(
   [
     body("title").trim().isLength({ min: 3, max: 160 }),
     body("excerpt").optional().isLength({ max: 400 }),
-    body("content").isString().isLength({ min: 20 }),
+  body("content").isString().isLength({ min: 20 }),
     body("category").optional().isString(),
     body("tags").optional().isArray({ max: 20 }),
     body("featured").optional().isBoolean(),
@@ -147,6 +148,11 @@ router.post(
       if (!errors.isEmpty())
         return res.status(400).json({ errors: errors.array() });
       const data = req.body;
+      if(data.content){ data.content = sanitizeContent(data.content); }
+      // Enforce category presence for blog posts
+      if ((data.postType === undefined || data.postType === 'blog') && !data.category) {
+        return res.status(400).json({ message: 'Category is required for blog posts' });
+      }
       let coverFields = {};
       if (data.coverImageBase64) {
         // Expected format: data:<mime>;base64,<payload> OR just base64
@@ -258,7 +264,7 @@ router.put(
     param("id").isMongoId(),
     body("title").optional().isString().isLength({ min: 3, max: 160 }),
     body("excerpt").optional().isString().isLength({ max: 400 }),
-    body("content").optional().isString().isLength({ min: 20 }),
+  body("content").optional().isString().isLength({ min: 20 }),
     body("category").optional().isString(),
     body("tags").optional().isArray({ max: 20 }),
     body("featured").optional().isBoolean(),
@@ -278,6 +284,14 @@ router.put(
       if (!isOwner && !isAdmin)
         return res.status(403).json({ message: "Not allowed" });
       const data = req.body || {};
+      if(data.content){ data.content = sanitizeContent(data.content); }
+      // If this is (or will remain) a blog post, ensure category not removed
+      const resultingType = data.postType || post.postType || 'blog';
+      if (resultingType === 'blog') {
+        if (data.category === null || data.category === '') {
+          return res.status(400).json({ message: 'Category cannot be removed from a blog post' });
+        }
+      }
       // Handle cover image replacement when provided
       if (data.coverImageBase64) {
         let base64 = data.coverImageBase64;

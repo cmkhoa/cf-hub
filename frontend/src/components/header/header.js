@@ -150,12 +150,12 @@ const HeaderComponent = ({ current, handleClick }) => {
 							<Menu.Item key="news">
 								<Link href="/blog">BLOGS</Link>
 							</Menu.Item>
-							<Menu.Item key="success">
-								<a href="/#success">SUCCESS</a>
+							<Menu.Item key="stories">
+								<Link href="/stories">STORIES</Link>
 							</Menu.Item>
-							<Menu.Item key="features">
+							{/* <Menu.Item key="features">
 								<a href="/#features">FEATURES</a>
-							</Menu.Item>
+							</Menu.Item> */}
 						</Menu>
 						{/* <div className="nav-dropdowns inline">
 							<Dropdown

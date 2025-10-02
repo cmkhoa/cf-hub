@@ -2,7 +2,8 @@
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Input } from 'antd';
-import { Layout, Pagination, Select, Tag, Space, Button, Radio, Tooltip } from "antd";
+import { Layout, Pagination, Select, Tag, Space, Button, Radio, Tooltip, Segmented } from "antd";
+import PostCard from '@/components/post/PostCard';
 // import MentorshipContentLayout from "@/components/componentForBlogPage/MentorshipContentLayout/MentorshipContentLayout";
 import HeaderComponent from "@/components/header/header";
 import FooterComponent from "@/components/footer/Footer";
@@ -42,6 +43,7 @@ function BlogPageInner() {
   const [tagsMode, setTagsMode] = useState('any');
   const [searchQuery, setSearchQuery] = useState('');
   const pageSize = 10;
+  const [viewMode, setViewMode] = useState('card'); // 'card' | 'row'
 
   const load = async (p=1) => {
     try {
@@ -54,7 +56,8 @@ function BlogPageInner() {
   if(searchQuery.trim()) params.set('q', searchQuery.trim());
   if(selectedCategories.length > 0){ params.set('categories', selectedCategories.join(',')); }
       if(selectedTags.length){ params.set('tags', selectedTags.join(',')); params.set('tagsMode', tagsMode); }
-      const res = await fetch(`${base}/blog/posts?${params.toString()}`);
+  params.set('postType','blog');
+  const res = await fetch(`${base}/blog/posts?${params.toString()}`);
       if(!res.ok) throw new Error('Failed to fetch posts');
       const data = await res.json();
       setPosts(data.items || []);
@@ -103,7 +106,10 @@ function BlogPageInner() {
       <HeaderComponent current={current} handleClick={handleClick} />
       <Content style={{ minHeight: '60vh' }}>
         <div style={{ maxWidth: 1100, margin: '40px auto', padding: '0 24px' }}>
-          <h1 style={{ fontSize: 32, marginBottom: 24 }}>All Articles</h1>
+          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', gap:16, flexWrap:'wrap', marginBottom:24 }}>
+            <h1 style={{ fontSize: 32, margin:0 }}>Blog Articles</h1>
+            <Segmented size="middle" value={viewMode} onChange={setViewMode} options={[{label:'Cards', value:'card'},{ label:'Rows', value:'row'}]} />
+          </div>
           <div style={{ marginBottom:24, background:'#fff', padding:16, border:'1px solid #eee', borderRadius:8 }}>
             <Space direction="vertical" style={{width:'100%'}} size="small">
               <div style={{ display:'flex', flexWrap:'wrap', gap:16 }}>
@@ -173,18 +179,21 @@ function BlogPageInner() {
           {loading && <p>Loading articles...</p>}
           {error && <p style={{ color:'red' }}>Error: {error}</p>}
           {!loading && !error && posts.length === 0 && <p>No articles yet.</p>}
-          <div style={{ display:'grid', gap:24, gridTemplateColumns:'repeat(auto-fill, minmax(250px,1fr))' }}>
-            {posts.map(p => (
-              <article key={p._id} style={{ background:'#fff', border:'1px solid #eee', borderRadius:8, padding:16, display:'flex', flexDirection:'column', cursor:'pointer' }} onClick={()=> window.location.href = `/blog/${p.slug}` }>
-                <h3 style={{ marginTop:0, fontSize:18 }}>{p.title}</h3>
-                <p style={{ margin:'8px 0', color:'#555', fontSize:14 }}>{p.excerpt || (p.content?.slice(0,120)+'...')}</p>
-                <div style={{ marginTop:'auto', fontSize:12, color:'#888' }}>
-                  <span>{p.publishedAt ? new Date(p.publishedAt).toLocaleDateString() : ''}</span>
-                  {p.readingTimeMins ? <span> · {p.readingTimeMins} min read</span> : null}
-                </div>
-              </article>
-            ))}
-          </div>
+          {posts.length > 0 && (
+            viewMode === 'card' ? (
+              <div style={{ display:'grid', gap:24, gridTemplateColumns:'repeat(auto-fill, minmax(250px,1fr))' }}>
+                {posts.map(p => (
+                  <PostCard key={p._id} post={p} layout='card' onClick={()=> window.location.href = `/blog/${p.slug}`} />
+                ))}
+              </div>
+            ) : (
+              <div style={{ display:'flex', flexDirection:'column', gap:16 }}>
+                {posts.map(p => (
+                  <PostCard key={p._id} post={p} layout='row' onClick={()=> window.location.href = `/blog/${p.slug}`} />
+                ))}
+              </div>
+            )
+          )}
           {total > pageSize && (
             <div style={{ marginTop:32, textAlign:'center' }}>
               <Pagination current={page} pageSize={pageSize} total={total} onChange={setPage} showSizeChanger={false} />
