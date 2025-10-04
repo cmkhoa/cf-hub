@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
-import OpenAI from "openai";
 import PromptSuggestionsRow from "./PromptSuggestionsRow.js";
 import LoadingBubble from "./LoadingBubble.js";
 import {
@@ -10,6 +9,7 @@ import {
 } from "@ant-design/icons";
 import "./Chatbot.css";
 import { useAuth } from "@/contexts/authContext/authContext";
+import ChatService from "@/services/chatService";
 
 const Chatbot = () => {
 	const [input, setInput] = useState("");
@@ -18,9 +18,19 @@ const Chatbot = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const chatContainerRef = useRef(null);
 	const { currentUser } = useAuth();
+	const chatService = new ChatService();
 
 	const handleInputChange = (e) => {
 		setInput(e.target.value);
+	};
+
+	const handleSuggestionClick = (suggestion) => {
+		setInput(suggestion);
+		// Focus the input after setting the suggestion
+		const input = document.querySelector(".chat-input");
+		if (input) {
+			input.focus();
+		}
 	};
 
 	const handleSubmit = async (e) => {
@@ -34,25 +44,9 @@ const Chatbot = () => {
 		setMessages((prev) => [...prev, { role: "user", content: input }]);
 
 		try {
-			const response = await fetch("/api/chat/", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					messages: [...messages, { role: "user", content: input }],
-				}),
-			});
+			const response = await chatService.generateResponse([...messages, { role: "user", content: input }]);
 
-			if (!response.ok) {
-				throw new Error(`HTTP error! status: ${response.status}`);
-			}
-
-			// Handle non-streaming response
-			const data = await response.json();
-
-			// Add assistant message
-			setMessages((prev) => [...prev, data]);
+			setMessages((prev) => [...prev, response]);
 
 			setInput("");
 		} catch (error) {
@@ -107,7 +101,7 @@ const Chatbot = () => {
 								</div>
 								<span className="message-time">03:52 PM</span>
 							</div>
-							<PromptSuggestionsRow />
+							<PromptSuggestionsRow onSuggestionClick={handleSuggestionClick} />
 						</>
 					) : (
 						<>
@@ -123,7 +117,7 @@ const Chatbot = () => {
 											message.role === "user" ? "user" : "assistant"
 										}`}
 									>
-										<p>{message.content}</p>
+										<p style={{color: message.role === "user" ? "#f5f5f5" : "#333"}}>{message.content}</p>
 									</div>
 									<span className="message-time">
 										{new Date().toLocaleTimeString("en-US", {
