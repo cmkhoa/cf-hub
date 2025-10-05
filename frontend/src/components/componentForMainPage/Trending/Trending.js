@@ -5,10 +5,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import './Trending.css';
 import { API_ENDPOINTS } from '@/config/api';
+import { useLang } from "@/contexts/langprov";
 
 const { Title, Paragraph } = Typography;
 
 const Trending = () => {
+  const { t } = useLang();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -36,10 +38,10 @@ const Trending = () => {
         <div className="trending-header">
           <div className="trending-title-wrapper">
             <FireOutlined className="trending-icon" />
-            <Title level={2} className="trending-title">TRENDING</Title>
+            <Title level={2} className="trending-title">{t("trending.title")}</Title>
           </div>
           <Paragraph className="trending-subtitle">
-            Discover the most popular articles and insights from our community
+            {t("trending.subtitle")}
           </Paragraph>
         </div>
 
@@ -50,9 +52,9 @@ const Trending = () => {
             <Row gutter={[48, 48]} align="middle">
               <Col xs={24} lg={12} onClick={()=> window.location.href=`/blog/${featuredPost.slug}` } style={{ cursor:'pointer' }}>
                 <div className="featured-content">
-                  <div className="featured-badge">
+                    <div className="featured-badge">
                     <FireOutlined />
-                    <span>TRENDING NOW</span>
+                      <span>{t("trending.now")}</span>
                   </div>
                   <div className="featured-category">{featuredPost.categories?.[0]?.name || 'Blog'}</div>
                   <Title level={3} className="featured-title">
@@ -68,11 +70,11 @@ const Trending = () => {
                   <div className="featured-stats">
                     <div className="stat-item">
                       <EyeOutlined />
-                      <span>{featuredPost.views || 0} views</span>
+                      <span>{featuredPost.views || 0} {t("trending.views")}</span>
                     </div>
                     <div className="stat-item">
                       <ClockCircleOutlined />
-                      <span>{featuredPost.readingTimeMins || 1} min read</span>
+                      <span>{featuredPost.readingTimeMins || 1} {t("trending.minRead")}</span>
                     </div>
                   </div>
                   {featuredPost.tags?.length > 0 && (
@@ -110,7 +112,7 @@ const Trending = () => {
                     {posts.indexOf(post) < 6 && (
                       <div className="trending-badge">
                         <FireOutlined />
-                        <span>TRENDING</span>
+                        <span>{t("trending.badge")}</span>
                       </div>
                     )}
                     <div className="category-badge">{post.categories?.[0]?.name || 'Blog'}</div>
@@ -126,14 +128,14 @@ const Trending = () => {
                       </div>
                       <div className="trending-post-date">{post.publishedAt ? new Date(post.publishedAt).toLocaleDateString() : ''}</div>
                     </div>
-                    <div className="trending-card-stats">
+                      <div className="trending-card-stats">
                       <div className="stat-item">
                         <EyeOutlined />
-                        <span>{post.views || 0}</span>
+                          <span>{post.views || 0}</span>
                       </div>
                       <div className="stat-item">
                         <ClockCircleOutlined />
-                        <span>{post.readingTimeMins || 1} min</span>
+                          <span>{post.readingTimeMins || 1} {t("trending.min")}</span>
                       </div>
                     </div>
                     <div className="trending-card-tags">
@@ -152,7 +154,7 @@ const Trending = () => {
         <div className="trending-actions">
           <Link href="/blog">
             <button className="view-all-trending-btn">
-              View All Trending Posts
+              {t("trending.viewAll")}
               <FireOutlined />
             </button>
           </Link>

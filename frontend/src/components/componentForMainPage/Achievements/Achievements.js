@@ -6,6 +6,7 @@ import {
 	GlobalOutlined,
 } from "@ant-design/icons";
 import "./Achievements.css";
+import { useLang } from "@/contexts/langprov";
 
 const AnimatedNumber = ({ value, hasAnimated }) => {
 	const [count, setCount] = useState(hasAnimated ? value : 0);
@@ -38,7 +39,8 @@ const AnimatedNumber = ({ value, hasAnimated }) => {
 };
 
 const Achievements = () => {
-	const [hasAnimated, setHasAnimated] = useState(false);
+    const { t } = useLang();
+    const [hasAnimated, setHasAnimated] = useState(false);
 	const sectionRef = useRef(null);
 
 	useEffect(() => {
@@ -73,7 +75,7 @@ const Achievements = () => {
 	return (
 		<div className="achievements-container" ref={sectionRef}>
 			<div className="achievements-content">
-				<h2 className="achievements-title">Achievements</h2>
+				<h2 className="achievements-title">{t("achievements.title")}</h2>
 
 				<div className="achievements-grid">
 					<div className="achievement-item">
@@ -82,7 +84,7 @@ const Achievements = () => {
 							<AnimatedNumber value={500} hasAnimated={hasAnimated} />
 							<span className="achievement-plus">+</span>
 						</h3>
-						<p className="achievement-label">Community members</p>
+						<p className="achievement-label">{t("achievements.members")}</p>
 					</div>
 
 					<div className="achievement-item">
@@ -91,7 +93,7 @@ const Achievements = () => {
 							<AnimatedNumber value={100} hasAnimated={hasAnimated} />
 							<span className="achievement-plus">+</span>
 						</h3>
-						<p className="achievement-label">Professionals across the U.S.</p>
+						<p className="achievement-label">{t("achievements.prosUS")}</p>
 					</div>
 
 					<div className="achievement-item">
@@ -100,35 +102,23 @@ const Achievements = () => {
 							<AnimatedNumber value={15} hasAnimated={hasAnimated} />
 							<span className="achievement-plus">+</span>
 						</h3>
-						<p className="achievement-label">Years of Experience</p>
+						<p className="achievement-label">{t("achievements.years")}</p>
 					</div>
 				</div>
 
 				<div className="achievements-info">
 					<div className="info-section">
-						<h3>Representation</h3>
-						<p>
-                            Our community includes over 500 members from diverse backgrounds
-                            across various industries and organizations, and we make sure 
-                            that everybody is welcomed.
-						</p>
+						<h3>{t("achievements.repTitle")}</h3>
+						<p>{t("achievements.repBody")}</p>
 					</div>
 
 					<div className="info-section">
-						<h3>Mentor Network</h3>
-						<p>
-							Our platform is powered by a diverse network of 100+ experienced
-							professionals across the United States, bringing expertise from various
-							industries and backgrounds.
-						</p>
+						<h3>{t("achievements.mentorTitle")}</h3>
+						<p>{t("achievements.mentorBody")}</p>
 					</div>
 					<div className="info-section">
-						<h3>Industry Experience</h3>
-						<p>
-							With over 15+ years of combined industry experience, our mentors
-							provide deep insights and practical guidance based on real-world
-							expertise.
-						</p>
+						<h3>{t("achievements.industryTitle")}</h3>
+						<p>{t("achievements.industryBody")}</p>
 					</div>
 				</div>
 			</div>

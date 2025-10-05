@@ -8,8 +8,8 @@
     "setup": "npm install && npm run install:all",
     "dev:frontend": "cd frontend && npm run dev",
     "dev:backend": "cd backend && npm run dev",
-  "build": "echo 'Use frontend/package.json build script instead'",
-  "start": "echo 'Use frontend/package.json start script instead'"
+    "build": "echo 'Use frontend/package.json build script instead'",
+    "start": "echo 'Use frontend/package.json start script instead'"
   },
   "keywords": [],
   "author": "",
@@ -18,7 +18,9 @@
   "dependencies": {
     "@datastax/astra-db-ts": "^1.5.0",
     "dotenv": "^16.4.7",
+    "express": "^5.1.0",
     "langchain": "^0.3.20",
+    "mongodb": "^6.20.0",
     "openai": "^4.91.1",
     "puppeteer": "^24.6.0"
   },

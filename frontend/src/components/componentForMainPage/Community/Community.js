@@ -2,10 +2,12 @@ import React from "react";
 import { Row, Col, Typography } from "antd";
 import "./Community.css";
 import Image from "next/image";
+import { useLang } from "@/contexts/langprov";
 
 const { Text } = Typography;
 
 const Community = () => {
+	const { t } = useLang();
 	const handleClick = (url) => {
 		window.open(url, "_blank"); // Opens the link in a new tab
 	};
@@ -13,7 +15,7 @@ const Community = () => {
 	return (
 		<div className="community-container">
 			<div className="community-title-wrapper">
-				<Text className="community-title">CF Hub Community</Text>
+				<Text className="community-title">{t("community.title")}</Text>
 			</div>
 			<Row gutter={[16, 16]} justify="center" className="community-row">
 				<Col xs={24} sm={12} md={6} lg={6} className="image-col">
@@ -30,7 +32,7 @@ const Community = () => {
 							width={100}
 							height={100}
 						/>
-						<Text className="image-description">Group TECH</Text>
+						<Text className="image-description">{t("community.groupTech")}</Text>
 					</div>
 				</Col>
 				<Col xs={24} sm={12} md={6} lg={6} className="image-col">
@@ -47,7 +49,7 @@ const Community = () => {
 							width={200}
 							height={200}
 						/>
-						<Text className="image-description">Instagram TECH</Text>
+						<Text className="image-description">{t("community.instagramTech")}</Text>
 					</div>
 				</Col>
 			</Row>

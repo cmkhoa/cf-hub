@@ -2,7 +2,8 @@
 import { Layout, Row, Col, Typography, Button } from "antd";
 import { useState } from "react";
 import HeaderComponent from "@/components/header/header";
-import CareerStories from "@/components/componentForMainPage/CareerStories/CareerStories";
+import JobAppTip from "@/components/componentForMainPage/JobAppTip/JobAppTip";
+import CareerStories from "@/components/CareerStories/CareerStories";
 import Features from "@/components/componentForMainPage/Features/Features";
 import FeedbackGallery from "@/components/componentForMainPage/FeedbackGallery/FeedbackGallery";
 import MenteeShowcase from "@/components/componentForMainPage/MenteeShowcase/MenteeShowcase";
@@ -13,7 +14,7 @@ import FooterComponent from "@/components/footer/Footer";
 import Trending from "@/components/componentForMainPage/Trending/Trending";
 import Achievements from "@/components/componentForMainPage/Achievements/Achievements";
 import Image from "next/image";
-
+import CareerVis from "@/components/componentForMainPage/CareerVis/CareerVis";
 const { Header, Content } = Layout;
 const { Title } = Typography;
 
@@ -92,7 +93,9 @@ export default function Home() {
 			<HeaderComponent current={current} handleClick={handleClick} />
 			<Content>
 				<div className="site-layout-content">
-					<section id="career-stories"><CareerStories /></section>
+				<section id="career-stories"><JobAppTip /></section>
+				<section id="career-stories"><CareerStories /></section>
+					<section id="job-app"><CareerVis /></section>
 					<section id="news"><BlogGrid /></section>
 					<section id="trending"><Trending /></section>
 					<section id="hero"><HeroSection /></section>

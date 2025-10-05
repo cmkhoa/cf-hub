@@ -1,0 +1,81 @@
+{
+    "home": "TRANG CHỦ",
+    "about": "GIỚI THIỆU",
+    "blogs": "BÀI VIẾT",
+    "stories": "CÂU CHUYỆN",
+    "searchPlaceholder": "Tìm kiếm bài viết",
+    "login": "Đăng nhập",
+    "logout": "Đăng xuất",
+    "drawerTitle": "CF Hub",
+    "conference": "HỘI NGHỊ NGHỀ NGHIỆP VIỆT",
+    "videos": "VIDEO MỚI NHẤT",
+    "support": "ỦNG HỘ CHÚNG TÔI",
+  "homeHero": {
+    "eyebrow": "Career Foundation Hub",
+    "line1": "Xây nền tảng vững chắc",
+    "line2": "bắt đầu bước đầu tiên",
+    "subtext": "Tham gia cộng đồng dành riêng cho sinh viên và người đi làm Việt Nam mong muốn phát triển sự nghiệp tại Hoa Kỳ. Nhận hướng dẫn cá nhân hóa từ các chuyên gia và xây dựng mạng lưới của bạn.",
+    "tagline": "nền tảng sự nghiệp",
+    "statsAria": "Thống kê chương trình",
+    "stats": { "members": "Thành viên cộng đồng", "pros": "Chuyên gia trong ngành" },
+    "cta": "Tham gia ngay"
+  },
+  "achievements": {
+    "title": "Thành tựu",
+    "members": "Thành viên cộng đồng",
+    "prosUS": "Chuyên gia trên khắp Hoa Kỳ",
+    "years": "Năm kinh nghiệm",
+    "repTitle": "Đa dạng và đại diện",
+    "repBody": "Cộng đồng của chúng tôi có hơn 500 thành viên từ nhiều ngành nghề và tổ chức khác nhau, và mọi người đều được chào đón.",
+    "mentorTitle": "Mạng lưới Mentor",
+    "mentorBody": "Nền tảng được dẫn dắt bởi mạng lưới hơn 100 chuyên gia giàu kinh nghiệm trên khắp Hoa Kỳ, mang lại kiến thức từ nhiều lĩnh vực.",
+    "industryTitle": "Kinh nghiệm ngành",
+    "industryBody": "Với hơn 15+ năm kinh nghiệm tổng hợp, các mentor mang đến góc nhìn thực tiễn và hướng dẫn hữu ích."
+  },
+  "community": {
+    "title": "Cộng đồng CF Hub",
+    "groupTech": "Nhóm TECH",
+    "instagramTech": "Instagram TECH"
+  },
+  "careerStories": {
+    "title": "Câu chuyện nghề nghiệp",
+    "subtitle": "Những hành trình và kết quả thực tế. Xem các thành viên CF Hub chinh phục công việc mơ ước và vượt qua thử thách nghề nghiệp như thế nào.",
+    "resumeTips": "Mẹo Resume",
+    "interviewTips": "Mẹo Phỏng vấn",
+    "technicalTips": "Mẹo Kỹ thuật",
+    "noPostsYet": "Chưa có bài viết",
+    "viewAll": "Xem tất cả câu chuyện"
+  },
+  "trending": {
+    "title": "XU HƯỚNG",
+    "subtitle": "Khám phá các bài viết phổ biến và góc nhìn từ cộng đồng",
+    "now": "ĐANG HOT",
+    "badge": "XU HƯỚNG",
+    "views": "lượt xem",
+    "minRead": "phút đọc",
+    "min": "phút",
+    "viewAll": "Xem tất cả bài viết xu hướng"
+  },
+  "jobApp": {
+    "title": "Career Path Visualizer",
+    "subtitle": "Khám phá các con đường sự nghiệp khác nhau và phát hiện tiềm năng của bạn. Xem những câu chuyện thành công thực tế và tìm ra quỹ đạo sự nghiệp hoàn hảo.",
+    "choosePath": "Chọn Con Đường Của Bạn",
+    "successStories": "Câu Chuyện Thành Công",
+    "cta": {
+      "title": "Ready to Start Your Journey?",
+      "description": "Tham gia cộng đồng của chúng tôi và nhận hướng dẫn cá nhân hóa cho con đường sự nghiệp bạn đã chọn.",
+      "getStarted": "Start Your Path",
+      "learnMore": "Explore More"
+    }
+  },
+  "footer": {
+    "aboutTitle": "Về Career Foundation Hub",
+    "recentNews": "Tin mới",
+    "aboutBody1": "VNPN là mạng lưới kết nối chuyên gia Việt tại Hoa Kỳ. Sứ mệnh của VNPN là tạo cơ hội phát triển sự nghiệp cho mọi thành viên thông qua tiếp cận thông tin tuyển dụng, kiến thức chuyên môn và cố vấn từ những người đi trước.",
+    "aboutBody2": "VNPN là dự án phi lợi nhuận với sự hỗ trợ từ Hội Thanh Niên, Sinh Viên Việt Nam tại Hoa Kỳ (sinhvienusa.org) và cuộc thi VietChallenge (vietchallenge.org). Dự án hiện ở giai đoạn Beta.",
+    "followUs": "Theo dõi chúng tôi",
+    "noRecent": "Chưa có bài viết mới",
+    "copyright": "© 2025 CF Hub Corporation - Website chính thức của CF Hub Corporation."
+  }
+}
+  
