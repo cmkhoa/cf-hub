@@ -89,7 +89,7 @@ function StoriesPageInner(){
       <Content style={{ minHeight:'60vh' }}>
         <div style={{ maxWidth:1100, margin:'40px auto', padding:'0 24px' }}>
           <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', gap:16, flexWrap:'wrap', marginBottom:24 }}>
-            <h1 style={{ fontSize:32, margin:0 }}>Career Stories</h1>
+            <h1 style={{ fontSize:32, margin:0 }}>Job Application Tips</h1>
             <Segmented size='middle' value={viewMode} onChange={setViewMode} options={[{label:'Cards', value:'card'},{label:'Rows', value:'row'}]} />
           </div>
           <div style={{ marginBottom:24, background:'#fff', padding:16, border:'1px solid #eee', borderRadius:8 }}>

@@ -126,6 +126,91 @@
 	color: var(--brand-blue) !important;
 }
 
+/* Horizontal rectangular layout for webinar cards */
+.mentor-card.horizontal {
+	flex-direction: row;
+	align-items: stretch;
+	padding: 0;
+	width: 100%;
+	max-width: 950px;
+	margin: 20px auto;
+	text-align: left;
+}
+
+.mentor-image-container.horizontal {
+	flex: 0 0 260px;
+	width: 260px;
+	height: 160px;
+	margin: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+	border-top-left-radius: 10px;
+	border-bottom-left-radius: 10px;
+}
+
+.mentor-image.horizontal {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border: none;
+	border-radius: 0;
+}
+
+.mentor-text-side {
+	flex: 1;
+	padding: 18px 22px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	text-align: left;
+}
+
+.mentor-card.horizontal .mentor-meta {
+	text-align: left;
+	margin: 0;
+}
+
+.mentor-card.horizontal .mentor-company {
+	color: var(--brand-blue);
+	margin-bottom: 6px;
+}
+
+.mentor-card.horizontal .mentor-position {
+	color: #444;
+	margin-bottom: 6px;
+}
+
+.mentor-card.horizontal .mentor-location {
+	color: #888;
+}
+
+/* Container list alignment for horizontal cards */
+.webinar-list {
+	flex-direction: column;
+	align-items: center;
+}
+
+/* Carousel slide spacing */
+.carousel-slide {
+	padding: 0 8px;
+}
+
+/* Button styled to match heading color */
+.mentor-showcase-container .view-all-btn {
+	background: var(--brand-blue) !important;
+	border-color: var(--brand-blue) !important;
+	color: #fff !important;
+	font-weight: 600;
+}
+
+.mentor-showcase-container .view-all-btn:hover,
+.mentor-showcase-container .view-all-btn:focus {
+	filter: brightness(0.92);
+	color: #fff !important;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
 	.mentor-card {
@@ -142,5 +227,21 @@
 
 	.mentor-location {
 		font-size: 10px;
+	}
+
+	/* Mobile adjustments for horizontal cards */
+	.mentor-card.horizontal {
+		flex-direction: column;
+		max-width: 100%;
+	}
+
+	.mentor-image-container.horizontal {
+		width: 100%;
+		height: 200px;
+		border-radius: 10px 10px 0 0;
+	}
+
+	.mentor-text-side {
+		padding: 16px 18px 22px;
 	}
 }

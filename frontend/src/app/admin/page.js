@@ -1,6 +1,9 @@
 "use client";
-import dynamic from 'next/dynamic';
-const RichTextEditor = dynamic(() => import('@/components/admin/RichTextEditor'), { ssr: false });
+import dynamic from "next/dynamic";
+const RichTextEditor = dynamic(
+  () => import("@/components/admin/RichTextEditor"),
+  { ssr: false }
+);
 import React, { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/authContext/authContext";
@@ -259,13 +262,16 @@ export default function AdminDashboard() {
     setCreateLoading(true);
     try {
       // Determine postType: if editing keep original; else from active section (success) or default blog
-      const inferredType = isEditing && editingPost
-        ? (editingPost.postType || 'blog')
-        : (activeSection === 'success' ? 'success' : 'blog');
+      const inferredType =
+        isEditing && editingPost
+          ? editingPost.postType || "blog"
+          : activeSection === "success"
+          ? "success"
+          : "blog";
       // Frontend enforcement: blog posts must have category
-      if (inferredType === 'blog' && !values.category) {
+      if (inferredType === "blog" && !values.category) {
         setCreateLoading(false);
-        message.error('Category is required for blog posts');
+        message.error("Category is required for blog posts");
         return;
       }
       const body = {
@@ -781,7 +787,7 @@ export default function AdminDashboard() {
             onClick={(e) => setActiveSection(e.key)}
             items={[
               { key: "blogs", label: "Blog Posts" },
-              { key: "success", label: "Career Stories" },
+              { key: "success", label: "Job Application Tips" },
               { key: "applications", label: "Applications" },
               { key: "consultations", label: "Consultation Requests" },
               { key: "userSubmissions", label: "User Blog Submissions" },
@@ -851,7 +857,12 @@ export default function AdminDashboard() {
                     <Form.Item
                       name="category"
                       label="Category"
-                      rules={[{ required: true, message: 'Category required for blog posts' }]}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Category required for blog posts",
+                        },
+                      ]}
                     >
                       <Select
                         placeholder="Select category"
@@ -1018,18 +1029,28 @@ export default function AdminDashboard() {
                         {
                           validator: (_, value) => {
                             if (!value) return Promise.resolve();
-                            const stripped = String(value).replace(/<[^>]+>/g, '').trim();
+                            const stripped = String(value)
+                              .replace(/<[^>]+>/g, "")
+                              .trim();
                             return stripped.length >= 20
                               ? Promise.resolve()
-                              : Promise.reject(new Error('Content must be at least 20 characters (min ~20 plain text chars)'));
+                              : Promise.reject(
+                                  new Error(
+                                    "Content must be at least 20 characters (min ~20 plain text chars)"
+                                  )
+                                );
                           },
                         },
                       ]}
                     >
-                      <div style={{ border: '1px solid #d9d9d9', borderRadius: 6 }}>
+                      <div
+                        style={{ border: "1px solid #d9d9d9", borderRadius: 6 }}
+                      >
                         <RichTextEditor
-                          value={form.getFieldValue('content')}
-                          onChange={(html) => form.setFieldsValue({ content: html })}
+                          value={form.getFieldValue("content")}
+                          onChange={(html) =>
+                            form.setFieldsValue({ content: html })
+                          }
                           placeholder="Write your post... (formatted HTML will be stored)"
                         />
                       </div>
@@ -1505,7 +1526,7 @@ export default function AdminDashboard() {
             )}
             {activeSection === "success" && (
               <div>
-                <Title level={2}>Career Stories</Title>
+                <Title level={2}>Job Application Tips</Title>
                 <div
                   style={{
                     marginBottom: 32,
@@ -1516,7 +1537,7 @@ export default function AdminDashboard() {
                   }}
                 >
                   <Title level={4} style={{ marginTop: 0 }}>
-                    Create New Career Story
+                    Create New Job Application Tips
                   </Title>
                   <Form
                     layout="vertical"
@@ -1613,18 +1634,28 @@ export default function AdminDashboard() {
                         {
                           validator: (_, value) => {
                             if (!value) return Promise.resolve();
-                            const stripped = String(value).replace(/<[^>]+>/g, '').trim();
+                            const stripped = String(value)
+                              .replace(/<[^>]+>/g, "")
+                              .trim();
                             return stripped.length >= 20
                               ? Promise.resolve()
-                              : Promise.reject(new Error('Content must be at least 20 characters (min ~20 plain text chars)'));
+                              : Promise.reject(
+                                  new Error(
+                                    "Content must be at least 20 characters (min ~20 plain text chars)"
+                                  )
+                                );
                           },
                         },
                       ]}
                     >
-                      <div style={{ border: '1px solid #d9d9d9', borderRadius: 6 }}>
+                      <div
+                        style={{ border: "1px solid #d9d9d9", borderRadius: 6 }}
+                      >
                         <RichTextEditor
-                          value={form.getFieldValue('content')}
-                          onChange={(html) => form.setFieldsValue({ content: html })}
+                          value={form.getFieldValue("content")}
+                          onChange={(html) =>
+                            form.setFieldsValue({ content: html })
+                          }
                           placeholder="Write your post... (formatted HTML will be stored)"
                         />
                       </div>
@@ -1656,7 +1687,7 @@ export default function AdminDashboard() {
                   }}
                 >
                   <Title level={4} style={{ marginTop: 0 }}>
-                    Manage Career Stories
+                    Manage Job Application Tips
                   </Title>
                   <div style={{ overflowX: "auto" }}>
                     <Table

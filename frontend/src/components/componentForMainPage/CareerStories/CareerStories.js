@@ -78,7 +78,7 @@ const CareerStories = () => {
       <div className="container">
         <div className="success-story-header">
           <Title level={2} className="success-story-title">
-            Career Stories
+            Job Application Tips
           </Title>
           <p className="success-story-subtitle">
             Real journeys, real results. See how CF Hub members landed their
@@ -195,7 +195,7 @@ const CareerStories = () => {
                   className="view-all-btn view-all-btn-stories"
                   icon={<ArrowRightOutlined />}
                 >
-                  View All Stories
+                  View All Tips
                 </Button>
               </Link>
             </div>

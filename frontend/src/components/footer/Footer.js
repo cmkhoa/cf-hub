@@ -83,9 +83,16 @@ const Footer = () => {
             {/* Brand Section */}
             <Col xs={24} md={12} lg={12}>
               <div className="brand-section">
-                <div className="brand-logo">
-                  <div className="logo-icon">CFH</div>
-                  <span className="logo-text">CF Hub</span>
+                <div className="brand-logo single">
+                  <img
+                    src="/assets/logo.png"
+                    alt="Site Logo"
+                    className="footer-logo-img"
+                    width={56}
+                    height={56}
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </div>
                 <Paragraph className="brand-description">
                   {/* CF Hub là tổ chức phi lợi nhuận 501(c)(3) được thành lập bởi các bạn trẻ 
@@ -114,21 +121,54 @@ const Footer = () => {
                   Follow Us
                 </Title>
                 <div className="social-links">
-                  <Button
-                    type="text"
-                    icon={<FacebookOutlined />}
-                    className="social-btn facebook"
-                  />
-                  <Button
-                    type="text"
-                    icon={<LinkedinOutlined />}
-                    className="social-btn linkedin"
-                  />
-                  <Button
-                    type="text"
-                    icon={<YoutubeOutlined />}
-                    className="social-btn youtube"
-                  />
+                  <a
+                    href="https://www.facebook.com/CareerFoundationHub"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Visit our Facebook page"
+                  >
+                    <Button
+                      type="text"
+                      icon={<FacebookOutlined />}
+                      className="social-btn facebook always"
+                    />
+                  </a>
+                  {/* <a
+                    href=""
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Visit our LinkedIn page"
+                  >
+                    <Button
+                      type="text"
+                      icon={<LinkedinOutlined />}
+                      className="social-btn linkedin always"
+                    />
+                  </a> */}
+                  <a
+                    href="https://www.instagram.com/cf.hub_2025/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Visit our Instagram profile"
+                  >
+                    <Button
+                      type="text"
+                      icon={<InstagramOutlined />}
+                      className="social-btn instagram always"
+                    />
+                  </a>
+                  {/* <a
+                    href="https://www.youtube.com/@sample-channel"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Visit our YouTube channel"
+                  >
+                    <Button
+                      type="text"
+                      icon={<YoutubeOutlined />}
+                      className="social-btn youtube always"
+                    />
+                  </a> */}
                 </div>
               </div>
             </Col>

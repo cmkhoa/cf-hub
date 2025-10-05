@@ -151,7 +151,7 @@ const HeaderComponent = ({ current, handleClick }) => {
 								<Link href="/blog">BLOGS</Link>
 							</Menu.Item>
 							<Menu.Item key="stories">
-								<Link href="/stories">STORIES</Link>
+								<Link href="/stories">APPLICATION TIPS</Link>
 							</Menu.Item>
 							{/* <Menu.Item key="features">
 								<a href="/#features">FEATURES</a>

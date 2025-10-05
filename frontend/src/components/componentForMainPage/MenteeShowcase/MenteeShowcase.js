@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Card, Typography, Carousel } from "antd";
+import { Card, Typography, Carousel, Button } from "antd";
+import { ArrowRightOutlined } from "@ant-design/icons";
 import "./MenteeShowcase.css";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -85,35 +86,40 @@ const MenteeShowcase = () => {
         const needsCarousel = items.length > slidesToShow;
         const renderCard = (webinar, index) => (
           <div key={index} className="carousel-slide">
-            <Card hoverable className="mentor-card">
-              <div className="mentor-image-container">
+            <Card hoverable className="mentor-card horizontal">
+              <div className="mentor-image-container horizontal">
                 <Image
                   src={imgSrc(webinar.image)}
                   alt={webinar.title}
-                  width={100}
-                  height={100}
-                  className="mentor-image"
-                  style={{ borderRadius: "50%" }}
+                  width={260}
+                  height={160}
+                  className="mentor-image horizontal"
                 />
               </div>
-              <Meta
-                title={webinar.title}
-                description={
-                  <div>
-                    <div className="mentor-company">
-                      {webinar.speakerName}
-                      {webinar.speakerTitle ? ` — ${webinar.speakerTitle}` : ""}
+              <div className="mentor-text-side">
+                <Meta
+                  title={webinar.title}
+                  description={
+                    <div>
+                      <div className="mentor-company">
+                        {webinar.speakerName}
+                        {webinar.speakerTitle
+                          ? ` — ${webinar.speakerTitle}`
+                          : ""}
+                      </div>
+                      <div className="mentor-position">
+                        {webinar.description}
+                      </div>
+                      <div className="mentor-location">
+                        {webinar.date
+                          ? new Date(webinar.date).toLocaleDateString()
+                          : ""}
+                      </div>
                     </div>
-                    <div className="mentor-position">{webinar.description}</div>
-                    <div className="mentor-location">
-                      {webinar.date
-                        ? new Date(webinar.date).toLocaleDateString()
-                        : ""}
-                    </div>
-                  </div>
-                }
-                className="mentor-meta"
-              />
+                  }
+                  className="mentor-meta"
+                />
+              </div>
             </Card>
           </div>
         );
@@ -145,12 +151,15 @@ const MenteeShowcase = () => {
       })()}
 
       <div className="call-to-action">
-        <button
-          className="custom-button"
+        <Button
+          type="primary"
+          size="large"
+          className="view-all-btn view-all-btn-stories"
+          icon={<ArrowRightOutlined />}
           onClick={() => router.push("/blog?category=webinars-workshops")}
         >
           See All Events
-        </button>
+        </Button>
       </div>
     </div>
   );
