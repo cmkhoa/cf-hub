@@ -15,10 +15,12 @@ import Link from "next/link";
 // Using native <img> for small thumbnails to avoid Next/Image optimizer hitting backend multiple times (429)
 import "./Footer.css";
 import { API_ENDPOINTS } from "@/config/api";
+import { useLang } from "@/contexts/langprov";
 
 const { Title, Paragraph, Text: AntText } = Typography;
 
 const Footer = () => {
+  const { t } = useLang();
   const handleSubscribe = (e) => {
     e.preventDefault();
     // TODO: Implement subscription logic
@@ -66,11 +68,11 @@ const Footer = () => {
           <Row justify="space-between" align="middle">
             <Col>
               <AntText className="footer-top-text">
-                About Career Foundation Hub
+                {t("footer.aboutTitle")}
               </AntText>
             </Col>
             <Col>
-              <AntText className="footer-top-text">Recent News</AntText>
+              <AntText className="footer-top-text">{t("footer.recentNews")}</AntText>
             </Col>
           </Row>
         </div>
@@ -92,26 +94,16 @@ const Footer = () => {
 									sinh viên và chuyên gia người Việt tại Mỹ, nhằm trở thành nền tảng cộng đồng 
 									hỗ trợ sinh viên và các bạn trẻ trong quá trình chuyển đổi từ môi trường học 
 									thuật sang môi trường chuyên nghiệp, giúp các bạn kết nối và phát triển. */}
-                  VNPN là mạng lưới kết nối chuyên gia Việt tại Hoa Kỳ. Nhiệm vụ
-                  của VNPN là tạo ra cơ hội phát triển sự nghiệp cho mọi thành
-                  viên thông qua việc tiếp cận với các nguồn thông tin tuyển
-                  dụng có ưu thế, kiến thức chuyên ngành và kinh nghiệm cố vấn
-                  từ những người đi trước. VNPN mong muốn được góp phần xây dựng
-                  cộng đồng người Việt Nam ở nước ngoài gắn kết, tương trợ lẫn
-                  nhau.
+                  {t("footer.aboutBody1")}
                 </Paragraph>
                 <Paragraph
                   className="brand-description"
                   style={{ marginTop: 8 }}
                 >
-                  VNPN là dự án phi lợi nhuận, được triển khai với sự hỗ trợ từ
-                  Hội Thanh Niên, Sinh Viên Việt Nam ở Hoa Kỳ
-                  (www.sinhvienusa.org) và cuộc thi khởi nghiệp VietChallenge
-                  (www.vietchallenge.org). Dự án hiện tại đang được thử nghiệm ở
-                  giai đoạn Beta.
+                  {t("footer.aboutBody2")}
                 </Paragraph>
                 <Title level={5} className="follow-title">
-                  Follow Us
+                  {t("footer.followUs")}
                 </Title>
                 <div className="social-links">
                   <Button
@@ -139,13 +131,13 @@ const Footer = () => {
             <Col xs={24} md={12} lg={12}>
               <div className="news-section">
                 <Title level={5} className="links-title">
-                  Recent News
+                  {t("footer.recentNews")}
                 </Title>
                 <div className="news-list">
                   {news.length === 0 && !loadingNews && (
                     <div className="news-item">
                       <div className="news-content">
-                        <div className="news-title">No recent posts yet</div>
+                        <div className="news-title">{t("footer.noRecent")}</div>
                       </div>
                     </div>
                   )}
@@ -204,8 +196,7 @@ const Footer = () => {
           <Row justify="center" align="middle">
             <Col>
               <Paragraph className="copyright">
-                © 2025 CF Hub Corporation - Official website of CF Hub
-                Corporation.
+                {t("footer.copyright")}
               </Paragraph>
             </Col>
           </Row>

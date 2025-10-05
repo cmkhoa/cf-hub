@@ -75,6 +75,23 @@ body .ant-layout .main-header.unified-header { background:#ffffff !important; }
 .register-btn { background: transparent; border-color: var(--primary-blue); color: var(--primary-blue); }
 .login-btn, .register-btn { height: 36px; border-radius: 4px; font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; gap: 6px; }
 
+/* Search suggestions styling */
+.nav-search .ant-select-dropdown {
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.nav-search .ant-select-item-option-disabled {
+  cursor: default !important;
+  color: #999 !important;
+  font-weight: 600 !important;
+  background: #f8f9fa !important;
+}
+
+.nav-search .ant-select-item-option:hover:not(.ant-select-item-option-disabled) {
+  background: #f0f8ff !important;
+}
+
 /* Navigation (Ant Design overrides) */
 .desktop-nav { display: flex; align-items: center; gap: var(--header-nav-gap); overflow: hidden; height: var(--header-bar-height); }
 .main-nav-menu.unified { background: transparent !important; border-bottom: none !important; flex: 1 1 auto; min-width:0; display: flex !important; align-items: center; height: var(--header-bar-height); }
