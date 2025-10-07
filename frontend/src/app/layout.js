@@ -2,19 +2,18 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Chatbot from "@/components/Chatbot/Chatbot";
 import { AuthProvider } from "@/contexts/authContext/authContext";
-
+import { LangProvider } from "@/contexts/langprov";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-	title: "CF Hub Mentorship",
 	title: "Career Foundation Hub",
 	description:
 		"CF Hub empowers young professionals to secure jobs and build successful careers in finance, operations, strategy, marketing, management, and beyond through dedicated mentorship and support.",
 };
 
 export default function RootLayout({ children }) {
-	return (
-		<html lang="vi">
+    return (
+        <html lang="en">
 			<head>
 				<link rel="preconnect" href="https://fonts.googleapis.com" />
 				<link
@@ -36,8 +35,10 @@ export default function RootLayout({ children }) {
 			</head>
 			<body className={inter.className}>
 				<AuthProvider>
-					{children}
-					<Chatbot />
+					<LangProvider>
+						{children}
+						<Chatbot />
+					</LangProvider>
 				</AuthProvider>
 			</body>
 		</html>

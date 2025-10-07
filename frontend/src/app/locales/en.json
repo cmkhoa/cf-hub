@@ -1,0 +1,91 @@
+{
+    "home": "HOME",
+    "about": "ABOUT",
+    "blogs": "BLOGS",
+    "stories": "STORIES",
+    "searchPlaceholder": "Search articles",
+    "login": "Login",
+    "logout": "Logout",
+    "drawerTitle": "CF Hub",
+    "conference": "VIET CAREER CONFERENCE",
+    "videos": "LATEST VIDEOS",
+    "support": "SUPPORT US",
+  
+  "homeHero": {
+    "eyebrow": "Career Foundation Hub",
+    "line1": "Build the foundation",
+    "line2": "take the first step",
+    "subtext": "Join our community designed specifically for Vietnamese students and professionals seeking to advance their careers in the United States. Get personalized guidance from industry experts and build your professional network.",
+    "tagline": "career foundation",
+    "statsAria": "Program statistics",
+    "stats": { "members": "Community Members", "pros": "Industry Professionals" },
+    "cta": "Join Now"
+  },
+  "achievements": {
+    "title": "Achievements",
+    "members": "Community members",
+    "prosUS": "Professionals across the U.S.",
+    "years": "Years of Experience",
+    "repTitle": "Representation",
+    "repBody": "Our community includes over 500 members from diverse backgrounds across various industries and organizations, and we make sure that everybody is welcomed.",
+    "mentorTitle": "Mentor Network",
+    "mentorBody": "Our platform is powered by a diverse network of 100+ experienced professionals across the United States, bringing expertise from various industries and backgrounds.",
+    "industryTitle": "Industry Experience",
+    "industryBody": "With over 15+ years of combined industry experience, our mentors provide deep insights and practical guidance based on real-world expertise."
+  },
+  "community": {
+    "title": "CF Hub Community",
+    "groupTech": "Group TECH",
+    "instagramTech": "Instagram TECH"
+  },
+  "JobAppTip": {
+    "title": "Job Application Tips",
+    "subtitle": "Real journeys, real results. See how CF Hub members landed their dream jobs and overcame career challenges.",
+    "resumeTips": "Resume Tips",
+    "interviewTips": "Interview Tips",
+    "technicalTips": "Technical Tips",
+    "noPostsYet": "No posts yet",
+    "viewAll": "View All Stories"
+  },
+  "CareerStories": {
+    "title": "Career Stories",
+    "subtitle": "Real journeys, real results. See how CF Hub members landed their dream jobs and overcame career challenges.",
+    "resumeTips": "Resume Tips",
+    "interviewTips": "Interview Tips",
+    "technicalTips": "Technical Tips",
+    "noPostsYet": "No posts yet",
+    "viewAll": "View All Stories"
+  },
+  "trending": {
+    "title": "TRENDING",
+    "subtitle": "Discover the most popular articles and insights from our community",
+    "now": "TRENDING NOW",
+    "badge": "TRENDING",
+    "views": "views",
+    "minRead": "min read",
+    "min": "min",
+    "viewAll": "View All Trending Posts"
+  },
+  "jobApp": {
+    "title": "Career Path Visualizer",
+    "subtitle": "Explore different career paths and discover your potential. See real success stories and find your perfect career trajectory.",
+    "choosePath": "Choose Your Path",
+    "successStories": "Success Stories",
+    "cta": {
+      "title": "Ready to Start Your Journey?",
+      "description": "Join our community and get personalized guidance for your chosen career path.",
+      "getStarted": "Start Your Path",
+      "learnMore": "Explore More"
+    }
+  },
+  "footer": {
+    "aboutTitle": "About Career Foundation Hub",
+    "recentNews": "Recent News",
+    "aboutBody1": "VNPN is a network connecting Vietnamese professionals in the United States. Our mission is to create career opportunities for all members through access to recruiting insights, domain knowledge, and mentorship from experienced professionals.",
+    "aboutBody2": "VNPN is a non-profit initiative supported by the Vietnamese Youth and Students Association in the USA (sinhvienusa.org) and the VietChallenge competition (vietchallenge.org). The project is currently in Beta.",
+    "followUs": "Follow Us",
+    "noRecent": "No recent posts yet",
+    "copyright": "© 2025 CF Hub Corporation - Official website of CF Hub Corporation."
+  }
+}
+  

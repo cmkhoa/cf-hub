@@ -2,6 +2,7 @@ import React from "react";
 import { Row, Col, Typography } from "antd";
 import "./Community.css";
 import Image from "next/image";
+import { useLang } from "@/contexts/langprov";
 
 const { Text } = Typography;
 

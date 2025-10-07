@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Layout, Menu, Button, Drawer, Dropdown } from "antd";
+import { Layout, Menu, Button, Drawer, Dropdown, AutoComplete } from "antd";
 import Link from "next/link";
 import { 
 	MenuOutlined, 
@@ -10,7 +10,8 @@ import {
 	YoutubeOutlined,
 	DownOutlined,
 	LoginOutlined,
-	UserAddOutlined
+	UserAddOutlined,
+	TagOutlined
 } from "@ant-design/icons";
 import { Input } from 'antd';
 import Image from "next/image";
@@ -19,13 +20,22 @@ import { useAuth } from "@/contexts/authContext/authContext";
 import { message } from "antd";
 import "./header.css";
 const { Header } = Layout;
+import en from "@/app/locales/en.json";
+import vi from "@/app/locales/vi.json";
+import { useLang } from "@/contexts/langprov";
 // Removed unused Input/Search & Typography after layout refactor
 
 const HeaderComponent = ({ current, handleClick }) => {
 	const [drawerVisible, setDrawerVisible] = useState(false);
 	const [isScrolled, setIsScrolled] = useState(false);
+	const [searchValue, setSearchValue] = useState('');
+	const [searchSuggestions, setSearchSuggestions] = useState([]);
+	const [popularTags, setPopularTags] = useState([]);
+	const [recentSearches, setRecentSearches] = useState([]);
+	const [showSuggestions, setShowSuggestions] = useState(false);
 	const router = useRouter();
 	const { currentUser, userLoggedIn, logout } = useAuth();
+	const { lang, setLang, t } = useLang();
 
 	useEffect(() => {
 		// Check if user is logged in
@@ -33,6 +43,28 @@ const HeaderComponent = ({ current, handleClick }) => {
 			// User is already logged in, no need to check localStorage
 		}
 	}, [userLoggedIn, currentUser]);
+
+	// Load popular tags and recent searches
+	useEffect(() => {
+		const loadSearchData = async () => {
+			try {
+				const base = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8008/api';
+				const [tagsRes] = await Promise.all([
+					fetch(`${base}/blog/tags`)
+				]);
+				const [tagsData] = await Promise.all([tagsRes.json()]);
+				setPopularTags(tagsData || []);
+			} catch (error) {
+				console.error('Failed to load search data:', error);
+			}
+		};
+
+		// Load recent searches from localStorage
+		const savedSearches = JSON.parse(localStorage.getItem('recentSearches') || '[]');
+		setRecentSearches(savedSearches);
+
+		loadSearchData();
+	}, []);
 
 	// Add scroll event listener
 	useEffect(() => {
@@ -93,8 +125,135 @@ const HeaderComponent = ({ current, handleClick }) => {
 
 	const onNavSearch = (value) => {
 		const q = (value || '').trim();
-		if(q) router.push(`/blog?q=${encodeURIComponent(q)}`);
-		else router.push('/blog');
+		if(q) {
+			// Save to recent searches
+			const newRecentSearches = [q, ...recentSearches.filter(s => s !== q)].slice(0, 5);
+			setRecentSearches(newRecentSearches);
+			localStorage.setItem('recentSearches', JSON.stringify(newRecentSearches));
+			
+			// Check if the search query matches any popular tag exactly
+			const exactTagMatch = popularTags.find(tag => 
+				tag.name.toLowerCase() === q.toLowerCase()
+			);
+			
+			if (exactTagMatch) {
+				// If it's an exact tag match, search by tag instead of text
+				router.push(`/blog?tags=${encodeURIComponent(q)}`);
+			} else {
+				// Otherwise, use text search
+				router.push(`/blog?q=${encodeURIComponent(q)}`);
+			}
+		} else {
+			router.push('/blog');
+		}
+		setShowSuggestions(false);
+	};
+
+	const handleSearchChange = (value) => {
+		setSearchValue(value);
+		
+		if (!value.trim()) {
+			// Show popular tags and recent searches when empty
+			const suggestions = [];
+			
+			// Add recent searches
+			if (recentSearches.length > 0) {
+				suggestions.push({
+					value: '',
+					label: (
+						<div style={{ fontSize: '12px', color: '#999', padding: '4px 0', borderBottom: '1px solid #f0f0f0' }}>
+							Recent Searches
+						</div>
+					),
+					disabled: true
+				});
+				
+				recentSearches.slice(0, 3).forEach(search => {
+					suggestions.push({
+						value: search,
+						label: (
+							<div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+								<SearchOutlined style={{ color: '#52c41a' }} />
+								<span>{search}</span>
+							</div>
+						),
+						type: 'recent'
+					});
+				});
+			}
+			
+			// Add popular tags
+			if (popularTags.length > 0) {
+				suggestions.push({
+					value: '',
+					label: (
+						<div style={{ fontSize: '12px', color: '#999', padding: '4px 0', borderBottom: '1px solid #f0f0f0', marginTop: recentSearches.length > 0 ? '8px' : '0' }}>
+							Popular Tags
+						</div>
+					),
+					disabled: true
+				});
+				
+				popularTags.slice(0, 5).forEach(tag => {
+					suggestions.push({
+						value: tag.name,
+						label: (
+							<div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+								<TagOutlined style={{ color: '#1890ff' }} />
+								<span>{tag.name}</span>
+							</div>
+						),
+						type: 'tag'
+					});
+				});
+			}
+			
+			setSearchSuggestions(suggestions);
+			setShowSuggestions(suggestions.length > 0);
+			return;
+		}
+
+		// Generate suggestions based on input
+		const suggestions = [];
+		
+		// Add matching tags
+		const matchingTags = popularTags
+			.filter(tag => tag.name.toLowerCase().includes(value.toLowerCase()))
+			.slice(0, 3)
+			.map(tag => ({
+				value: tag.name,
+				label: (
+					<div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+						<TagOutlined style={{ color: '#1890ff' }} />
+						<span>Tag: {tag.name}</span>
+					</div>
+				),
+				type: 'tag'
+			}));
+
+		// Add recent searches that match
+		const matchingRecent = recentSearches
+			.filter(search => search.toLowerCase().includes(value.toLowerCase()) && search !== value)
+			.slice(0, 2)
+			.map(search => ({
+				value: search,
+				label: (
+					<div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+						<SearchOutlined style={{ color: '#52c41a' }} />
+						<span>{search}</span>
+					</div>
+				),
+				type: 'recent'
+			}));
+
+		suggestions.push(...matchingTags, ...matchingRecent);
+		setSearchSuggestions(suggestions);
+		setShowSuggestions(suggestions.length > 0);
+	};
+
+	const handleSearchSelect = (value, option) => {
+		setSearchValue(value);
+		onNavSearch(value);
 	};
 
 	// Tags dropdown items
@@ -141,17 +300,17 @@ const HeaderComponent = ({ current, handleClick }) => {
 							onClick={handleClick}
 							className="main-nav-menu unified no-select-effect"
 						>
-							<Menu.Item key="home">
-								<a href="/">HOME</a>
-							</Menu.Item>
+						<Menu.Item key="home">
+							<a href="/">{t("home")}</a>
+						</Menu.Item>
 							<Menu.Item key="about">
-								<Link href="/about">ABOUT</Link>
+							<Link href="/about">{t("about")}</Link>
 							</Menu.Item>
 							<Menu.Item key="news">
-								<Link href="/blog">BLOGS</Link>
+							<Link href="/blog">{t("blogs")}</Link>
 							</Menu.Item>
 							<Menu.Item key="stories">
-								<Link href="/stories">APPLICATION TIPS</Link>
+							<Link href="/stories">{t("stories")}</Link>
 							</Menu.Item>
 							{/* <Menu.Item key="features">
 								<a href="/#features">FEATURES</a>
@@ -172,13 +331,34 @@ const HeaderComponent = ({ current, handleClick }) => {
 					<div className="nav-right">
 						<div className="header-right">
 							<div className="nav-search" style={{ display:'flex', alignItems:'center', gap:8 }}>
-								<Input.Search
-									placeholder="Search articles"
-									allowClear
+								<AutoComplete
+									value={searchValue}
+									options={searchSuggestions}
+									onChange={handleSearchChange}
+									onSelect={(value, option) => {
+										if (!option.disabled) {
+											handleSearchSelect(value, option);
+										}
+									}}
 									onSearch={onNavSearch}
-									enterButton={<SearchOutlined />}
+									placeholder={t("searchPlaceholder")}
 									style={{ width: 260 }}
-								/>
+									open={showSuggestions}
+									onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+									onFocus={() => setShowSuggestions(true)}
+									dropdownStyle={{ maxHeight: 300, overflow: 'auto' }}
+									filterOption={(inputValue, option) => {
+										if (option.disabled) return true; // Always show disabled options (headers)
+										return option.value.toLowerCase().includes(inputValue.toLowerCase());
+									}}
+								>
+									<Input.Search
+										allowClear
+										onSearch={onNavSearch}
+										enterButton={<SearchOutlined />}
+										style={{ width: '100%' }}
+									/>
+								</AutoComplete>
 							</div>
 								{userLoggedIn ? (
 									<div className="user-info" style={{display:'flex', alignItems:'center', gap:8}}>
@@ -212,6 +392,20 @@ const HeaderComponent = ({ current, handleClick }) => {
 									</Button> */}
 								</div>
 							)}
+								<Dropdown
+									menu={{
+									items: [
+										{ key: "en", label: "English" },
+										{ key: "vi", label: "Tiếng Việt" }
+									],
+									onClick: ({ key }) => setLang(key),
+									}}
+									placement="bottomRight"
+								>
+									<Button>
+									{lang === "en" ? "English" : "Tiếng Việt"} <DownOutlined />
+									</Button>
+								</Dropdown>
 							<Button
 								icon={<MenuOutlined />}
 								onClick={showDrawer}
@@ -224,7 +418,7 @@ const HeaderComponent = ({ current, handleClick }) => {
 
 			{/* Mobile Drawer */}
 			<Drawer
-				title="CF Hub"
+				title={t("drawerTitle")}
 				placement="right"
 				onClose={closeDrawer}
 				visible={drawerVisible}
@@ -237,12 +431,12 @@ const HeaderComponent = ({ current, handleClick }) => {
 					style={{ borderRight: "none" }}
 				>
 					{[
-						{ key: "home", label: "HOME" },
-						{ key: "about", label: "ABOUT" },
-						{ key: "blog", label: "BLOGS" },
-						{ key: "conference", label: "VIET CAREER CONFERENCE" },
-						{ key: "videos", label: "LATEST VIDEOS" },
-						{ key: "support", label: "SUPPORT US" },
+						{ key: "home", label: t("home") },
+						{ key: "about", label: t("about") },
+						{ key: "blog", label: t("blogs") },
+						{ key: "conference", label: t("conference") },
+						{ key: "videos", label: t("videos") },
+						{ key: "support", label: t("support") },
 					].map((item) => (
 						<Menu.Item key={item.key} onClick={closeDrawer}>
 							<Link href={`/${item.key === "home" ? "" : item.key}`} passHref>

@@ -1,18 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { Row, Col, Typography, Card, Tag, Avatar, Spin } from "antd";
-import {
-  FireOutlined,
-  EyeOutlined,
-  ClockCircleOutlined,
-} from "@ant-design/icons";
-import Image from "next/image";
-import Link from "next/link";
-import "./Trending.css";
-import { API_ENDPOINTS } from "@/config/api";
+import React, { useEffect, useState } from 'react';
+import { Row, Col, Typography, Card, Tag, Avatar, Spin } from 'antd';
+import { FireOutlined, EyeOutlined, ClockCircleOutlined } from '@ant-design/icons';
+import Image from 'next/image';
+import Link from 'next/link';
+import './Trending.css';
+import { API_ENDPOINTS } from '@/config/api';
+import { useLang } from "@/contexts/langprov";
 
 const { Title, Paragraph } = Typography;
 
 const Trending = () => {
+  const { t } = useLang();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -49,12 +47,10 @@ const Trending = () => {
         <div className="trending-header">
           <div className="trending-title-wrapper">
             <FireOutlined className="trending-icon" />
-            <Title level={2} className="trending-title">
-              TRENDING
-            </Title>
+            <Title level={2} className="trending-title">{t("trending.title")}</Title>
           </div>
           <Paragraph className="trending-subtitle">
-            Discover the most popular articles and insights from our community
+            {t("trending.subtitle")}
           </Paragraph>
         </div>
 
@@ -196,7 +192,7 @@ const Trending = () => {
                       />
                       <div className="trending-badge">
                         <FireOutlined />
-                        <span>TRENDING</span>
+                        <span>{t("trending.badge")}</span>
                       </div>
                       <div className="category-badge">
                         {post.category?.name || post.category?.title || "Blog"}
@@ -254,7 +250,7 @@ const Trending = () => {
         <div className="trending-actions">
           <Link href="/blog">
             <button className="view-all-trending-btn">
-              View All Trending Posts
+              {t("trending.viewAll")}
               <FireOutlined />
             </button>
           </Link>

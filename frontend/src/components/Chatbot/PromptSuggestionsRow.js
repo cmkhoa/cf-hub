@@ -1,6 +1,6 @@
 import "./PromptSuggestionsRow.css";
 
-const PromptSuggestionsRow = ({}) => {
+const PromptSuggestionsRow = ({ onSuggestionClick }) => {
 	const suggestions = [
 		"Tell me about CF Hub's workshops",
 		"How can I join as a mentor?",
@@ -8,17 +8,8 @@ const PromptSuggestionsRow = ({}) => {
 	];
 
 	const handleSuggestionClick = (suggestion) => {
-		const input = document.querySelector(".chat-input");
-		if (input) {
-			// Create a new input event
-			const inputEvent = new Event("input", { bubbles: true });
-			// Set the value
-			input.value = suggestion;
-			// Dispatch the event
-			input.dispatchEvent(inputEvent);
-
-			// Focus the input after selecting a suggestion
-			input.focus();
+		if (onSuggestionClick) {
+			onSuggestionClick(suggestion);
 		}
 	};
 
