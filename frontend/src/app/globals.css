@@ -166,6 +166,18 @@ p {
   }
 }
 
+/* Prevent mobile zoom on input focus - apply globally */
+@media (max-width: 480px) {
+  input,
+  textarea,
+  select,
+  .ant-input,
+  .ant-input-search input,
+  .ant-select-selection-search-input {
+    font-size: 16px !important;
+  }
+}
+
 /* Make common container class centered and safe on small screens */
 @media (max-width: 780px) {
   .container, .blog-grid-section .container, .success-story-section .container {
