@@ -13,7 +13,10 @@ export default function PostCard({ post, onClick, layout='card' }) {
     }
     // Else, use provided coverImage (R2/public URL or relative path)
     if (post?.coverImage) {
-      return post.coverImage;
+      // Absolute URL from CDN/R2: use as-is
+      if (/^https?:\/\//i.test(post.coverImage)) return post.coverImage;
+      // Otherwise treat as key and go through cover endpoint
+      return `${apiBase}/blog/posts/${post._id}/cover`;
     }
     // Fallback image
     return '/images/resume.jpeg';

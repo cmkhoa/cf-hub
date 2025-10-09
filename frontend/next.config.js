@@ -4,6 +4,9 @@ const r2PublicHost = process.env.R2_PUBLIC_HOST; // e.g. cdn.cf-hub.example.com
 
 const remotePatterns = [
   { protocol: 'http', hostname: 'localhost', port: '8008', pathname: '/api/blog/posts/**/cover' },
+  { protocol: 'http', hostname: 'localhost', port: '8009', pathname: '/api/blog/posts/**/cover' },
+  { protocol: 'http', hostname: 'localhost', port: '8008', pathname: '/api/webinars/**/image' },
+  { protocol: 'http', hostname: 'localhost', port: '8009', pathname: '/api/webinars/**/image' },
   { protocol: 'https', hostname: 'pub-563dc0627c35466bbf0456ec4ee3d5a3.r2.dev' },
 ];
 

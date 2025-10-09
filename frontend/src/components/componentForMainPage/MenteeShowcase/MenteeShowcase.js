@@ -58,10 +58,14 @@ const MenteeShowcase = () => {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  const imgSrc = (url) => {
-    if (!url) return PLACEHOLDER;
-    if (url.startsWith("http://") || url.startsWith("https://")) return url;
-    return url.startsWith("/") ? url : `/uploads/${url}`;
+  const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8008/api';
+  const imgSrc = (webinar) => {
+    if (!webinar) return PLACEHOLDER;
+    const u = webinar.image;
+    if (!u) return PLACEHOLDER;
+    if (/^https?:\/\//i.test(u)) return u;
+    // For keys, use backend image proxy to stream/redirect
+    return `${apiBase}/webinars/${webinar._id || ''}/image`;
   };
   return (
     <div className="mentor-showcase-container">
@@ -82,70 +86,96 @@ const MenteeShowcase = () => {
       {/* element used to measure container width */}
       <div className="carousel-measure" style={{ width: "100%" }} />
       {(() => {
-        const items = webinars.length ? webinars : Array.from({ length: 0 });
-        const needsCarousel = items.length > slidesToShow;
-        const renderCard = (webinar, index) => (
-          <div key={index} className="carousel-slide">
-            <Card hoverable className="mentor-card horizontal">
-              <div className="mentor-image-container horizontal">
-                <Image
-                  src={imgSrc(webinar.image)}
-                  alt={webinar.title}
-                  width={260}
-                  height={160}
-                  className="mentor-image horizontal"
-                />
-              </div>
-              <div className="mentor-text-side">
-                <Meta
-                  title={webinar.title}
-                  description={
-                    <div>
-                      <div className="mentor-company">
-                        {webinar.speakerName}
-                        {webinar.speakerTitle
-                          ? ` — ${webinar.speakerTitle}`
-                          : ""}
-                      </div>
-                      <div className="mentor-position">
-                        {webinar.description}
-                      </div>
-                      <div className="mentor-location">
-                        {webinar.date
-                          ? new Date(webinar.date).toLocaleDateString()
-                          : ""}
-                      </div>
-                    </div>
-                  }
-                  className="mentor-meta"
-                />
-              </div>
-            </Card>
-          </div>
-        );
-        if (!needsCarousel) {
-          return <div className="webinar-list">{items.map(renderCard)}</div>;
-        }
+        const items = webinars.length ? webinars : [];
+        const renderCard = (webinar, index) => {
+          const reg = webinar.registrationUrl;
+          const rec = webinar.recordingUrl;
+          const primaryHref = reg || rec || null;
+          const dateLabel = webinar.date ? new Date(webinar.date).toLocaleDateString() : null;
+          const handleCardClick = () => {
+            if (primaryHref) window.open(primaryHref, '_blank', 'noopener');
+          };
+          return (
+            <div key={index} className="carousel-slide">
+              <Card
+                hoverable
+                className="mentor-card horizontal card-clickable"
+                onClick={handleCardClick}
+              >
+                <div className="mentor-image-container horizontal">
+                  <Image
+                    src={imgSrc(webinar)}
+                    alt={webinar.title}
+                    fill
+                    className="mentor-image horizontal"
+                    sizes="(max-width: 768px) 100vw, 320px"
+                    priority={index < 2}
+                  />
+                  {dateLabel && <div className="image-badge">{dateLabel}</div>}
+                </div>
+                <div className="mentor-text-side">
+                  <div className="webinar-title title-clamp">{webinar.title}</div>
+                  <div className="mentor-company">
+                    {webinar.speakerName}
+                    {webinar.speakerTitle ? ` — ${webinar.speakerTitle}` : ""}
+                  </div>
+                  <div className="mentor-position desc-clamp">{webinar.description}</div>
+                  <div className="webinar-actions">
+                    {reg && (
+                      <Button
+                        type="primary"
+                        size="small"
+                        className="webinar-btn webinar-btn-primary"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          window.open(reg, '_blank', 'noopener');
+                        }}
+                      >
+                        Register
+                      </Button>
+                    )}
+                    {rec && (
+                      <Button
+                        size="small"
+                        className="webinar-btn"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          window.open(rec, '_blank', 'noopener');
+                        }}
+                      >
+                        Watch
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              </Card>
+            </div>
+          );
+        };
+        // Always show a one-row carousel; loop only when enough slides
+        const loop = items.length > slidesToShow;
         return (
           <Carousel
             arrows
             dots={false}
-            infinite
-            slidesToShow={slidesToShow}
+            infinite={loop}
+            slidesToShow={Math.min(slidesToShow, Math.max(items.length, 1))}
             slidesToScroll={1}
             responsive={[
               {
                 breakpoint: 1200,
-                settings: { slidesToShow: Math.min(3, items.length) },
+                settings: { slidesToShow: Math.min(3, Math.max(items.length, 1)) },
               },
               {
                 breakpoint: 992,
-                settings: { slidesToShow: Math.min(2, items.length) },
+                settings: { slidesToShow: Math.min(2, Math.max(items.length, 1)) },
               },
               { breakpoint: 768, settings: { slidesToShow: 1 } },
             ]}
           >
-            {items.map(renderCard)}
+            {items.length ? items.map(renderCard) : <div />}
           </Carousel>
         );
       })()}

@@ -270,7 +270,16 @@ router.post("/posts/upload/cover", auth, upload.single("image"), async (req, res
     const original = req.file.originalname ? req.file.originalname.replace(/[^a-zA-Z0-9._-]/g, '_') : 'upload';
     const key = `uploads/${Date.now()}-${original}`;
     const contentType = req.file.mimetype || 'application/octet-stream';
-    const result = await uploadBufferToR2({ Key: key, Body: req.file.buffer, ContentType: contentType });
+    // Multer is configured with diskStorage, so buffer may be undefined; read from disk when needed
+    let buffer = req.file.buffer;
+    if (!buffer && req.file.path) {
+      buffer = fs.readFileSync(req.file.path);
+    }
+    const result = await uploadBufferToR2({ Key: key, Body: buffer, ContentType: contentType });
+    // Cleanup temp file if present
+    if (req.file.path) {
+      try { fs.unlinkSync(req.file.path); } catch (_) { /* ignore */ }
+    }
     return res.status(201).json({ url: result.url, key: result.key, contentType, size: req.file.size });
   } catch (e) {
     console.error('Cover upload failed:', e);
@@ -671,13 +680,24 @@ router.get("/posts/:id/cover", async (req, res) => {
         if (/^https?:\/\//i.test(post.coverImage)) {
           return res.redirect(post.coverImage);
         }
-        // Otherwise assume it's an R2 key stored like 'uploads/...' and redirect to public URL
+        // Otherwise assume it's an R2 key stored like 'uploads/...'
+        // Try to stream directly from R2 to avoid requiring public bucket access
         try {
-          const { getPublicUrl } = require('../config/r2');
-          const publicUrl = getPublicUrl(post.coverImage);
-          return res.redirect(publicUrl);
+          const { getObjectFromR2 } = require('../config/r2');
+          const obj = await getObjectFromR2({ Key: post.coverImage });
+          res.setHeader('Content-Type', obj.ContentType || 'image/jpeg');
+          if (obj.ContentLength) res.setHeader('Content-Length', String(obj.ContentLength));
+          res.setHeader('Cache-Control', 'public, max-age=3600');
+          return obj.Body.pipe(res);
         } catch (e) {
-          // If building public URL failed, fall back to local file serve
+          // As a fallback, attempt to build a public URL (works if bucket is public or CDN in front)
+          try {
+            const { getPublicUrl } = require('../config/r2');
+            const publicUrl = getPublicUrl(post.coverImage);
+            return res.redirect(publicUrl);
+          } catch (_) {
+            // continue to local/placeholder
+          }
         }
         // Local path: stream if exists (legacy)
         const relPath = post.coverImage.startsWith("/")

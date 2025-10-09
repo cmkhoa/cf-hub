@@ -388,7 +388,10 @@ export default function AdminDashboard() {
   const submitWebinar = async () => {
     try {
       const values = await webinarForm.validateFields();
-      const payload = { ...values };
+  const payload = { ...values };
+  // Ensure only imageBase64 is sent (backend will set image key); remove legacy image field
+  if (!payload.imageBase64) delete payload.imageBase64;
+  delete payload.image;
       // Convert datetime-local string to Date if present
       if (payload.date) payload.date = new Date(payload.date).toISOString();
       const method = editingWebinar ? "PUT" : "POST";
@@ -1383,8 +1386,29 @@ export default function AdminDashboard() {
                     <Form.Item name="location" label="Location">
                       <Input placeholder="City, State" />
                     </Form.Item>
-                    <Form.Item name="image" label="Image URL or /uploads path">
-                      <Input placeholder="https://… or /uploads/…" />
+                    <Form.Item label="Webinar Image (uploads to R2)">
+                      <Upload
+                        beforeUpload={(file) => {
+                          const isImg = file.type.startsWith('image/');
+                          if (!isImg) { message.error('Only image files'); return Upload.LIST_IGNORE; }
+                          const reader = new FileReader();
+                          reader.onload = (e) => {
+                            // Store temporarily in form for submit
+                            webinarForm.setFieldsValue({ imageBase64: e.target.result });
+                            message.success('Image ready for upload');
+                          };
+                          reader.readAsDataURL(file);
+                          return false; // prevent auto upload
+                        }}
+                        maxCount={1}
+                        accept="image/*"
+                        onRemove={() => webinarForm.setFieldsValue({ imageBase64: null })}
+                      >
+                        <Button icon={<UploadOutlined />}>Select Image</Button>
+                      </Upload>
+                      <Form.Item name="imageBase64" style={{ display: 'none' }}>
+                        <Input type="hidden" />
+                      </Form.Item>
                     </Form.Item>
                     <Form.Item name="order" label="Order" initialValue={0}>
                       <Input type="number" min={0} style={{ width: 120 }} />
@@ -1478,7 +1502,29 @@ export default function AdminDashboard() {
                   onOk={submitWebinar}
                   okText="Save"
                 >
-                  <Form layout="vertical" form={webinarForm}>
+                  <Form
+                    layout="vertical"
+                    form={webinarForm}
+                    onPaste={async (e) => {
+                      try {
+                        const items = e.clipboardData?.items || [];
+                        for (const item of items) {
+                          if (item.kind === 'file' && item.type.startsWith('image/')) {
+                            const file = item.getAsFile();
+                            if (file) {
+                              const reader = new FileReader();
+                              reader.onload = (ev) => {
+                                webinarForm.setFieldsValue({ imageBase64: ev.target.result });
+                                message.success('Pasted image captured');
+                              };
+                              reader.readAsDataURL(file);
+                              break;
+                            }
+                          }
+                        }
+                      } catch (err) { /* ignore */ }
+                    }}
+                  >
                     <Form.Item
                       name="title"
                       label="Title"
@@ -1501,8 +1547,38 @@ export default function AdminDashboard() {
                     <Form.Item name="speakerTitle" label="Speaker Title">
                       <Input placeholder="Speaker title/role" />
                     </Form.Item>
-                    <Form.Item name="image" label="Image URL or /uploads path">
-                      <Input placeholder="https://… or /uploads/…" />
+                    <Form.Item label="Webinar Image (uploads to R2)">
+                      <Upload
+                        beforeUpload={(file) => {
+                          const isImg = file.type.startsWith('image/');
+                          if (!isImg) { message.error('Only image files'); return Upload.LIST_IGNORE; }
+                          const reader = new FileReader();
+                          reader.onload = (e) => {
+                            webinarForm.setFieldsValue({ imageBase64: e.target.result });
+                            message.success('Image ready for upload');
+                          };
+                          reader.readAsDataURL(file);
+                          return false;
+                        }}
+                        maxCount={1}
+                        accept="image/*"
+                        onRemove={() => webinarForm.setFieldsValue({ imageBase64: null })}
+                      >
+                        <Button icon={<UploadOutlined />}>Select Image</Button>
+                      </Upload>
+                      <Form.Item name="imageBase64" style={{ display: 'none' }}>
+                        <Input type="hidden" />
+                      </Form.Item>
+                      {editingWebinar && !webinarForm.getFieldValue('imageBase64') && editingWebinar?.image && (
+                        <div style={{ marginTop: 8, fontSize: 12, color: '#666' }}>
+                          Existing image in use. Selecting a new image will replace it.
+                        </div>
+                      )}
+                      {webinarForm.getFieldValue('imageBase64') && (
+                        <div style={{ marginTop: 8, fontSize: 12, wordBreak: 'break-all' }}>
+                          Embedded (base64) size: {Math.round((webinarForm.getFieldValue('imageBase64').length * 3) / 4 / 1024)} KB
+                        </div>
+                      )}
                     </Form.Item>
                     <Form.Item name="registrationUrl" label="Registration URL">
                       <Input placeholder="https://register.example.com" />
