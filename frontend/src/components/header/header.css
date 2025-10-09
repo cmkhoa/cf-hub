@@ -180,4 +180,10 @@ body .ant-dropdown .ant-dropdown-menu, body .ant-select-dropdown .ant-select-dro
 @media (max-width: 480px) {
   .main-header { padding: 12px 0 !important; }
   .logo-text { font-size: 18px; }
+  
+  /* Prevent zoom on input focus */
+  .nav-search input,
+  .nav-search .ant-input {
+    font-size: 16px !important;
+  }
 }
