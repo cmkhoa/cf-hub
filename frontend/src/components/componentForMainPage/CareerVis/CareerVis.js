@@ -23,164 +23,48 @@ const JobApp = () => {
   const [compact, setCompact] = useState(false);
   const [hoveredNode, setHoveredNode] = useState(null);
 
-  const careerPaths = {
+  const careerPaths = useMemo(() => ({
     finance: {
-      title: "Finance & Banking",
+      title: t("jobApp.paths.finance.title"),
       icon: <BankOutlined />,
       color: "#0C1E72",
-      description: "Investment banking, corporate finance, risk management",
-      skills: ["Financial Modeling", "Excel", "SQL", "Python", "CFA"],
-      salary: "$85K - $150K",
+      description: t("jobApp.paths.finance.description"),
+      skills: t("jobApp.paths.finance.skills"),
+      salary: t("jobApp.paths.finance.salary"),
       growth: 85,
-      roadmap: [
-        {
-          level: "Foundations",
-          description: "Accounting basics, time value of money, Excel fundamentals and corporate finance principles."
-        },
-        {
-          level: "Financial Modeling",
-          description: "Build DCF, LBO and merger models in Excel; learn sensitivity and scenario analysis."
-        },
-        {
-          level: "Analytics & Tools",
-          description: "Use SQL/Python for data analysis; become proficient with Bloomberg/Refinitiv terminals."
-        },
-        {
-          level: "Transaction Experience",
-          description: "Work on M&A, capital markets, due diligence and prepare client-facing materials."
-        },
-        {
-          level: "Specialization & Credentials",
-          description: "Pursue CFA/FRM or MBA depending on track; specialize in sectors like PE, asset management or corporate finance."
-        },
-        {
-          level: "Senior Practitioner",
-          description: "Lead deal teams, manage client relationships and take ownership of financial strategy."
-        },
-        {
-          level: "Leadership",
-          description: "Shape firm strategy, mentor senior staff and drive business development initiatives."
-        }
-      ]
+      roadmap: t("jobApp.paths.finance.roadmap")
     },
     consulting: {
-      title: "Management Consulting",
+      title: t("jobApp.paths.consulting.title"),
       icon: <TeamOutlined />,
       color: "#f47458",
-      description: "Strategy consulting, operations, business transformation",
-      skills: ["Problem Solving", "PowerPoint", "Data Analysis", "Leadership", "MBA"],
-      salary: "$90K - $180K",
+      description: t("jobApp.paths.consulting.description"),
+      skills: t("jobApp.paths.consulting.skills"),
+      salary: t("jobApp.paths.consulting.salary"),
       growth: 92,
-      roadmap: [
-        {
-          level: "Foundations",
-          description: "Develop structured problem solving, quantitative reasoning and case interview basics."
-        },
-        {
-          level: "Analytical Toolkit",
-          description: "Master Excel modeling, basic SQL and data visualization for client deliverables."
-        },
-        {
-          level: "Client Execution",
-          description: "Participate in workstreams: market sizing, process mapping, KPI definition and stakeholder workshops."
-        },
-        {
-          level: "Specialization",
-          description: "Choose industry or function focus (strategy, operations, digital) and deepen domain knowledge."
-        },
-        {
-          level: "Consulting Skills",
-          description: "Lead project modules, manage junior consultants and deliver executive presentations."
-        },
-        {
-          level: "Network & Credentials",
-          description: "Grow professional network, consider MBA or advanced credentials for acceleration."
-        },
-        {
-          level: "Partner/Leadership",
-          description: "Drive client portfolio, win new business and build firm-level capabilities."
-        }
-      ]
+      roadmap: t("jobApp.paths.consulting.roadmap")
     },
     tech: {
-      title: "Software Engineering Roles",
+      title: t("jobApp.paths.tech.title"),
       icon: <BulbOutlined />,
       color: "#4b0082",
-      description: "Software engineering, Product management, Data science",
-      skills: ["Programming", "Cloud Computing","Database Design", "AI/ML", "Data Structure & Algorithms", "System Design"],
-      salary: "$95K - $200K",
+      description: t("jobApp.paths.tech.description"),
+      skills: t("jobApp.paths.tech.skills"),
+      salary: t("jobApp.paths.tech.salary"),
       growth: 88,
-      roadmap: [
-        {
-          level: "Foundations",
-          description: "Learn programming fundamentals; focus on one language, data structures, algorithms and Git basics."
-        },
-        {
-          level: "Frontend Development",
-          description: "Master HTML/CSS/JS and frameworks like React or Next.js; build interactive UIs."
-        },
-        {
-          level: "Backend Development",
-          description: "Build REST/GraphQL APIs, work with SQL/NoSQL databases and implement auth patterns."
-        },
-        {
-          level: "Full Stack Projects",
-          description: "Ship end-to-end apps, deploy to platforms (Vercel, Render) and add tests and CI workflows."
-        },
-        {
-          level: "DevOps & Cloud",
-          description: "Learn Docker, CI/CD (GitHub Actions), cloud fundamentals on AWS/GCP/Azure and monitoring."
-        },
-        {
-          level: "Advanced Engineering",
-          description: "Master system design, microservices, caching strategies and performance optimization."
-        },
-        {
-          level: "Tech Leadership",
-          description: "Lead architecture, mentor teams and influence product and engineering strategy."
-        }
-      ]
+      roadmap: t("jobApp.paths.tech.roadmap")
     },
     marketing: {
-      title: "Marketing & Growth",
+      title: t("jobApp.paths.marketing.title"),
       icon: <GlobalOutlined />,
       color: "#27ae60",
-      description: "Digital marketing, brand management, growth hacking",
-      skills: ["Analytics", "SEO/SEM", "Social Media", "Content Strategy", "A/B Testing"],
-      salary: "$70K - $130K",
+      description: t("jobApp.paths.marketing.description"),
+      skills: t("jobApp.paths.marketing.skills"),
+      salary: t("jobApp.paths.marketing.salary"),
       growth: 78,
-      roadmap: [
-        {
-          level: "Foundations",
-          description: "Understand marketing fundamentals: customer funnels, positioning, segmentation and basic analytics."
-        },
-        {
-          level: "Digital Basics",
-          description: "Learn SEO fundamentals, Google Analytics, tag management and basic HTML for marketers."
-        },
-        {
-          level: "Acquisition Channels",
-          description: "Run paid acquisition (Google Ads, Meta), set up tracking and optimize cost-per-acquisition."
-        },
-        {
-          level: "Growth Experiments",
-          description: "Design A/B tests, improve conversion rates and build retention loops using product analytics."
-        },
-        {
-          level: "Content & Brand",
-          description: "Develop content strategy, social media playbooks and long-term brand positioning."
-        },
-        {
-          level: "Advanced Measurement",
-          description: "Use SQL, BI tools and attribution modeling to guide channel investment decisions."
-        },
-        {
-          level: "Marketing Leadership",
-          description: "Lead growth teams, define GTM strategy and align marketing with product and sales goals."
-        }
-      ]
+      roadmap: t("jobApp.paths.marketing.roadmap")
     }
-  };
+  }), [t]);
 
   // Switch to dropdown when viewport likely can't fit 4 cards comfortably
   const BREAKPOINT = 992; // match desktop CSS breakpoint
@@ -271,7 +155,7 @@ const JobApp = () => {
                         strokeColor={path.color}
                         showInfo={false}
                       />
-                      <Text className="growth-text">{path.growth}% growth</Text>
+                      <Text className="growth-text">{path.growth}% {t("jobApp.growth")}</Text>
                     </div>
                   </div>
                 </div>
@@ -284,7 +168,7 @@ const JobApp = () => {
         <div className="path-details">
           <div className="details-header">
             <Title level={3} className="details-title">
-              {careerPaths[activePath].title} Roadmap
+              {careerPaths[activePath].title} {t("jobApp.roadmap")}
             </Title>
             <div className="path-timeline">
               {careerPaths[activePath].roadmap.map((milestone, index) => (
@@ -300,7 +184,7 @@ const JobApp = () => {
           </div>
           
           <div className="skills-section">
-            <Title level={4} className="skills-title">Key Skills Required</Title>
+            <Title level={4} className="skills-title">{t("jobApp.keySkills")}</Title>
             <div className="skills-tags">
               {careerPaths[activePath].skills.map((skill, index) => (
                 <Tag key={index} className="skill-tag" color={careerPaths[activePath].color}>
