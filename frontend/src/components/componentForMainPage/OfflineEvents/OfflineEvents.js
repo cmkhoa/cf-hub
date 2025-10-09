@@ -1,29 +1,29 @@
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import "./SuccessMetrics.css";
+import "./OfflineEvents.css";
 
-const SuccessMetrics = () => {
+const OfflineEvents = () => {
   const slides = [
     {
       id: 1,
-      src: "/assets/online-event1.png",
-      alt: "Online Event 1",
+      src: "/assets/offline-event1.png",
+      alt: "Offline Event 1",
     },
     {
       id: 2,
-      src: "/assets/online-event2.png",
-      alt: "Online Event 2",
+      src: "/assets/offline-event2.png",
+      alt: "Offline Event 2",
     },
     {
       id: 3,
-      src: "/assets/online-event3.png",
-      alt: "Online Event 3",
+      src: "/assets/offline-event3.png",
+      alt: "Offline Event 3",
     },
     {
       id: 4,
-      src: "/assets/online-event4.png",
-      alt: "Online Event 4",
+      src: "/assets/offline-event4.png",
+      alt: "Offline Event 4",
     },
   ];
 
@@ -32,7 +32,7 @@ const SuccessMetrics = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 3000); // Change slide every 3 seconds
+    }, 3000);
 
     return () => clearInterval(timer);
   }, [slides.length]);
@@ -42,18 +42,20 @@ const SuccessMetrics = () => {
   };
 
   return (
-    <div className="success-metrics-container">
-      <div className="success-metrics-header">
-        <h2>Online Events</h2>
+    <div className="offline-events-container">
+      <div className="offline-events-header">
+        <h2>Offline Events</h2>
       </div>
 
-      <div className="slideshow-container">
+      <div className="offline-slideshow-container">
         {slides.map((slide, index) => (
           <div
             key={slide.id}
-            className={`metric-slide ${index === currentSlide ? "active" : ""}`}
+            className={`offline-slide ${
+              index === currentSlide ? "active" : ""
+            }`}
           >
-            <div className="image-wrapper">
+            <div className="offline-image-wrapper">
               <Image
                 src={slide.src}
                 alt={slide.alt}
@@ -66,11 +68,11 @@ const SuccessMetrics = () => {
         ))}
       </div>
 
-      <div className="dots-container">
+      <div className="offline-dots-container">
         {slides.map((_, index) => (
           <span
             key={index}
-            className={`dot ${index === currentSlide ? "active" : ""}`}
+            className={`offline-dot ${index === currentSlide ? "active" : ""}`}
             onClick={() => goToSlide(index)}
           ></span>
         ))}
@@ -79,4 +81,4 @@ const SuccessMetrics = () => {
   );
 };
 
-export default SuccessMetrics;
+export default OfflineEvents;
