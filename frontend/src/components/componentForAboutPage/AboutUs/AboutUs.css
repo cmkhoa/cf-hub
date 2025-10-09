@@ -1,123 +1,183 @@
 .about-us-container {
-    padding: 80px 40px;
-    background-color: #f9f9f9;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  
-  .about-us-title {
-    text-align: center;
-    font-size: 40px;
-    color: var(--primary-color);
-    margin-bottom: 40px;
-  }
-  
-  .about-us-intro {
-    text-align: center;
-    font-size: 18px;
-    line-height: 1.6;
-    color: #555;
-    max-width: 800px;
-    margin: 0 auto 50px;
-  }
-  
-  .member-row {
-    display: flex;
-    align-items: center;
-    margin-bottom: 60px;
-  }
-  
-  .description-column {
-    padding-right: 20px;
-  }
-  
-  .member-name {
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--primary-color);
-    margin-bottom: 15px;
-    display: block;
-  }
-  
-  .member-description {
-    font-size: 16px;
-    line-height: 1.6;
-    color: #333;
-    display: block;
-    margin-bottom: 10px;
-  }
-  
-  .image-column {
-    position: relative;
-    display: flex;
-    justify-content: center;
-  }
-  
-  .member-image {
-    width: 100%;
-    max-width: 350px;
-    border-radius: 10px;
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
-  }
-  
-  .role-label {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background-color: var(--secondary-color);
-    color: #fff;
-    font-size: 14px;
-    font-weight: 600;
-    padding: 5px 10px;
-    border-radius: 5px;
-    text-transform: uppercase;
+  padding: 0px  40px;
+  /* background-color: #f9f9f9; */
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Full-width banner section */
+.about-banner {
+  position: relative;
+  top: 0;
+  z-index: 0;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  width: 100vw;
+  /* full viewport width */
+  /* background: #000; */
+
+}
+
+.about-banner-image {
+  width: 100%;
+  height: 50vh;
+  min-height: 360px;
+  max-height: 640px;
+  object-fit: cover;
+  display: block;
+}
+
+.about-hero-image {
+  width: 100%;
+  max-width: 1000px;
+  height: auto;
+  display: block;
+  margin: 0 auto 32px;
+  /* centered and spaced below */
+  border-radius: 0;
+  /* no rounded corners */
+  box-shadow: none;
+  /* no shadow to avoid block look */
+  object-fit: cover;
+}
+
+.about-us-title {
+  text-align: center;
+  font-size: 40px;
+  color: var(--primary-color);
+  margin-bottom: 40px;
+}
+
+.about-us-intro {
+  text-align: center;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #555;
+  max-width: 800px;
+  margin: 0 auto 50px;
+}
+
+/* Sticky block to cover scrolled area */
+.about-us-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #fff;
+  /* white block */
+  padding: 24px 28px;
+  margin: 0 auto 24px;
+  /* center horizontally */
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  max-width: 780px;
+  /* narrower than hero image (1000px) */
+}
+
+.member-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 60px;
+}
+
+.description-column {
+  padding-right: 20px;
+}
+
+.member-name {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 15px;
+  display: block;
+}
+
+.member-description {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.image-column {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.member-image {
+  width: 100%;
+  max-width: 350px;
+  border-radius: 10px;
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.role-label {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: var(--secondary-color);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-transform: uppercase;
+}
+
+.linkedin-link {
+  display: inline-flex;
+  align-items: center;
+  font-size: 16px;
+  color: #0077b5;
+  margin-top: 10px;
+}
+
+.linkedin-icon {
+  font-size: 18px;
+  margin-right: 5px;
+}
+
+@media (max-width: 768px) {
+  .about-us-container {
+    padding: 60px 20px;
   }
 
-  .linkedin-link {
-    display: inline-flex;
-    align-items: center;
+  .about-us-title {
+    font-size: 32px;
+  }
+
+  .about-us-intro {
     font-size: 16px;
-    color: #0077b5;
-    margin-top: 10px;
   }
-  
-  .linkedin-icon {
-    font-size: 18px;
-    margin-right: 5px;
+
+  .about-us-sticky {
+    padding: 16px 18px;
+    max-width: 100%;
+    margin: 0 auto 16px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
   }
-  
-  @media (max-width: 768px) {
-    .about-us-container {
-      padding: 60px 20px;
-    }
-  
-    .about-us-title {
-      font-size: 32px;
-    }
-  
-    .about-us-intro {
-      font-size: 16px;
-    }
-  
-    .member-row {
-      flex-direction: column;
-      margin-bottom: 40px;
-    }
-  
-    .description-column {
-      padding-right: 0;
-    }
-  
-    .member-name {
-      font-size: 20px;
-    }
-  
-    .member-description {
-      font-size: 14px;
-    }
-  
-    .member-image {
-      max-width: 100%;
-    }
+
+  .member-row {
+    flex-direction: column;
+    margin-bottom: 40px;
   }
-  
+
+  .description-column {
+    padding-right: 0;
+  }
+
+  .member-name {
+    font-size: 20px;
+  }
+
+  .member-description {
+    font-size: 14px;
+  }
+
+  .member-image {
+    max-width: 100%;
+  }
+}

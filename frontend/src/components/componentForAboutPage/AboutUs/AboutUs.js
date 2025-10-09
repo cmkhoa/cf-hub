@@ -1,6 +1,5 @@
 import React from "react";
-import { Row, Col, Typography } from "antd";
-import { LinkedinOutlined } from "@ant-design/icons";
+import { Typography } from "antd";
 import "./AboutUs.css";
 
 const { Title, Text } = Typography;
@@ -45,52 +44,42 @@ const teamMembers = [
   },
 ];
 
+// Replace with the exact English paragraph from your banner image
+const ABOUT_ENGLISH_PARAGRAPH = `Giới thiệu về VietNamese Professionals Network (VNPN)
+VNPN là mạng lưới kết nối chuyên gia Việt tại Hoa Kỳ. Nhiệm vụ của VNPN là tạo ra cơ hội phát triển sự nghiệp cho mọi thành viên thông qua việc tiếp cận với các nguồn thông tin tuyển dụng có ưu thế, kiến thức chuyên ngành và kinh nghiệm cố vấn từ những người đi trước. VNPN mong muốn được góp phần xây dựng cộng đồng người Việt Nam ở nước ngoài gắn kết, tương trợ lẫn nhau.
+Bạn tham gia VNPN vì:
+Bạn muốn đóng góp, hỗ trợ xây dựng cộng đồng người Việt Nam ở Hoa Kỳ
+Bạn muốn kinh nghiệm của mình được chia sẻ và sử dụng
+Bạn muốn tìm thành viên mới cho công ty bạn đang làm
+Bạn muốn tìm đồng sáng lập (co-founder) cho start-up của mình
+Bạn muốn có cơ hội có được giới thiệu từ bên trong (internal job referral)
+Bạn muốn hỗ sơ xin việc (resume) của mình được đánh giá (review) từ những người nhiều kinh nghiệm cùng ngành
+Bạn muốn tìm một người hướng dẫn có nhiều kinh nghiệm để phát triển sự nghiệp
+Bạn muốn tìm hiểu về công ty bạn quan tâm qua góc nhìn của những người Việt làm việc ở đó
+Bạn muốn kết nối với các thành viên khác đang làm việc khắp nơi trên nước Mỹ
+VNPN là dự án phi lợi nhuận, được triển khai với sự hỗ trợ từ Hội Thanh Niên, Sinh Viên Việt Nam ở Hoa Kỳ (www.sinhvienusa.org) và cuộc thi khởi nghiệp VietChallenge (www.vietchallenge.org). Dự án hiện tại đang được thử nghiệm ở giai đoạn Beta.`;
+
 const AboutUs = () => (
-  <div>In maintenance</div>
-  // <div className="about-us-container">
-  //   <Title level={2} className="about-us-title">
-  //     Our Team
-  //   </Title>
-  //   <Text className="about-us-intro">
-  //     We are Vietnamese students in the U.S. who have experienced many
-  //     challenges during our studies and job search journeys here. Understanding
-  //     the difficulties of applying to hundreds of positions without receiving a
-  //     single interview, CF Hub Mentorship program was established with the
-  //     mission to build a community that shares knowledge and experiences to help
-  //     Vietnamese students achieve their dream jobs.
-  //   </Text>
-  //   {teamMembers.map((member, index) => (
-  //     <Row
-  //       className="member-row"
-  //       align="middle"
-  //       justify="center"
-  //       key={index}
-  //       gutter={[32, 32]}
-  //     >
-  //       <Col xs={24} md={14} className="description-column">
-  //         <Text className="member-name">{member.name.toUpperCase()}</Text>
-  //         {member.description.map((paragraph, idx) => (
-  //           <Text key={idx} className="member-description">
-  //             {paragraph}
-  //           </Text>
-  //         ))}
-  //         <a
-  //           href={member.linkedin}
-  //           target="_blank"
-  //           rel="noopener noreferrer"
-  //           className="linkedin-link"
-  //         >
-  //           <LinkedinOutlined className="linkedin-icon" />
-  //           <span>LinkedIn</span>
-  //         </a>
-  //       </Col>
-  //       <Col xs={24} md={10} className="image-column">
-  //         <div className="role-label">{member.role.toUpperCase()}</div>
-  //         <img src={member.image} alt={member.name} className="member-image" />
-  //       </Col>
-  //     </Row>
-  //   ))}
-  // </div>
+  <>
+    {/* Full-width banner at the top */}
+    <div className="about-banner">
+      <img
+        src="/assets/facebook-screenshot.png"
+        alt="About CF Hub Banner"
+        className="about-banner-image"
+      />
+    </div>
+
+    {/* Content section below the banner */}
+    <div className="about-us-container">
+      <Title level={2} className="about-us-title">
+        About Us
+      </Title>
+      <div className="about-us-sticky">
+        <Text className="about-us-intro">{ABOUT_ENGLISH_PARAGRAPH}</Text>
+      </div>
+    </div>
+  </>
 );
 
 export default AboutUs;
