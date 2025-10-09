@@ -134,3 +134,11 @@
     margin-top: 20px;
   }
 }
+
+@media (max-width: 480px) {
+  /* Prevent zoom on input focus */
+  .search-input input,
+  .search-input .ant-input {
+    font-size: 16px !important;
+  }
+}

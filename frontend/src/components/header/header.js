@@ -417,15 +417,13 @@ const HeaderComponent = ({ current, handleClick }) => {
 					style={{ borderRight: "none" }}
 				>
 					{[
-						{ key: "home", label: t("home") },
-						{ key: "about", label: t("about") },
-						{ key: "blog", label: t("blogs") },
-						{ key: "conference", label: t("conference") },
-						{ key: "videos", label: t("videos") },
-						{ key: "support", label: t("support") },
+						{ key: "home", label: t("home"), href: "/" },
+						{ key: "about", label: t("about"), href: "/about" },
+						{ key: "news", label: t("blogs"), href: "/blog" },
+						{ key: "stories", label: t("stories"), href: "/stories" },
 					].map((item) => (
 						<Menu.Item key={item.key} onClick={closeDrawer}>
-							<Link href={`/${item.key === "home" ? "" : item.key}`} passHref>
+							<Link href={item.href} passHref>
 								<span>{item.label}</span>
 							</Link>
 						</Menu.Item>

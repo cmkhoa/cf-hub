@@ -26,12 +26,8 @@ const Chatbot = () => {
 	};
 
 	const handleSuggestionClick = (suggestion) => {
-		setInput(suggestion);
-		// Focus the input after setting the suggestion
-		const input = document.querySelector(".chat-input");
-		if (input) {
-			input.focus();
-		}
+		// Auto-send default suggestions immediately (same as follow-ups)
+		sendPrompt(suggestion);
 	};
 
 	// Reusable sender used by form submit and follow-up click
