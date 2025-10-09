@@ -86,6 +86,172 @@
     "followUs": "Follow Us",
     "noRecent": "No recent posts yet",
     "copyright": "© 2025 CF Hub Corporation - Official website of CF Hub Corporation."
+  },
+  "chatroom": {
+    "title": "Chatroom",
+    "saveChat": "Save Chat",
+    "newChat": "New Chat",
+    "sessionStats": "Session Stats",
+    "messages": "Messages",
+    "files": "Files",
+    "helpWith": "What I Can Help With",
+    "capabilities": {
+      "resume": "Resume review & optimization",
+      "career": "Career path planning",
+      "interview": "Interview preparation",
+      "skills": "Skill development advice",
+      "jobSearch": "Job search strategies",
+      "insights": "Industry insights"
+    },
+    "greeting": "Hello! 👋 I'm your CF Hub Career Assistant. I'm here to help you with:\n\n• Resume review and optimization\n• Career path guidance\n• Interview preparation\n• Skill development roadmaps\n• Job application strategies\n\nYou can upload your resume (PDF/DOCX) or screenshots for personalized feedback. How can I assist you today?",
+    "placeholder": "Ask about your career, upload your resume for review, or share a screenshot...",
+    "attachFile": "Attach file (PDF, DOCX, or image)",
+    "thinking": "Thinking...",
+    "disclaimer": "AI responses are for guidance only. Verify important information.",
+    "warningMessage": "Please enter a message or attach a file",
+    "limitReached": "Message limit reached. Please refresh to start a new session.",
+    "fileAttached": "attached",
+    "clearConfirmTitle": "Clear Chat History",
+    "clearConfirmMessage": "Are you sure you want to clear all messages? This cannot be undone. Consider saving your conversation first.",
+    "clearButton": "Clear",
+    "cancelButton": "Cancel",
+    "chatCleared": "Chat cleared. How can I help you today?",
+    "chatClearedSuccess": "Chat history cleared",
+    "conversationSaved": "Conversation saved!",
+    "errorResponse": "Sorry, I encountered an error processing your request. Please try again.",
+    "failedResponse": "Failed to get response. Please try again.",
+    "suggestions": {
+      "workshops": "Tell me about CF Hub's workshops",
+      "mentor": "How can I join as a mentor?",
+      "opportunities": "What career opportunities are available?"
+    }
+  },
+  "blog": {
+    "title": "Blog",
+    "searchPlaceholder": "Search articles...",
+    "filterByCategory": "Filter by Category",
+    "filterByTags": "Filter by Tags",
+    "allCategories": "All Categories",
+    "selectTags": "Select Tags",
+    "tagsMode": "Tags Mode",
+    "anyTag": "Any Tag",
+    "allTags": "All Tags",
+    "viewMode": "View",
+    "cardView": "Card",
+    "rowView": "Row",
+    "clearFilters": "Clear Filters",
+    "noResults": "No blog posts found",
+    "tryAdjusting": "Try adjusting your search or filters",
+    "loading": "Loading...",
+    "error": "Failed to load posts"
+  },
+  "storiesPage": {
+    "title": "Career Stories",
+    "searchPlaceholder": "Search stories...",
+    "filterByCategory": "Filter by Category",
+    "filterByTags": "Filter by Tags",
+    "allCategories": "All Categories",
+    "selectTags": "Select Tags",
+    "tagsMode": "Tags Mode",
+    "anyTag": "Any Tag",
+    "allTags": "All Tags",
+    "viewMode": "View",
+    "cardView": "Card",
+    "rowView": "Row",
+    "clearFilters": "Clear Filters",
+    "noResults": "No stories found",
+    "tryAdjusting": "Try adjusting your search or filters",
+    "loading": "Loading...",
+    "error": "Failed to load stories"
+  },
+  "search": {
+    "title": "Search Results",
+    "searchPlaceholder": "Search...",
+    "filterByTags": "Filter by Tags",
+    "selectTags": "Select Tags",
+    "tagsMode": "Tags Mode",
+    "anyTag": "Any Tag",
+    "allTags": "All Tags",
+    "viewMode": "View",
+    "cardView": "Card",
+    "rowView": "Row",
+    "clearFilters": "Clear Filters",
+    "noResults": "No results found",
+    "tryAdjusting": "Try adjusting your search",
+    "loading": "Loading...",
+    "error": "Failed to load results",
+    "searchButton": "Search",
+    "resultsFor": "Results for"
+  },
+  "chatbot": {
+    "title": "Let's Chat!",
+    "subtitle": "We'll reply as soon as we can",
+    "greeting": "Hi! How can I help you today?",
+    "greetingWithName": "Hi, {name}! How can I help you today?",
+    "placeholder": "Write your message...",
+    "send": "Send",
+    "errorMessage": "I apologize, but I encountered an error. Please try again.",
+    "suggestions": {
+      "resume": "Help with resume review",
+      "interview": "Interview preparation tips",
+      "career": "Career guidance"
+    }
+  },
+  "offlineEvents": {
+    "title": "Offline Events"
+  },
+  "onlineEvents": {
+    "title": "Online Events"
+  },
+  "missionStatement": {
+    "words": {
+      "cfHub": "CF Hub",
+      "empowers": "empowers",
+      "youngProfessionals": "young professionals",
+      "toSecureJobs": "to secure jobs and build successful careers in",
+      "finance": "finance,",
+      "operations": "operations,",
+      "strategy": "strategy,",
+      "marketing": "marketing,",
+      "management": "management,",
+      "andBeyond": "and beyond",
+      "throughDedicated": "through dedicated",
+      "mentorship": "mentorship",
+      "and": "and",
+      "support": "support."
+    },
+    "stats": {
+      "careerSuccess": "Career Success",
+      "expertMentorship": "Expert Mentorship",
+      "professionalGrowth": "Professional Growth"
+    }
+  },
+  "blogGrid": {
+    "title": "Latest News",
+    "loading": "Loading latest articles...",
+    "error": "Error",
+    "noArticles": "No articles yet.",
+    "viewAll": "View All Articles"
+  },
+  "aboutUs": {
+    "title": "About Us",
+    "intro": "VNPN is a network connecting Vietnamese professionals in the United States. VNPN's mission is to create career development opportunities for all members by providing access to recruitment information, specialized knowledge, and mentorship from experienced professionals. VNPN hopes to contribute to building a cohesive and mutually supportive Vietnamese community abroad.",
+    "joinTitle": "You join VNPN because:",
+    "reasons": {
+      "contribute": "You want to contribute and help build the Vietnamese community in the United States",
+      "share": "You want your experience to be shared and utilized",
+      "recruit": "You want to find new members for your company",
+      "cofounder": "You want to find a co-founder for your startup",
+      "referral": "You want the opportunity to get an internal job referral",
+      "resume": "You want your resume reviewed by experienced professionals in the same field",
+      "mentor": "You want to find an experienced mentor for career development",
+      "insights": "You want to learn about companies you're interested in from the perspective of Vietnamese people working there",
+      "connect": "You want to connect with other members working across the United States"
+    },
+    "nonprofit": "VNPN is a non-profit project, implemented with support from the Association of Vietnamese Youth and Students in the United States (",
+    "sinhvien": "www.sinhvienusa.org",
+    "vietchallenge": ") and the VietChallenge startup competition (",
+    "betaNote": "). The project is currently being tested in the Beta phase."
   }
 }
   

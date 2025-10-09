@@ -1,9 +1,11 @@
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { useLang } from "@/contexts/langprov";
 import "./OfflineEvents.css";
 
 const OfflineEvents = () => {
+  const { t } = useLang();
   const slides = [
     {
       id: 1,
@@ -44,7 +46,7 @@ const OfflineEvents = () => {
   return (
     <div className="offline-events-container">
       <div className="offline-events-header">
-        <h2>Offline Events</h2>
+        <h2>{t("offlineEvents.title")}</h2>
       </div>
 
       <div className="offline-slideshow-container">

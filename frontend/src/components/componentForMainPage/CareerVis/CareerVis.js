@@ -10,6 +10,7 @@ import {
   GlobalOutlined,
   DownOutlined
 } from '@ant-design/icons';
+import { useRouter } from 'next/navigation';
 import './CareerVis.css';
 import { useLang } from "@/contexts/langprov";
 
@@ -17,6 +18,7 @@ const { Title, Paragraph, Text } = Typography;
 
 const JobApp = () => {
   const { t } = useLang();
+  const router = useRouter();
   const [activePath, setActivePath] = useState('finance');
   const [compact, setCompact] = useState(false);
   const [hoveredNode, setHoveredNode] = useState(null);
@@ -324,6 +326,7 @@ const JobApp = () => {
                 size="large" 
                 className="primary-cta"
                 icon={<RocketOutlined />}
+                onClick={() => router.push('/chatroom')}
               >
                 {t("jobApp.cta.getStarted")}
               </Button>
@@ -331,6 +334,7 @@ const JobApp = () => {
                 size="large" 
                 className="secondary-cta"
                 icon={<ArrowRightOutlined />}
+                onClick={() => router.push('/about')}
               >
                 {t("jobApp.cta.learnMore")}
               </Button>

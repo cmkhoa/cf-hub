@@ -1,9 +1,11 @@
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { useLang } from "@/contexts/langprov";
 import "./SuccessMetrics.css";
 
 const SuccessMetrics = () => {
+  const { t } = useLang();
   const slides = [
     {
       id: 1,
@@ -44,7 +46,7 @@ const SuccessMetrics = () => {
   return (
     <div className="success-metrics-container">
       <div className="success-metrics-header">
-        <h2>Online Events</h2>
+        <h2>{t("onlineEvents.title")}</h2>
       </div>
 
       <div className="slideshow-container">

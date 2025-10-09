@@ -6,12 +6,14 @@ import { Layout, Pagination, Select, Tag, Space, Button, Segmented } from "antd"
 import PostCard from '@/components/post/PostCard';
 import HeaderComponent from "@/components/header/header";
 import FooterComponent from "@/components/footer/Footer";
+import { useLang } from "@/contexts/langprov";
 
 const { Content } = Layout;
 
 export const dynamic = 'force-dynamic';
 
 function SearchPageInner(){
+  const { t } = useLang();
   const [current, setCurrent] = useState("blog");
   const handleClick = (e) => setCurrent(e.key);
   const searchParams = useSearchParams();
@@ -83,16 +85,16 @@ function SearchPageInner(){
       <Content style={{ minHeight:'60vh' }}>
         <div style={{ maxWidth:1100, margin:'40px auto', padding:'0 24px' }}>
           <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', gap:16, flexWrap:'wrap', marginBottom:24 }}>
-            <h1 style={{ fontSize:32, margin:0 }}>Search Results</h1>
-            <Segmented size="middle" value={viewMode} onChange={setViewMode} options={[{label:'Cards', value:'card'},{label:'Rows', value:'row'}]} />
+            <h1 style={{ fontSize:32, margin:0 }}>{t('search.title')}</h1>
+            <Segmented size="middle" value={viewMode} onChange={setViewMode} options={[{label:t('search.cardView'), value:'card'},{label:t('search.rowView'), value:'row'}]} />
           </div>
           <div style={{ marginBottom:24, background:'#fff', padding:16, border:'1px solid #eee', borderRadius:8 }}>
             <Space direction='vertical' style={{ width:'100%' }} size='small'>
               <div style={{ display:'flex', flexWrap:'wrap', gap:16 }}>
                 <div style={{ minWidth:280, flex:'1 1 320px' }}>
-                  <label style={{ fontSize:12, fontWeight:600, letterSpacing:0.5 }}>Search</label>
+                  <label style={{ fontSize:12, fontWeight:600, letterSpacing:0.5 }}>{t('searchPlaceholder')}</label>
                   <Input.Search
-                    placeholder='Search all posts'
+                    placeholder={t('search.searchPlaceholder')}
                     allowClear
                     value={searchQuery}
                     onChange={e=> setSearchQuery(e.target.value)}
@@ -101,9 +103,9 @@ function SearchPageInner(){
                 </div>
                 <div style={{ minWidth:240 }}>
                   <label style={{ fontSize:12, fontWeight:600, letterSpacing:0.5 }}>
-                    {`Tags${selectedTags.length ? ` (${selectedTags.length})` : ''}`}
+                    {`${t('search.filterByTags')}${selectedTags.length ? ` (${selectedTags.length})` : ''}`}
                   </label>
-                  <Select mode='tags' allowClear placeholder='Filter by tags' value={selectedTags} onChange={vals=> { setSelectedTags(vals); setPage(1); }} options={tags.map(t=> ({ value:t.name, label:t.name }))} loading={metaLoading} style={{ width:'100%' }} maxTagCount={3} />
+                  <Select mode='tags' allowClear placeholder={t('search.selectTags')} value={selectedTags} onChange={vals=> { setSelectedTags(vals); setPage(1); }} options={tags.map(t=> ({ value:t.name, label:t.name }))} loading={metaLoading} style={{ width:'100%' }} maxTagCount={3} />
                 </div>
                 {/* Removed Any/All switch; default tag matching is OR (any) */}
               </div>
@@ -112,17 +114,17 @@ function SearchPageInner(){
                   <div style={{ display:'flex', flexWrap:'wrap', gap:8, flex:1 }}>
                     {selectedTags.map(t=> <Tag key={t} closable onClose={()=> setSelectedTags(selectedTags.filter(x=> x!==t))}>{t}</Tag>)}
                   </div>
-                  <Button onClick={clearFilters}>Clear</Button>
+                  <Button onClick={clearFilters}>{t('search.clearFilters')}</Button>
                 </div>
               )}
             </Space>
           </div>
           {!committedQuery && (
-            <p style={{ color:'#666' }}>Type a query above and press Enter to search across blogs and stories.</p>
+            <p style={{ color:'#666' }}>{t('search.tryAdjusting')}</p>
           )}
-          {committedQuery && loading && <p>Loading results...</p>}
-          {committedQuery && error && <p style={{ color:'red' }}>Error: {error}</p>}
-          {committedQuery && !loading && !error && posts.length === 0 && <p>No results for "{committedQuery}".</p>}
+          {committedQuery && loading && <p>{t('search.loading')}</p>}
+          {committedQuery && error && <p style={{ color:'red' }}>{t('search.error')}: {error}</p>}
+          {committedQuery && !loading && !error && posts.length === 0 && <p>{t('search.noResults')} "{committedQuery}".</p>}
           {committedQuery && posts.length > 0 && (
             viewMode === 'card' ? (
               <div style={{ display:'grid', gap:24, gridTemplateColumns:'repeat(auto-fill, minmax(250px,1fr))' }}>

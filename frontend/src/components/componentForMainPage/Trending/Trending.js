@@ -112,12 +112,12 @@ const Trending = () => {
                     <div className="featured-stats">
                       <div className="stat-item">
                         <EyeOutlined />
-                        <span>{featuredPost.views || 0} views</span>
+                        <span>{featuredPost.views || 0} {t("trending.views")}</span>
                       </div>
                       <div className="stat-item">
                         <ClockCircleOutlined />
                         <span>
-                          {featuredPost.readingTimeMins || 1} min read
+                          {featuredPost.readingTimeMins || 1} {t("trending.minRead")}
                         </span>
                       </div>
                     </div>
@@ -225,7 +225,7 @@ const Trending = () => {
                         </div>
                         <div className="stat-item">
                           <ClockCircleOutlined />
-                          <span>{post.readingTimeMins || 1} min</span>
+                          <span>{post.readingTimeMins || 1} {t("trending.min")}</span>
                         </div>
                       </div>
                       <div className="trending-card-tags">
