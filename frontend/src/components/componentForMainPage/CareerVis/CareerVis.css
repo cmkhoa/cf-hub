@@ -536,6 +536,10 @@
     max-width: 95%;
   }
 
+  .visualizer-cta {
+    max-width: 95%;
+  }
+
   .path-timeline {
     display: block;
     position: relative;
@@ -629,6 +633,11 @@
   
   .path-details {
     padding: 25px 15px;
+    max-width: 100%;
+  }
+
+  .visualizer-cta {
+    padding: 40px 15px;
     max-width: 100%;
   }
 
