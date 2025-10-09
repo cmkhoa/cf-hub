@@ -70,11 +70,160 @@
     "subtitle": "Khám phá các con đường sự nghiệp khác nhau và phát hiện tiềm năng của bạn. Xem những câu chuyện thành công thực tế và tìm ra quỹ đạo sự nghiệp hoàn hảo.",
     "choosePath": "Chọn Con Đường Của Bạn",
     "successStories": "Câu Chuyện Thành Công",
+    "growth": "tăng trưởng",
+    "roadmap": "Lộ Trình",
+    "keySkills": "Kỹ Năng Chính Cần Thiết",
     "cta": {
-      "title": "Ready to Start Your Journey?",
+      "title": "Sẵn Sàng Bắt Đầu Hành Trình?",
       "description": "Tham gia cộng đồng của chúng tôi và nhận hướng dẫn cá nhân hóa cho con đường sự nghiệp bạn đã chọn.",
-      "getStarted": "Start Your Path",
-      "learnMore": "Explore More"
+      "getStarted": "Bắt Đầu Con Đường",
+      "learnMore": "Khám Phá Thêm"
+    },
+    "paths": {
+      "finance": {
+        "title": "Tài Chính & Ngân Hàng",
+        "description": "Ngân hàng đầu tư, tài chính doanh nghiệp, quản lý rủi ro",
+        "skills": ["Mô Hình Tài Chính", "Excel", "SQL", "Python", "CFA"],
+        "salary": "$85K - $150K",
+        "roadmap": [
+          {
+            "level": "Nền Tảng",
+            "description": "Kiến thức kế toán cơ bản, giá trị thời gian của tiền, Excel cơ bản và nguyên tắc tài chính doanh nghiệp."
+          },
+          {
+            "level": "Mô Hình Tài Chính",
+            "description": "Xây dựng mô hình DCF, LBO và mô hình sáp nhập trong Excel; học phân tích độ nhạy và kịch bản."
+          },
+          {
+            "level": "Phân Tích & Công Cụ",
+            "description": "Sử dụng SQL/Python để phân tích dữ liệu; thành thạo các thiết bị đầu cuối Bloomberg/Refinitiv."
+          },
+          {
+            "level": "Kinh Nghiệm Giao Dịch",
+            "description": "Làm việc về M&A, thị trường vốn, thẩm định và chuẩn bị tài liệu cho khách hàng."
+          },
+          {
+            "level": "Chuyên Môn & Chứng Chỉ",
+            "description": "Theo đuổi CFA/FRM hoặc MBA tùy theo hướng đi; chuyên sâu vào các lĩnh vực như PE, quản lý tài sản hoặc tài chính doanh nghiệp."
+          },
+          {
+            "level": "Chuyên Gia Cấp Cao",
+            "description": "Dẫn dắt các nhóm giao dịch, quản lý mối quan hệ khách hàng và chịu trách nhiệm về chiến lược tài chính."
+          },
+          {
+            "level": "Lãnh Đạo",
+            "description": "Định hình chiến lược công ty, cố vấn nhân viên cấp cao và thúc đẩy các sáng kiến phát triển kinh doanh."
+          }
+        ]
+      },
+      "consulting": {
+        "title": "Tư Vấn Quản Lý",
+        "description": "Tư vấn chiến lược, vận hành, chuyển đổi kinh doanh",
+        "skills": ["Giải Quyết Vấn Đề", "PowerPoint", "Phân Tích Dữ Liệu", "Lãnh Đạo", "MBA"],
+        "salary": "$90K - $180K",
+        "roadmap": [
+          {
+            "level": "Nền Tảng",
+            "description": "Phát triển tư duy giải quyết vấn đề có cấu trúc, lý luận định lượng và kiến thức cơ bản về phỏng vấn case."
+          },
+          {
+            "level": "Bộ Công Cụ Phân Tích",
+            "description": "Thành thạo mô hình Excel, SQL cơ bản và trực quan hóa dữ liệu cho các sản phẩm giao khách hàng."
+          },
+          {
+            "level": "Thực Hiện Khách Hàng",
+            "description": "Tham gia các luồng công việc: định cỡ thị trường, lập bản đồ quy trình, định nghĩa KPI và hội thảo với các bên liên quan."
+          },
+          {
+            "level": "Chuyên Môn Hóa",
+            "description": "Chọn ngành hoặc chức năng tập trung (chiến lược, vận hành, kỹ thuật số) và làm sâu kiến thức chuyên môn."
+          },
+          {
+            "level": "Kỹ Năng Tư Vấn",
+            "description": "Dẫn dắt các mô-đun dự án, quản lý tư vấn viên junior và trình bày cho ban lãnh đạo."
+          },
+          {
+            "level": "Mạng Lưới & Chứng Chỉ",
+            "description": "Phát triển mạng lưới chuyên môn, xem xét MBA hoặc chứng chỉ nâng cao để tăng tốc."
+          },
+          {
+            "level": "Đối Tác/Lãnh Đạo",
+            "description": "Thúc đẩy danh mục khách hàng, giành được doanh nghiệp mới và xây dựng năng lực cấp công ty."
+          }
+        ]
+      },
+      "tech": {
+        "title": "Vai Trò Kỹ Thuật Phần Mềm",
+        "description": "Kỹ thuật phần mềm, Quản lý sản phẩm, Khoa học dữ liệu",
+        "skills": ["Lập Trình", "Điện Toán Đám Mây", "Thiết Kế Cơ Sở Dữ Liệu", "AI/ML", "Cấu Trúc Dữ Liệu & Thuật Toán", "Thiết Kế Hệ Thống"],
+        "salary": "$95K - $200K",
+        "roadmap": [
+          {
+            "level": "Nền Tảng",
+            "description": "Học kiến thức lập trình cơ bản; tập trung vào một ngôn ngữ, cấu trúc dữ liệu, thuật toán và Git cơ bản."
+          },
+          {
+            "level": "Phát Triển Frontend",
+            "description": "Thành thạo HTML/CSS/JS và các framework như React hoặc Next.js; xây dựng giao diện tương tác."
+          },
+          {
+            "level": "Phát Triển Backend",
+            "description": "Xây dựng REST/GraphQL APIs, làm việc với cơ sở dữ liệu SQL/NoSQL và triển khai mẫu xác thực."
+          },
+          {
+            "level": "Dự Án Full Stack",
+            "description": "Triển khai ứng dụng end-to-end, deploy lên các nền tảng (Vercel, Render) và thêm tests và CI workflows."
+          },
+          {
+            "level": "DevOps & Cloud",
+            "description": "Học Docker, CI/CD (GitHub Actions), kiến thức cơ bản về cloud trên AWS/GCP/Azure và giám sát."
+          },
+          {
+            "level": "Kỹ Thuật Nâng Cao",
+            "description": "Thành thạo thiết kế hệ thống, microservices, chiến lược caching và tối ưu hóa hiệu suất."
+          },
+          {
+            "level": "Lãnh Đạo Kỹ Thuật",
+            "description": "Dẫn dắt kiến trúc, cố vấn nhóm và ảnh hưởng đến chiến lược sản phẩm và kỹ thuật."
+          }
+        ]
+      },
+      "marketing": {
+        "title": "Marketing & Tăng Trưởng",
+        "description": "Marketing kỹ thuật số, quản lý thương hiệu, growth hacking",
+        "skills": ["Phân Tích", "SEO/SEM", "Mạng Xã Hội", "Chiến Lược Nội Dung", "A/B Testing"],
+        "salary": "$70K - $130K",
+        "roadmap": [
+          {
+            "level": "Nền Tảng",
+            "description": "Hiểu kiến thức marketing cơ bản: phễu khách hàng, định vị, phân khúc và phân tích cơ bản."
+          },
+          {
+            "level": "Kiến Thức Kỹ Thuật Số Cơ Bản",
+            "description": "Học kiến thức SEO cơ bản, Google Analytics, quản lý thẻ và HTML cơ bản cho marketer."
+          },
+          {
+            "level": "Kênh Thu Hút",
+            "description": "Chạy thu hút có trả phí (Google Ads, Meta), thiết lập theo dõi và tối ưu chi phí trên mỗi lần thu hút."
+          },
+          {
+            "level": "Thử Nghiệm Tăng Trưởng",
+            "description": "Thiết kế các bài test A/B, cải thiện tỷ lệ chuyển đổi và xây dựng vòng lặp giữ chân bằng phân tích sản phẩm."
+          },
+          {
+            "level": "Nội Dung & Thương Hiệu",
+            "description": "Phát triển chiến lược nội dung, playbook mạng xã hội và định vị thương hiệu dài hạn."
+          },
+          {
+            "level": "Đo Lường Nâng Cao",
+            "description": "Sử dụng SQL, công cụ BI và mô hình phân bổ để hướng dẫn quyết định đầu tư kênh."
+          },
+          {
+            "level": "Lãnh Đạo Marketing",
+            "description": "Dẫn dắt nhóm tăng trưởng, định nghĩa chiến lược GTM và đồng bộ marketing với mục tiêu sản phẩm và bán hàng."
+          }
+        ]
+      }
     }
   },
   "footer": {
@@ -250,7 +399,39 @@
     "nonprofit": "VNPN là dự án phi lợi nhuận, được triển khai với sự hỗ trợ từ Hội Thanh Niên, Sinh Viên Việt Nam ở Hoa Kỳ (",
     "sinhvien": "www.sinhvienusa.org",
     "vietchallenge": ") và cuộc thi khởi nghiệp VietChallenge (",
-    "betaNote": "). Dự án hiện tại đang được thử nghiệm ở giai đoạn Beta."
+    "betaNote": "). Dự án hiện tại đang được thử nghiệm ở giai đoạn Beta.",
+    "teamTitle": "Đội Ngũ Của Chúng Tôi",
+    "viewLinkedIn": "Xem Hồ Sơ LinkedIn",
+    "teamMembers": {
+      "quang": {
+        "name": "Quang Nguyen",
+        "role": "Cố Vấn Trưởng",
+        "description": [
+          "Quang Nguyen hiện đang làm kỹ sư phần mềm tại Microsoft. Trước đây, anh đã thực tập làm kỹ sư phần mềm tại NVIDIA (Hè 2023) và Facebook (Hè 2022).",
+          "Anh nhận học bổng toàn phần trị giá $73,000/năm trong 4 năm tại Đại học Rice, chuyên ngành Khoa học Máy tính.",
+          "Với vai trò Chủ tịch của Rice Apps (Câu lạc bộ Kỹ thuật Phần mềm Rice) tại Đại học Rice, anh đã hướng dẫn và giảng dạy hơn 60 thành viên về phát triển ứng dụng web và di động chuyên nghiệp."
+        ]
+      },
+      "tri": {
+        "name": "Tri Bui",
+        "role": "Cố Vấn",
+        "description": [
+          "Tri Bui hiện làm việc trong lĩnh vực Quản lý Rủi ro tại Revantage, một công ty trong danh mục đầu tư của Blackstone, và đã từng thực tập làm kỹ sư phần mềm tại Daikin, DetectAuto và Deloitte Việt Nam.",
+          "Người sáng lập/CEO của Esmart Solutions, công ty cung cấp giải pháp truyền thông và công nghệ cho các doanh nghiệp vừa và nhỏ tại Việt Nam.",
+          "Chủ tịch của Câu lạc bộ Khởi nghiệp và Đầu tư tại Đại học Macalester. Anh đã giành được nhiều giải thưởng trong lĩnh vực công nghệ, tài chính và khởi nghiệp, với tổng giá trị vượt quá $15,000."
+        ]
+      },
+      "anh": {
+        "name": "Anh Ngo",
+        "role": "Cố Vấn",
+        "description": [
+          "Anh Ngo hiện là Chuyên viên Phân tích Ngân hàng Đầu tư tại Deutsche Bank.",
+          "Cô nhận học bổng để học Kinh tế tại Đại học Pennsylvania (UPenn).",
+          "Phó Chủ tịch của Câu lạc bộ Tài chính Wharton và là thành viên của Ban Cố vấn Sinh viên Quốc tế tại UPenn.",
+          "Cô có nhiều kinh nghiệm làm việc tại Dịch vụ Nghề nghiệp UPenn, nơi cô đã hỗ trợ hơn 200 sinh viên đánh giá hồ sơ và hướng dẫn nghề nghiệp."
+        ]
+      }
+    }
   }
 }
   

@@ -1,49 +1,10 @@
 import React from "react";
-import { Typography } from "antd";
+import { Typography, Button } from "antd";
+import { LinkedinOutlined } from "@ant-design/icons";
 import { useLang } from "@/contexts/langprov";
 import "./AboutUs.css";
 
 const { Title, Text } = Typography;
-
-const teamMembers = [
-  {
-    name: "Quang Nguyen",
-    role: "Head Mentor",
-    linkedin: "https://www.linkedin.com/in/quang1401/",
-    description: [
-      "Quang Nguyen is currently a Software Engineer at Microsoft. He previously interned as a software engineer at NVIDIA (Summer 2023) and Facebook (Summer 2022).",
-      "He received a full-ride scholarship worth $73,000/year for 4 years at Rice University, majoring in Computer Science.",
-      "As the President of Rice Apps (Rice Software Engineering Club) at Rice University, he has mentored and taught over 60 members about professional web and mobile application development.",
-    ],
-    image:
-      "http://res.cloudinary.com/dbqcioj2g/image/upload/v1730786179/qz0r41jqmatncyl9h6py.jpg",
-  },
-  {
-    name: "Tri Bui",
-    role: "Mentor",
-    linkedin: "https://www.linkedin.com/in/tribuidinh/",
-    description: [
-      "Tri Bui currently works in Risk Management at Revantage, a Blackstone portfolio company, and has interned as a Software Engineer at Daikin, DetectAuto, and Deloitte Vietnam.",
-      "Founder/CEO of Esmart Solutions, a company providing communication and technology solutions to small and medium-sized businesses in Vietnam.",
-      "President of the Entrepreneurship and Investment Clubs at Macalester College. He has won multiple awards in technology, finance, and entrepreneurship, with a total value exceeding $15,000.",
-    ],
-    image:
-      "http://res.cloudinary.com/dbqcioj2g/image/upload/v1730786150/vqyqmxshnub26yu08dpr.jpg",
-  },
-  {
-    name: "Anh Ngo",
-    role: "Advisor",
-    linkedin: "https://www.linkedin.com/in/anhmngo/",
-    description: [
-      "Anh Ngo is currently an Investment Banking Analyst at Deutsche Bank.",
-      "She received a scholarship to study Economics at the University of Pennsylvania (UPenn).",
-      "Vice President of the Wharton Finance Club and a member of the International Student Advisory Board at UPenn.",
-      "She has extensive experience working at UPenn Career Services, where she has assisted over 200 students with resume reviews and career guidance.",
-    ],
-    image:
-      "http://res.cloudinary.com/dbqcioj2g/image/upload/v1730176141/tfiotmhqb6vpkofuh5py.jpg",
-  },
-];
 
 const AboutContent = () => {
   const { t } = useLang();
@@ -94,6 +55,24 @@ const AboutContent = () => {
 const AboutUs = () => {
   const { t } = useLang();
   
+  const teamMembers = [
+    {
+      key: "quang",
+      linkedin: "https://www.linkedin.com/in/quang1401/",
+      image: "http://res.cloudinary.com/dbqcioj2g/image/upload/v1730786179/qz0r41jqmatncyl9h6py.jpg",
+    },
+    {
+      key: "tri",
+      linkedin: "https://www.linkedin.com/in/tribuidinh/",
+      image: "http://res.cloudinary.com/dbqcioj2g/image/upload/v1730786150/vqyqmxshnub26yu08dpr.jpg",
+    },
+    {
+      key: "anh",
+      linkedin: "https://www.linkedin.com/in/anhmngo/",
+      image: "http://res.cloudinary.com/dbqcioj2g/image/upload/v1730176141/tfiotmhqb6vpkofuh5py.jpg",
+    },
+  ];
+  
   return (
     <>
       {/* Full-width banner at the top */}
@@ -113,6 +92,88 @@ const AboutUs = () => {
         <div className="about-us-sticky">
           <AboutContent />
         </div>
+
+        {/* Team Members Section
+        <div style={{ marginTop: "60px" }}>
+          <Title level={2} className="about-us-title">
+            {t("aboutUs.teamTitle")}
+          </Title>
+          {teamMembers.map((member, index) => (
+            <div key={member.key} className="member-row">
+              {index % 2 === 0 ? (
+                <>
+                  <div className="description-column" style={{ flex: 1 }}>
+                    <Text className="member-name">
+                      {t(`aboutUs.teamMembers.${member.key}.name`)}
+                    </Text>
+                    {t(`aboutUs.teamMembers.${member.key}.description`).map((desc, i) => (
+                      <Text key={i} className="member-description">
+                        {desc}
+                      </Text>
+                    ))}
+                    <Button
+                      type="link"
+                      icon={<LinkedinOutlined className="linkedin-icon" />}
+                      href={member.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="linkedin-link"
+                    >
+                      {t("aboutUs.viewLinkedIn")}
+                    </Button>
+                  </div>
+                  <div className="image-column" style={{ flex: 1 }}>
+                    <div style={{ position: "relative" }}>
+                      <img
+                        src={member.image}
+                        alt={t(`aboutUs.teamMembers.${member.key}.name`)}
+                        className="member-image"
+                      />
+                      <div className="role-label">
+                        {t(`aboutUs.teamMembers.${member.key}.role`)}
+                      </div>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="image-column" style={{ flex: 1 }}>
+                    <div style={{ position: "relative" }}>
+                      <img
+                        src={member.image}
+                        alt={t(`aboutUs.teamMembers.${member.key}.name`)}
+                        className="member-image"
+                      />
+                      <div className="role-label">
+                        {t(`aboutUs.teamMembers.${member.key}.role`)}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="description-column" style={{ flex: 1 }}>
+                    <Text className="member-name">
+                      {t(`aboutUs.teamMembers.${member.key}.name`)}
+                    </Text>
+                    {t(`aboutUs.teamMembers.${member.key}.description`).map((desc, i) => (
+                      <Text key={i} className="member-description">
+                        {desc}
+                      </Text>
+                    ))}
+                    <Button
+                      type="link"
+                      icon={<LinkedinOutlined className="linkedin-icon" />}
+                      href={member.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="linkedin-link"
+                    >
+                      {t("aboutUs.viewLinkedIn")}
+                    </Button>
+                  </div>
+                </>
+              )}
+            </div>
+          ))}
+        </div> */}
       </div>
     </>
   );
