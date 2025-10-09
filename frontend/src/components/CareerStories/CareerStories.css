@@ -160,7 +160,7 @@
   }
   
   .post-content {
-    padding: 20px;
+    padding: 14px;
   }
   
   .featured-post .post-content {
@@ -236,13 +236,15 @@
     .category-header { margin-bottom:16px; }
     .category-title { font-size:0.9rem !important; }
     .posts-container { gap:16px; }
-    .post-image-container { height:160px; }
+    .post-image-container { height:140px; }
     .featured-post .post-image-container { height:200px; }
-    .post-content { padding:16px; }
-    .featured-post .post-content { padding:20px; }
+    .post-content { padding:12px; }
+    .featured-post .post-content { padding:14px; }
     .featured-post .post-title { font-size:1.1rem !important; }
     .regular-post .post-title { font-size:0.9rem !important; }
     .small-image { height:90px !important; }
+    /* Center containers and avoid horizontal scroll */
+    .success-story-section .container { padding-left: 12px; padding-right: 12px; }
   }
   
   /* High-specificity overrides to ensure title colors are not overwritten by Ant Typography */

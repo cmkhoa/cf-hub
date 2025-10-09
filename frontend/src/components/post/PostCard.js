@@ -4,7 +4,23 @@ import React from 'react';
 export default function PostCard({ post, onClick, layout='card' }) {
   const title = post.title;
   const excerpt = post.excerpt ? String(post.excerpt).trim() : '';
-  const coverBase64 = post.coverImageData ? `data:${post.coverImageMime||'image/jpeg'};base64,${post.coverImageData}` : null;
+  // Resolve cover image to match home page BlogGrid behavior
+  const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8008/api';
+  const coverUrl = (() => {
+    // If legacy DB-embedded image data is present, use the cover endpoint
+    if (post?.coverImageData || post?.coverImageMime) {
+      return `${apiBase}/blog/posts/${post._id}/cover`;
+    }
+    // Else, use provided coverImage (R2/public URL or relative path)
+    if (post?.coverImage) {
+      return post.coverImage;
+    }
+    // Fallback image
+    return '/images/resume.jpeg';
+  })();
+  // Determine published date label
+  const publishedAt = post?.publishedAt || post?.createdAt || null;
+  const dateLabel = publishedAt ? new Date(publishedAt).toLocaleDateString() : null;
   const tags = Array.isArray(post.tags) ? post.tags : [];
   const renderTags = tags.length ? (
     <div style={{ display:'flex', flexWrap:'wrap', gap:6, marginTop: excerpt ? 4 : 0 }}>
@@ -30,7 +46,12 @@ export default function PostCard({ post, onClick, layout='card' }) {
         }}
       >
         <div style={{ width:160, flex:'0 0 160px', position:'relative', overflow:'hidden', borderRadius:6, background:'#f5f5f5' }}>
-          {coverBase64 ? <img src={coverBase64} alt={title} style={{ width:'100%', height:'100%', objectFit:'cover' }} /> : <div style={{fontSize:12, color:'#888', display:'flex', alignItems:'center', justifyContent:'center', height:'100%'}}>No Image</div>}
+          <img src={coverUrl} alt={title} style={{ width:'100%', height:'100%', objectFit:'cover' }} />
+          {dateLabel && (
+            <div style={{ position:'absolute', top:8, left:8, background:'rgba(0,0,0,0.6)', color:'#fff', fontSize:11, padding:'2px 6px', borderRadius:4, lineHeight:1 }}>
+              {dateLabel}
+            </div>
+          )}
         </div>
         <div style={{ flex:1, minWidth:0 }}>
           <h3 style={{ margin:'0 0 8px', fontSize:20, lineHeight:1.2 }}>{title}</h3>
@@ -47,8 +68,11 @@ export default function PostCard({ post, onClick, layout='card' }) {
       style={{ background:'#fff', border:'1px solid #eee', borderRadius:8, overflow:'hidden', cursor:'pointer', display:'flex', flexDirection:'column' }}
     >
       <div style={{ position:'relative', width:'100%', paddingTop:'56%', background:'#f5f5f5' }}>
-        {coverBase64 ? <img src={coverBase64} alt={title} style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover' }} /> : (
-          <div style={{ position:'absolute', inset:0, display:'flex', alignItems:'center', justifyContent:'center', fontSize:12, color:'#888' }}>No Image</div>
+        <img src={coverUrl} alt={title} style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover' }} />
+        {dateLabel && (
+          <div style={{ position:'absolute', top:8, left:8, background:'rgba(0,0,0,0.6)', color:'#fff', fontSize:11, padding:'4px 8px', borderRadius:4, lineHeight:1 }}>
+            {dateLabel}
+          </div>
         )}
       </div>
       <div style={{ padding:16, display:'flex', flexDirection:'column', flex:1 }}>

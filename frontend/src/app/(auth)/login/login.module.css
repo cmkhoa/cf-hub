@@ -1,5 +1,6 @@
 .container {
-	min-height: 100vh;
+	/* subtract header height so card centers within the visible area under the fixed header */
+	min-height: calc(100vh - var(--header-total-height, 66px));
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -16,14 +17,14 @@
 
 .title {
 	text-align: center;
-	color: #1a365d;
+	color: var(--primary-blue, #0C1E72);
 	margin-bottom: 8px !important;
 }
 
 .subtitle {
 	display: block;
 	text-align: center;
-	color: #4a5568;
+	color: var(--cf-hub-text-secondary, #4a5568);
 	margin-bottom: 24px;
 }
 
@@ -38,7 +39,7 @@
 	align-items: center;
 	justify-content: center;
 	background-color: #fff;
-	border: 1px solid #e2e8f0;
+	border: 1px solid var(--cf-hub-border, #e2e8f0);
 }
 
 .googleButton:hover {
@@ -57,8 +58,8 @@
 
 .submitButton {
 	height: 40px;
-	background-color: #f0386b;
-	border-color: #f0386b;
+	background-color: var(--cf-hub-pink, #f0386b);
+	border-color: var(--cf-hub-pink, #f0386b);
 }
 
 .submitButton:hover {
@@ -72,10 +73,10 @@
 }
 
 .footer a {
-	color: #f0386b;
+	color: var(--primary-blue, #0C1E72);
 	margin-left: 4px;
 }
 
 .footer a:hover {
-	color: #d42e5d;
+	color: var(--brand-blue-light, #18328f);
 }

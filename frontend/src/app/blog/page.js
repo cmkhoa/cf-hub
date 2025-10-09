@@ -2,7 +2,7 @@
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Input } from 'antd';
-import { Layout, Pagination, Select, Tag, Space, Button, Radio, Tooltip, Segmented } from "antd";
+import { Layout, Pagination, Select, Tag, Space, Button, Segmented } from "antd";
 import PostCard from '@/components/post/PostCard';
 // import MentorshipContentLayout from "@/components/componentForBlogPage/MentorshipContentLayout/MentorshipContentLayout";
 import HeaderComponent from "@/components/header/header";
@@ -124,7 +124,9 @@ function BlogPageInner() {
                   />
                 </div>
                 <div style={{ minWidth:240 }}>
-                  <label style={{ fontSize:12, fontWeight:600, letterSpacing:0.5 }}>Categories</label>
+                  <label style={{ fontSize:12, fontWeight:600, letterSpacing:0.5 }}>
+                    {`Categories${selectedCategories.length ? ` (${selectedCategories.length})` : ''}`}
+                  </label>
                   <Select
                     mode="multiple"
                     allowClear
@@ -137,7 +139,9 @@ function BlogPageInner() {
                   />
                 </div>
                 <div style={{ minWidth:240 }}>
-                  <label style={{ fontSize:12, fontWeight:600, letterSpacing:0.5 }}>Tags (search)</label>
+                  <label style={{ fontSize:12, fontWeight:600, letterSpacing:0.5 }}>
+                    {`Tags${selectedTags.length ? ` (${selectedTags.length})` : ''}`}
+                  </label>
                   <Select
                     mode="tags"
                     allowClear
@@ -150,28 +154,17 @@ function BlogPageInner() {
                     maxTagCount={3}
                   />
                 </div>
-                {selectedTags.length > 0 && (
-                  <div style={{ display:'flex', alignItems:'flex-end', paddingBottom:4 }}>
-                    <Tooltip title="Match any = contains at least one selected tag. Match all = contains every selected tag.">
-                      <Radio.Group value={tagsMode} onChange={e=> { setTagsMode(e.target.value); setPage(1); }} size="small">
-                        <Radio.Button value="any">Any</Radio.Button>
-                        <Radio.Button value="all">All</Radio.Button>
-                      </Radio.Group>
-                    </Tooltip>
-                  </div>
-                )}
-                {(selectedCategories.length || selectedTags.length) && (
-                  <div>
-                    <Button onClick={clearFilters}>Clear</Button>
-                  </div>
-                )}
+                {/* Removed Any/All switch; default tag matching is OR (any) */}
               </div>
-              {(selectedCategories.length || selectedTags.length) && (
-                <div style={{ display:'flex', flexWrap:'wrap', gap:8 }}>
-                  {selectedCategories.map(id=> {
-                    const cat = categories.find(c=> c.key===id); return <Tag key={id} closable onClose={()=> setSelectedCategories(selectedCategories.filter(c=> c!==id))}>{cat?.label || id}</Tag>;
-                  })}
-                  {selectedTags.map(t=> <Tag key={t} closable onClose={()=> setSelectedTags(selectedTags.filter(x=> x!==t))}>{t}</Tag>)}
+              {(selectedCategories.length > 0 || selectedTags.length > 0) && (
+                <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:8 }}>
+                  <div style={{ display:'flex', flexWrap:'wrap', gap:8, flex:1 }}>
+                    {selectedCategories.map(id=> {
+                      const cat = categories.find(c=> c.key===id); return <Tag key={id} closable onClose={()=> setSelectedCategories(selectedCategories.filter(c=> c!==id))}>{cat?.label || id}</Tag>;
+                    })}
+                    {selectedTags.map(t=> <Tag key={t} closable onClose={()=> setSelectedTags(selectedTags.filter(x=> x!==t))}>{t}</Tag>)}
+                  </div>
+                  <Button onClick={clearFilters}>Clear</Button>
                 </div>
               )}
             </Space>

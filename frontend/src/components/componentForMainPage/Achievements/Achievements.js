@@ -81,7 +81,7 @@ const Achievements = () => {
 					<div className="achievement-item">
 						<TeamOutlined className="achievement-icon" />
 						<h3 className="achievement-number">
-							<AnimatedNumber value={500} hasAnimated={hasAnimated} />
+							<AnimatedNumber value={20000} hasAnimated={hasAnimated} />
 							<span className="achievement-plus">+</span>
 						</h3>
 						<p className="achievement-label">{t("achievements.members")}</p>
