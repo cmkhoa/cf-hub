@@ -16,7 +16,7 @@ const Chatbot = () => {
 	const [input, setInput] = useState("");
 	const [messages, setMessages] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
-	const [isOpen, setIsOpen] = useState(false);
+	const [isOpen, setIsOpen] = useState(true);
 	const chatContainerRef = useRef(null);
 	const { currentUser } = useAuth();
 	const chatService = new ChatService();
