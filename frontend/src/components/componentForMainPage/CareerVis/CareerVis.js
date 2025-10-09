@@ -218,7 +218,7 @@ const JobApp = () => {
                 size="large" 
                 className="secondary-cta"
                 icon={<ArrowRightOutlined />}
-                onClick={() => router.push('/about')}
+                onClick={() => router.push('/#hero')}
               >
                 {t("jobApp.cta.learnMore")}
               </Button>
