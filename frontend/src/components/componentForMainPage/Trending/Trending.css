@@ -1,7 +1,8 @@
 /* Trending Section Styles */
 .trending-section {
   padding: 40px 0;
-  background: #f47458; /* CF Hub Coral */
+  background: #f47458;
+  /* CF Hub Coral */
 }
 
 .trending-section .container {
@@ -31,8 +32,15 @@
 }
 
 @keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
 }
 
 .trending-title {
@@ -85,8 +93,8 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-bottom: 16px;
-  border: 1px solid rgba(0,0,0,0.06);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .featured-category {
@@ -180,6 +188,7 @@
   border-radius: 16px;
   overflow: hidden;
 }
+
 .featured-img {
   object-fit: cover;
   border-radius: 16px;
@@ -212,8 +221,8 @@
 .trending-card {
   border-radius: 16px !important;
   overflow: hidden !important;
-  box-shadow: 0 8px 24px rgba(59,130,246,0.3) !important;
-  border: 1px solid rgba(255,255,255,0.15) !important;
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
   transition: all 0.3s ease !important;
   height: 100%;
   background: #ffffff !important;
@@ -224,11 +233,13 @@
   transform: translateY(-8px) !important;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15) !important;
 }
+
 .trending-card-image {
   position: relative;
   height: 200px;
   overflow: hidden;
 }
+
 .trending-img {
   width: 100%;
   height: 100%;
@@ -244,9 +255,9 @@
   position: absolute;
   top: 12px;
   left: 12px;
-  background: rgba(255,255,255,0.15) !important;
+  background: rgba(255, 255, 255, 0.15) !important;
   color: #fff !important;
-  border: 1px solid rgba(255,255,255,0.25) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
   padding: 4px 12px;
   border-radius: 12px;
   font-size: 10px;
@@ -350,26 +361,31 @@
   .trending-section {
     padding: 60px 0;
   }
-  
+
   .trending-title {
     font-size: 36px !important;
   }
-  
+
+  /* Hide featured trending card on mobile */
+  .featured-trending {
+    display: none;
+  }
+
   .featured-title {
     font-size: 24px !important;
   }
-  
+
   .featured-meta {
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
   }
-  
+
   .featured-stats {
     flex-direction: column;
     gap: 12px;
   }
-  
+
   .trending-card-meta {
     flex-direction: column;
     align-items: flex-start;
