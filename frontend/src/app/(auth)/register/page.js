@@ -9,6 +9,7 @@ import {
 	Divider,
 	message,
 	Alert,
+    Layout,
 } from "antd";
 import {
 	GoogleOutlined,
@@ -81,7 +82,7 @@ const RegisterPageInner = () => {
 	};
 
 	return (
-		<>
+		<Layout>
 			<HeaderComponent current={navCurrent} handleClick={handleClick} />
 			<div className={styles.container}>
 			<Card className={styles.registerCard}>
@@ -207,7 +208,7 @@ const RegisterPageInner = () => {
 				</div>
 			</Card>
 			</div>
-		</>
+		</Layout>
 	);
 };
 

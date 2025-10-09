@@ -58,7 +58,7 @@ const HeroSection = () => {
         <div className="cf-hero__blue-section">
         <div className="cf-hero__stats-bar" aria-label={t("homeHero.statsAria")}>
             <div className="cf-hero__stat">
-              <div className="cf-hero__stat-number">500+</div>
+              <div className="cf-hero__stat-number">20.000+</div>
             <div className="cf-hero__stat-label">{t("homeHero.stats.members")}</div>
             </div>
             <div className="cf-hero__stat">

@@ -9,6 +9,7 @@ import {
 	Divider,
 	message,
 	Alert,
+    Layout,
 } from "antd";
 import { GoogleOutlined, MailOutlined, LockOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
@@ -72,7 +73,7 @@ const LoginPage = () => {
 	};
 
 	return (
-		<>
+		<Layout>
 			<HeaderComponent current={navCurrent} handleClick={handleClick} />
 			<div className={styles.container}>
 			<Card className={styles.loginCard}>
@@ -158,7 +159,7 @@ const LoginPage = () => {
 				</div>
 			</Card>
 			</div>
-		</>
+		</Layout>
 	);
 };
 

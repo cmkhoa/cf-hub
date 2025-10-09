@@ -55,7 +55,43 @@
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 30px;
   margin-bottom: 40px;
+  max-width: 85%;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
 }
+
+/* Force 4 cards in a single row on desktop */
+@media (min-width: 992px) {
+  .paths-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Dropdown fallback */
+.paths-dropdown { display:flex; justify-content:center; margin-bottom: 28px; }
+.paths-dropdown .dropdown-trigger { 
+  padding: 10px 16px; 
+  border-radius: 10px; 
+  background: #fff; 
+  border: 1px solid var(--cf-hub-border);
+  box-shadow: var(--cf-hub-shadow-light);
+}
+
+/* Dropdown items: compact two-column row */
+.cv-dropdown-card { display:flex; align-items:center; gap:10px; padding:8px 2px; min-width: 280px; }
+.cv-icon { width:22px; height:22px; display:flex; align-items:center; justify-content:center; font-size:20px; flex:0 0 22px; }
+.cv-body { display:flex; flex:1; min-width:0; }
+.cv-title-row { display:flex; align-items:center; gap:12px; width:100%; min-width:0; }
+.cv-title { font-weight:600; color:var(--cf-hub-text-primary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.cv-meta { margin-left:auto; display:flex; align-items:center; gap:10px; }
+.cv-salary { color:var(--cf-hub-coral); font-weight:600; font-size:12px; white-space:nowrap; }
+.cv-growth { display:flex; align-items:center; gap:6px; width:90px; }
+.cv-growth .ant-progress { width:70px; }
+.cv-growth-text { color:var(--cf-hub-text-secondary); font-size:12px; white-space:nowrap; }
+
+/* Visual separators between menu items */
+.ant-dropdown-menu .ant-dropdown-menu-item + .ant-dropdown-menu-item { border-top:1px solid var(--cf-hub-border); }
 
 .path-card {
   background: var(--cf-hub-bg-primary);
@@ -150,10 +186,11 @@
 
 /* Path Details */
 .path-details {
+    max-width: 85%;
   background: var(--cf-hub-bg-primary);
   border-radius: 24px;
   padding: 50px 40px;
-  margin-bottom: 80px;
+  margin: 0 auto 80px;
   box-shadow: var(--cf-hub-shadow-light);
   border: 1px solid var(--cf-hub-border);
 }
@@ -349,6 +386,8 @@
 
 /* CTA Section */
 .visualizer-cta {
+    max-width: 85%;
+    margin: 0 auto;
   text-align: center;
   padding: 80px 40px;
   background: var(--cf-hub-bg-primary);
@@ -437,19 +476,8 @@
     grid-template-columns: 1fr;
     gap: 20px;
   }
-  
-  .path-timeline {
-    flex-direction: column;
-    gap: 30px;
-  }
-  
-  .path-timeline::before {
-    display: none;
-  }
-  
-  .timeline-milestone {
-    max-width: none;
-  }
+  /* vertical timeline styles handled at <=992px */
+  .timeline-milestone { max-width: none; }
   
   .cta-title {
     font-size: 2rem !important;
@@ -464,6 +492,65 @@
   .secondary-cta {
     width: 100%;
     max-width: 300px;
+  }
+}
+
+/* Vertical timeline (same breakpoint as dropdown) */
+@media (max-width: 992px) {
+  .path-timeline {
+    display: block;
+    position: relative;
+    padding-left: 60px; /* slightly tighter rail space to move content left */
+    padding-right: 80px; /* give breathing room on the right */
+    margin-bottom: 40px;
+    /* Draw the vertical rail as a background to ensure continuity */
+    background-image: linear-gradient(to bottom, var(--cf-hub-border), var(--cf-hub-border));
+    background-position: 22px 0; /* align with dot center after padding change */
+    background-size: 2px 100%;
+    background-repeat: no-repeat;
+    background-origin: content-box; /* position relative to content (after padding) */
+  }
+  .path-timeline::before {
+    /* Keep pseudo-element as a fallback but not required when background is present */
+    content: '';
+    position: absolute;
+    left: 28px; /* center of the dot */
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: transparent; /* line handled by background above */
+    z-index: 0;
+  }
+  .timeline-milestone {
+    position: relative;
+    display: grid;
+    grid-template-columns: 44px 1fr; /* rail + content, tighter to shift left */
+    column-gap: 60px;
+    align-items: start;
+    max-width: none;
+    margin-bottom: 20px;
+    z-index: 2;
+  }
+  .timeline-milestone:last-child { margin-bottom: 0; }
+  .milestone-dot {
+    position: static; /* let grid place it */
+    width: 40px; /* bigger dot */
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--cf-hub-bg-primary);
+    box-shadow: 0 0 0 2px var(--cf-hub-bg-primary);
+    margin: 40px 0 10px 0; /* vertical offset from row start */
+    justify-self: center; /* center in the 56px rail column */
+    align-self: start;
+  }
+  .milestone-content {
+    background: var(--cf-hub-bg-primary);
+    border: 1px solid var(--cf-hub-border);
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: var(--cf-hub-shadow-light);
+    margin: 8px 0; /* contained by grid column */
+    text-align: center;
   }
 }
 

@@ -173,8 +173,20 @@ router.post(
         }
         try {
           const buf = Buffer.from(base64, "base64");
-          coverFields.coverImageData = buf;
-          coverFields.coverImageMime = mime;
+          // Upload to R2 and store key/url in coverImage
+          const fileName = `cover-${Date.now()}.jpg`;
+          const key = `uploads/${fileName}`;
+          try {
+            const { uploadBufferToR2 } = require('../config/r2');
+            const resR2 = await uploadBufferToR2({ Key: key, Body: buf, ContentType: mime });
+            coverFields.coverImage = resR2.key || key;
+            // do not store binary in DB for new uploads
+          } catch (e) {
+            // If R2 upload fails, fallback to storing binary in DB
+            console.error('R2 upload failed, falling back to DB storage:', e.message);
+            coverFields.coverImageData = buf;
+            coverFields.coverImageMime = mime;
+          }
         } catch (e) {
           /* ignore bad base64 */
         }
@@ -249,11 +261,21 @@ router.post(
   }
 );
 
-// Upload cover image (returns relative path)
-router.post("/posts/upload/cover", auth, upload.single("image"), (req, res) => {
+// Upload cover image (uploads to R2 and returns URL + key)
+const { uploadBufferToR2 } = require('../config/r2');
+router.post("/posts/upload/cover", auth, upload.single("image"), async (req, res) => {
   if (!req.file) return res.status(400).json({ message: "No file uploaded" });
-  const rel = `/uploads/${req.file.filename}`;
-  res.status(201).json({ path: rel });
+  try {
+    if(!req.user || req.user.role !== 'admin') return res.status(403).json({ message: 'Admin only' });
+    const original = req.file.originalname ? req.file.originalname.replace(/[^a-zA-Z0-9._-]/g, '_') : 'upload';
+    const key = `uploads/${Date.now()}-${original}`;
+    const contentType = req.file.mimetype || 'application/octet-stream';
+    const result = await uploadBufferToR2({ Key: key, Body: req.file.buffer, ContentType: contentType });
+    return res.status(201).json({ url: result.url, key: result.key, contentType, size: req.file.size });
+  } catch (e) {
+    console.error('Cover upload failed:', e);
+    return res.status(500).json({ message: 'Upload failed', error: e.message });
+  }
 });
 
 // Update Post (author or admin)
@@ -309,10 +331,30 @@ router.put(
             .json({ message: "Cover image too large (max 2MB)" });
         }
         try {
-          post.coverImageData = Buffer.from(base64, "base64");
-          post.coverImageMime = mime;
-          // If replacing with embedded image, clear any file path field
-          post.coverImage = undefined;
+          const buf = Buffer.from(base64, "base64");
+          const { uploadBufferToR2, deleteObjectFromR2 } = require('../config/r2');
+          const fileName = `cover-${Date.now()}.jpg`;
+          const key = `uploads/${fileName}`;
+          try {
+            const r2res = await uploadBufferToR2({ Key: key, Body: buf, ContentType: mime });
+            // If previous coverImage referenced R2, delete it
+            if (post.coverImage && typeof post.coverImage === 'string' && !/^https?:\/\//i.test(post.coverImage)) {
+              // assume stored key
+              try {
+                await deleteObjectFromR2({ Key: post.coverImage });
+              } catch (e) {
+                console.error('Failed to delete previous R2 object:', e.message);
+              }
+            }
+            post.coverImage = r2res.key || key;
+            post.coverImageData = undefined;
+            post.coverImageMime = undefined;
+          } catch (e) {
+            console.error('R2 upload failed, falling back to DB storage:', e.message);
+            post.coverImageData = buf;
+            post.coverImageMime = mime;
+            post.coverImage = undefined;
+          }
         } catch (e) {
           /* ignore invalid */
         }
@@ -625,11 +667,19 @@ router.get("/posts/:id/cover", async (req, res) => {
     // If there's a file path stored (e.g., from /uploads), try to serve it
     if (post && post.coverImage) {
       try {
-        // Absolute URL: redirect
+        // If it's an absolute URL, redirect
         if (/^https?:\/\//i.test(post.coverImage)) {
           return res.redirect(post.coverImage);
         }
-        // Local path: stream if exists
+        // Otherwise assume it's an R2 key stored like 'uploads/...' and redirect to public URL
+        try {
+          const { getPublicUrl } = require('../config/r2');
+          const publicUrl = getPublicUrl(post.coverImage);
+          return res.redirect(publicUrl);
+        } catch (e) {
+          // If building public URL failed, fall back to local file serve
+        }
+        // Local path: stream if exists (legacy)
         const relPath = post.coverImage.startsWith("/")
           ? post.coverImage
           : `/${post.coverImage}`;
@@ -693,25 +743,34 @@ router.delete("/posts/:id", auth, async (req, res) => {
       return res.status(403).json({ message: "Not allowed" });
 
     // Attempt to remove any local cover image file if present and local
-    if (post.coverImage && !/^https?:\/\//i.test(post.coverImage)) {
-      try {
-        const relPath = post.coverImage.startsWith("/")
-          ? post.coverImage
-          : `/${post.coverImage}`;
-        const filePath = path.join(__dirname, "..", relPath);
-        if (fs.existsSync(filePath)) {
-          fs.unlinkSync(filePath);
-        } else {
-          const uploadsTry = path.join(
-            __dirname,
-            "..",
-            "uploads",
-            post.coverImage.replace(/^.*\//, "")
-          );
-          if (fs.existsSync(uploadsTry)) fs.unlinkSync(uploadsTry);
+    if (post.coverImage) {
+      // If coverImage is an absolute URL, nothing to delete locally
+      if (!/^https?:\/\//i.test(post.coverImage)) {
+        // Assume it's an R2 key - attempt to delete from R2
+        try {
+          const { deleteObjectFromR2 } = require('../config/r2');
+          await deleteObjectFromR2({ Key: post.coverImage });
+        } catch (e) {
+          // If deletion fails, attempt legacy local file delete
+          try {
+            const relPath = post.coverImage.startsWith("/")
+              ? post.coverImage
+              : `/${post.coverImage}`;
+            const filePath = path.join(__dirname, "..", relPath);
+            if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+            else {
+              const uploadsTry = path.join(
+                __dirname,
+                "..",
+                "uploads",
+                post.coverImage.replace(/^.*\//, "")
+              );
+              if (fs.existsSync(uploadsTry)) fs.unlinkSync(uploadsTry);
+            }
+          } catch (e2) {
+            /* ignore fs errors */
+          }
         }
-      } catch (e) {
-        /* ignore fs errors */
       }
     }
 

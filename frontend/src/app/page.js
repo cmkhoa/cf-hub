@@ -94,7 +94,7 @@ export default function Home() {
 			<Content>
 				<div className="site-layout-content">
 				<section id="career-stories"><JobAppTip /></section>
-				<section id="career-stories"><CareerStories /></section>
+				{/* <section id="career-stories"><CareerStories /></section> */}
 					<section id="job-app"><CareerVis /></section>
 					<section id="news"><BlogGrid /></section>
 					<section id="trending"><Trending /></section>

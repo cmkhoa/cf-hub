@@ -14,7 +14,12 @@
     cursor: pointer;
     transition: all 0.2s ease;
     font-size: 0.9rem;
-    white-space: nowrap;
+    /* Make long suggestions wrap and keep a readable width */
+    white-space: normal;
+    text-align: left;
+    display: inline-block;
+    max-width: 320px;
+    overflow-wrap: anywhere;
 }
 
 .suggestion-button:hover {
@@ -30,6 +35,6 @@
 
     .suggestion-button {
         width: 100%;
-        text-align: center;
+        text-align: left;
     }
 } 

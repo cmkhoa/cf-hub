@@ -1,13 +1,14 @@
 "use client";
-import React, { useState } from 'react';
-import { Button, Typography, Progress, Tag } from 'antd';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Button, Typography, Progress, Tag, Dropdown } from 'antd';
 import { 
   RocketOutlined, 
   ArrowRightOutlined,
   BankOutlined,
   TeamOutlined,
   BulbOutlined,
-  GlobalOutlined
+  GlobalOutlined,
+  DownOutlined
 } from '@ant-design/icons';
 import './CareerVis.css';
 import { useLang } from "@/contexts/langprov";
@@ -17,6 +18,7 @@ const { Title, Paragraph, Text } = Typography;
 const JobApp = () => {
   const { t } = useLang();
   const [activePath, setActivePath] = useState('finance');
+  const [compact, setCompact] = useState(false);
   const [hoveredNode, setHoveredNode] = useState(null);
 
   const careerPaths = {
@@ -178,6 +180,40 @@ const JobApp = () => {
     }
   };
 
+  // Switch to dropdown when viewport likely can't fit 4 cards comfortably
+  const BREAKPOINT = 992; // match desktop CSS breakpoint
+  useEffect(() => {
+    const updateCompact = () => setCompact(window.innerWidth < BREAKPOINT);
+    updateCompact();
+    window.addEventListener('resize', updateCompact);
+    return () => window.removeEventListener('resize', updateCompact);
+  }, []);
+
+  const dropdownItems = useMemo(() => {
+    return Object.entries(careerPaths).map(([key, path]) => ({
+      key,
+      label: (
+        <div className="cv-dropdown-card">
+          <div className="cv-icon" style={{ color: path.color }}>
+            {path.icon}
+          </div>
+          <div className="cv-body">
+            <div className="cv-title-row">
+              <span className="cv-title">{path.title}</span>
+              <div className="cv-meta">
+                <span className="cv-salary">{path.salary}</span>
+                <div className="cv-growth">
+                  <Progress percent={path.growth} size="small" showInfo={false} strokeColor={path.color} />
+                  <span className="cv-growth-text">{path.growth}%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    }));
+  }, [careerPaths]);
+
   return (
     <section className="career-path-visualizer">
       <div className="visualizer-container">
@@ -194,35 +230,52 @@ const JobApp = () => {
         {/* Interactive Career Paths */}
         <div className="career-paths-section">
           <Title level={2} className="section-title">{t("jobApp.choosePath")}</Title>
-          <div className="paths-grid">
-            {Object.entries(careerPaths).map(([key, path]) => (
-              <div
-                key={key}
-                className={`path-card ${activePath === key ? 'active' : ''}`}
-                onClick={() => setActivePath(key)}
-                onMouseEnter={() => setHoveredNode(key)}
-                onMouseLeave={() => setHoveredNode(null)}
+          {compact ? (
+            <div className="paths-dropdown">
+              <Dropdown
+                menu={{
+                  items: dropdownItems,
+                  onClick: ({ key }) => setActivePath(key)
+                }}
+                placement="bottom"
+                trigger={["click"]}
               >
-                <div className="path-icon" style={{ color: path.color }}>
-                  {path.icon}
-                </div>
-                <Title level={4} className="path-title">{path.title}</Title>
-                <Paragraph className="path-description">{path.description}</Paragraph>
-                <div className="path-metrics">
-                  <div className="salary-range">{path.salary}</div>
-                  <div className="growth-rate">
-                    <Progress 
-                      percent={path.growth} 
-                      size="small" 
-                      strokeColor={path.color}
-                      showInfo={false}
-                    />
-                    <Text className="growth-text">{path.growth}% growth</Text>
+                <Button className="dropdown-trigger" size="large">
+                  {careerPaths[activePath]?.title || t("jobApp.choosePath")} <DownOutlined />
+                </Button>
+              </Dropdown>
+            </div>
+          ) : (
+            <div className="paths-grid">
+              {Object.entries(careerPaths).map(([key, path]) => (
+                <div
+                  key={key}
+                  className={`path-card ${activePath === key ? 'active' : ''}`}
+                  onClick={() => setActivePath(key)}
+                  onMouseEnter={() => setHoveredNode(key)}
+                  onMouseLeave={() => setHoveredNode(null)}
+                >
+                  <div className="path-icon" style={{ color: path.color }}>
+                    {path.icon}
+                  </div>
+                  <Title level={4} className="path-title">{path.title}</Title>
+                  <Paragraph className="path-description">{path.description}</Paragraph>
+                  <div className="path-metrics">
+                    <div className="salary-range">{path.salary}</div>
+                    <div className="growth-rate">
+                      <Progress 
+                        percent={path.growth} 
+                        size="small" 
+                        strokeColor={path.color}
+                        showInfo={false}
+                      />
+                      <Text className="growth-text">{path.growth}% growth</Text>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Selected Path Details */}

@@ -30,7 +30,7 @@
   height: 120px !important;
 }
 .small-content {
-  padding: 14px 16px !important;
+  padding: 12px 12px !important;
 }
 .small-title {
   font-size: 1rem !important;
@@ -55,8 +55,8 @@
 @media (max-width: 768px) {
   .success-story-title { font-size: 1.6rem !important; }
   .success-story-header { margin-bottom: 32px; }
-  .small-image { height: 80px !important; }
-  .small-content { padding: 10px 8px !important; }
+  .small-image { height: 70px !important; }
+  .small-content { padding: 8px 8px !important; }
 }
 .success-story-section {
   padding: 80px 0;

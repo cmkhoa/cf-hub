@@ -4,7 +4,7 @@
 // R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET, (optional) R2_ENDPOINT, R2_ACCOUNT_ID
 // Optional: R2_PUBLIC_BASE_URL for constructing public URLs
 
-const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+const { S3Client, PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 
 function getR2Client() {
   const accessKeyId = process.env.R2_ACCESS_KEY_ID;
@@ -25,17 +25,26 @@ async function uploadBufferToR2({ Key, Body, ContentType }) {
   if (!Bucket) throw new Error('R2_BUCKET not set');
   const client = getR2Client();
   await client.send(new PutObjectCommand({ Bucket, Key, Body, ContentType, ACL: 'public-read' }));
-  const base = process.env.R2_PUBLIC_BASE_URL;
-  let url;
-  if (base) {
-    url = `${base.replace(/\/$/, '')}/${Key}`;
-  } else {
-    // Construct generic R2 URL (may require public bucket or signed URLs)
-    // Public access pattern if configured: https://<accountid>.r2.cloudflarestorage.com/<bucket>/<key>
-    const endpoint = process.env.R2_ENDPOINT || '';
-    url = `${endpoint.replace(/\/$/, '')}/${Bucket}/${Key}`;
-  }
+  const url = getPublicUrl(Key);
   return { url, key: Key };
 }
 
-module.exports = { uploadBufferToR2 };
+async function deleteObjectFromR2({ Key }) {
+  const Bucket = process.env.R2_BUCKET;
+  if (!Bucket) throw new Error('R2_BUCKET not set');
+  const client = getR2Client();
+  await client.send(new DeleteObjectCommand({ Bucket, Key }));
+  return true;
+}
+
+function getPublicUrl(Key) {
+  const base = process.env.R2_PUBLIC_BASE_URL;
+  if (base) {
+    return `${base.replace(/\/$/, '')}/${Key}`;
+  }
+  const endpoint = process.env.R2_ENDPOINT || (process.env.R2_ACCOUNT_ID ? `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com` : undefined) || '';
+  const bucket = process.env.R2_BUCKET || '';
+  return `${endpoint.replace(/\/$/, '')}/${bucket}/${Key}`;
+}
+
+module.exports = { uploadBufferToR2, deleteObjectFromR2, getPublicUrl };

@@ -124,28 +124,16 @@ const HeaderComponent = ({ current, handleClick }) => {
 	};
 
 	const onNavSearch = (value) => {
-		const q = (value || '').trim();
-		if(q) {
-			// Save to recent searches
-			const newRecentSearches = [q, ...recentSearches.filter(s => s !== q)].slice(0, 5);
-			setRecentSearches(newRecentSearches);
-			localStorage.setItem('recentSearches', JSON.stringify(newRecentSearches));
-			
-			// Check if the search query matches any popular tag exactly
-			const exactTagMatch = popularTags.find(tag => 
-				tag.name.toLowerCase() === q.toLowerCase()
-			);
-			
-			if (exactTagMatch) {
-				// If it's an exact tag match, search by tag instead of text
-				router.push(`/blog?tags=${encodeURIComponent(q)}`);
+			const q = (value || '').trim();
+			// Only navigate to dedicated search page on explicit search action
+			if(q) {
+				const newRecentSearches = [q, ...recentSearches.filter(s => s !== q)].slice(0, 5);
+				setRecentSearches(newRecentSearches);
+				localStorage.setItem('recentSearches', JSON.stringify(newRecentSearches));
+				router.push(`/search?q=${encodeURIComponent(q)}`);
 			} else {
-				// Otherwise, use text search
-				router.push(`/blog?q=${encodeURIComponent(q)}`);
+				router.push('/search');
 			}
-		} else {
-			router.push('/blog');
-		}
 		setShowSuggestions(false);
 	};
 
@@ -251,10 +239,10 @@ const HeaderComponent = ({ current, handleClick }) => {
 		setShowSuggestions(suggestions.length > 0);
 	};
 
-	const handleSearchSelect = (value, option) => {
-		setSearchValue(value);
-		onNavSearch(value);
-	};
+		const handleSearchSelect = (value, _option) => {
+			// Fill input but do not navigate; user must press Enter or click search icon
+			setSearchValue(value);
+		};
 
 	// Tags dropdown items
 	const tagsItems = [
@@ -335,12 +323,8 @@ const HeaderComponent = ({ current, handleClick }) => {
 									value={searchValue}
 									options={searchSuggestions}
 									onChange={handleSearchChange}
-									onSelect={(value, option) => {
-										if (!option.disabled) {
-											handleSearchSelect(value, option);
-										}
-									}}
-									onSearch={onNavSearch}
+									onSelect={(value, option) => { if (!option.disabled) handleSearchSelect(value, option); }}
+									// Do not navigate on type; only show suggestions
 									placeholder={t("searchPlaceholder")}
 									style={{ width: 260 }}
 									open={showSuggestions}
@@ -422,6 +406,8 @@ const HeaderComponent = ({ current, handleClick }) => {
 				placement="right"
 				onClose={closeDrawer}
 				visible={drawerVisible}
+				open={drawerVisible}
+				aria-label="Main navigation drawer"
 				bodyStyle={{ padding: 0 }}
 			>
 				<Menu
@@ -445,6 +431,51 @@ const HeaderComponent = ({ current, handleClick }) => {
 						</Menu.Item>
 					))}
 				</Menu>
+				<div style={{ padding: 16, borderTop: '1px solid #f0f0f0' }}>
+					{/* Mobile search (reuse AutoComplete) */}
+					<div style={{ marginBottom: 12 }}>
+						<AutoComplete
+							value={searchValue}
+							options={searchSuggestions}
+							onChange={handleSearchChange}
+							onSelect={(value, option) => { if (!option.disabled) handleSearchSelect(value, option); }}
+							// Do not navigate on type; only show suggestions
+							placeholder={t("searchPlaceholder")}
+							style={{ width: '100%' }}
+							open={showSuggestions}
+						>
+							<Input.Search allowClear onSearch={onNavSearch} />
+						</AutoComplete>
+					</div>
+					{/* Auth actions */}
+					<div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+						{userLoggedIn ? (
+							<>
+								<Button block onClick={() => router.push(currentUser?.role === 'admin' ? '/admin' : '/dashboard')}>Dashboard</Button>
+								<Button block onClick={handleLogout}>Logout</Button>
+							</>
+						) : (
+							<>
+								<Button block onClick={handleLogin}>Login</Button>
+								<Button block onClick={() => router.push('/register')}>Sign Up</Button>
+							</>
+						)}
+					</div>
+					{/* Language selector */}
+					<div style={{ marginBottom: 8 }}>
+						<Dropdown
+							menu={{
+								items: [
+									{ key: "en", label: "English" },
+									{ key: "vi", label: "Tiếng Việt" }
+								],
+								onClick: ({ key }) => setLang(key),
+							}}
+						>
+							<Button block>{lang === 'en' ? 'English' : 'Tiếng Việt'}</Button>
+						</Dropdown>
+					</div>
+				</div>
 			</Drawer>
 		</>
 	);
