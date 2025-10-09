@@ -91,9 +91,6 @@ export default function Home() {
           <section id="job-app">
             <CareerVis />
           </section>
-          <section id="offline-events">
-            <OfflineEvents />
-          </section>
           <section id="news">
             <BlogGrid />
           </section>
@@ -108,6 +105,9 @@ export default function Home() {
           </section>
           <section id="success-metrics">
             <SuccessMetrics />
+          </section>
+          <section id="offline-events">
+            <OfflineEvents />
           </section>
           <section id="showcase">
             <MenteeShowcase />
