@@ -37,6 +37,15 @@
     "groupTech": "Nhóm TECH",
     "instagramTech": "Instagram TECH"
   },
+  "JobAppTip": {
+    "title": "Mẹo Ứng Tuyển Việc Làm",
+    "subtitle": "Những hành trình và kết quả thực tế. Xem các thành viên CF Hub chinh phục công việc mơ ước và vượt qua thử thách nghề nghiệp như thế nào.",
+    "resumeTips": "Mẹo Resume",
+    "interviewTips": "Mẹo Phỏng vấn",
+    "technicalTips": "Mẹo Kỹ thuật",
+    "noPostsYet": "Chưa có bài viết",
+    "viewAll": "Xem Tất Cả Câu Chuyện"
+  },
   "careerStories": {
     "title": "Câu chuyện nghề nghiệp",
     "subtitle": "Những hành trình và kết quả thực tế. Xem các thành viên CF Hub chinh phục công việc mơ ước và vượt qua thử thách nghề nghiệp như thế nào.",

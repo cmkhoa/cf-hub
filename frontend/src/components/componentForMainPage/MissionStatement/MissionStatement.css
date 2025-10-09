@@ -1,0 +1,293 @@
+.mission-statement-container {
+	position: relative;
+	width: 100%;
+	min-height: 500px;
+	background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #ffffff 100%);
+	padding: 80px 20px;
+	overflow: hidden;
+	opacity: 0;
+	transform: translateY(50px);
+	transition: all 1s ease-out;
+}
+
+.mission-statement-container.visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.mission-background {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	pointer-events: none;
+}
+
+.floating-shape {
+	position: absolute;
+	border-radius: 50%;
+	opacity: 0.15;
+	animation: float 20s infinite ease-in-out;
+}
+
+.shape-1 {
+	width: 300px;
+	height: 300px;
+	background: radial-gradient(circle, #0C1E72 0%, transparent 70%);
+	top: -100px;
+	left: -100px;
+	animation-delay: 0s;
+}
+
+.shape-2 {
+	width: 200px;
+	height: 200px;
+	background: radial-gradient(circle, #f47458 0%, transparent 70%);
+	bottom: -50px;
+	right: 10%;
+	animation-delay: 5s;
+}
+
+.shape-3 {
+	width: 250px;
+	height: 250px;
+	background: radial-gradient(circle, #0C1E72 0%, transparent 70%);
+	top: 50%;
+	right: -80px;
+	animation-delay: 10s;
+}
+
+@keyframes float {
+	0%,
+	100% {
+		transform: translate(0, 0) scale(1);
+	}
+	33% {
+		transform: translate(30px, -30px) scale(1.1);
+	}
+	66% {
+		transform: translate(-20px, 20px) scale(0.9);
+	}
+}
+
+.mission-content {
+	position: relative;
+	max-width: 1200px;
+	margin: 0 auto;
+	z-index: 2;
+}
+
+.mission-text {
+	font-size: 2.5rem;
+	font-weight: 300;
+	line-height: 1.6;
+	color: #0C1E72;
+	text-align: center;
+	margin-bottom: 60px;
+}
+
+.mission-word {
+	display: inline-block;
+	opacity: 0;
+	transform: translateY(20px);
+	animation: fadeInUp 0.8s ease forwards;
+	margin-right: 0.3em;
+}
+
+.mission-word.highlight {
+	font-weight: 700;
+	color: #f47458;
+	position: relative;
+	margin-right: 0.3em;
+}
+
+.mission-word.highlight::after {
+	content: "";
+	position: absolute;
+	bottom: -5px;
+	left: 0;
+	width: 100%;
+	height: 2px;
+	background: linear-gradient(90deg, transparent, #f47458, transparent);
+	animation: shimmer 2s infinite;
+}
+
+@keyframes fadeInUp {
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes shimmer {
+	0%,
+	100% {
+		opacity: 0.3;
+	}
+	50% {
+		opacity: 1;
+	}
+}
+
+.mission-divider {
+	width: 100px;
+	height: 3px;
+	background: linear-gradient(90deg, transparent, #f47458, transparent);
+	margin: 40px auto;
+	animation: expandWidth 1.5s ease forwards;
+	animation-delay: 1s;
+}
+
+@keyframes expandWidth {
+	from {
+		width: 0;
+	}
+	to {
+		width: 100px;
+	}
+}
+
+.mission-stats {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 60px;
+	flex-wrap: wrap;
+	margin-top: 40px;
+}
+
+.stat-item {
+	text-align: center;
+	opacity: 0;
+	transform: scale(0.8);
+	animation: scaleIn 0.6s ease forwards;
+}
+
+.stat-item:nth-child(1) {
+	animation-delay: 1.5s;
+}
+
+.stat-item:nth-child(2) {
+	animation-delay: 1.7s;
+}
+
+.stat-item:nth-child(3) {
+	animation-delay: 1.9s;
+}
+
+@keyframes scaleIn {
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+.stat-icon {
+	font-size: 3rem;
+	margin-bottom: 10px;
+	filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+	animation: bounce 2s infinite;
+}
+
+.stat-item:nth-child(1) .stat-icon {
+	animation-delay: 0s;
+}
+
+.stat-item:nth-child(2) .stat-icon {
+	animation-delay: 0.2s;
+}
+
+.stat-item:nth-child(3) .stat-icon {
+	animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-10px);
+	}
+}
+
+.stat-text {
+	font-size: 1.2rem;
+	font-weight: 600;
+	color: #0C1E72;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+	.mission-text {
+		font-size: 2rem;
+	}
+
+	.mission-stats {
+		gap: 40px;
+	}
+}
+
+@media (max-width: 768px) {
+	.mission-statement-container {
+		padding: 60px 20px;
+		min-height: 400px;
+	}
+
+	.mission-text {
+		font-size: 1.5rem;
+		margin-bottom: 40px;
+	}
+
+	.mission-stats {
+		gap: 30px;
+	}
+
+	.stat-icon {
+		font-size: 2.5rem;
+	}
+
+	.stat-text {
+		font-size: 1rem;
+	}
+}
+
+@media (max-width: 480px) {
+	.mission-statement-container {
+		padding: 40px 15px;
+	}
+
+	.mission-text {
+		font-size: 1.2rem;
+		line-height: 1.5;
+	}
+
+	.mission-stats {
+		gap: 20px;
+		flex-direction: column;
+	}
+
+	.stat-item {
+		width: 100%;
+	}
+
+	.stat-icon {
+		font-size: 2rem;
+	}
+
+	.stat-text {
+		font-size: 0.9rem;
+	}
+
+	.shape-1,
+	.shape-2,
+	.shape-3 {
+		width: 150px;
+		height: 150px;
+	}
+}
+

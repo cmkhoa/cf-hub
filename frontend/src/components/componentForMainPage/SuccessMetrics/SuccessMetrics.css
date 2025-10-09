@@ -1,0 +1,164 @@
+.success-metrics-container {
+	width: 100%;
+	max-width: 1200px;
+	margin: 60px auto;
+	padding: 40px 20px;
+}
+
+.success-metrics-header {
+	text-align: left;
+	margin-bottom: 30px;
+	padding-left: 20px;
+}
+
+.success-metrics-header h2 {
+	font-size: 2.5rem;
+	font-weight: 700;
+	color: #1c3d5a;
+	margin: 0;
+	line-height: 1.2;
+}
+
+.success-metrics-header h3 {
+	font-size: 2.5rem;
+	font-weight: 700;
+	color: #1c3d5a;
+	margin: 0;
+	line-height: 1.2;
+}
+
+.slideshow-container {
+	position: relative;
+	width: 100%;
+	height: 400px;
+	overflow: hidden;
+	border-radius: 20px;
+	box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.metric-slide {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	opacity: 0;
+	transform: translateX(100%);
+	transition: all 0.6s ease-in-out;
+}
+
+.metric-slide.active {
+	opacity: 1;
+	transform: translateX(0);
+	z-index: 2;
+}
+
+.metric-content {
+	text-align: center;
+	padding: 40px;
+	max-width: 800px;
+}
+
+.metric-title {
+	font-size: 5rem;
+	font-weight: 700;
+	margin: 0 0 20px 0;
+	line-height: 1;
+}
+
+.metric-subtitle {
+	font-size: 2rem;
+	font-weight: 400;
+	margin: 0;
+	line-height: 1.4;
+	white-space: pre-line;
+}
+
+.dots-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 15px;
+	margin-top: 30px;
+}
+
+.dot {
+	width: 15px;
+	height: 15px;
+	border-radius: 50%;
+	background-color: #d9d9d9;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.dot:hover {
+	background-color: #999;
+	transform: scale(1.2);
+}
+
+.dot.active {
+	background-color: #1c3d5a;
+	width: 20px;
+	height: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+	.success-metrics-header h2,
+	.success-metrics-header h3 {
+		font-size: 2rem;
+	}
+
+	.slideshow-container {
+		height: 300px;
+	}
+
+	.metric-title {
+		font-size: 3.5rem;
+	}
+
+	.metric-subtitle {
+		font-size: 1.5rem;
+	}
+
+	.metric-content {
+		padding: 20px;
+	}
+}
+
+@media (max-width: 480px) {
+	.success-metrics-header h2,
+	.success-metrics-header h3 {
+		font-size: 1.5rem;
+	}
+
+	.slideshow-container {
+		height: 250px;
+	}
+
+	.metric-title {
+		font-size: 2.5rem;
+	}
+
+	.metric-subtitle {
+		font-size: 1.2rem;
+	}
+
+	.metric-content {
+		padding: 15px;
+	}
+
+	.dot {
+		width: 12px;
+		height: 12px;
+	}
+
+	.dot.active {
+		width: 16px;
+		height: 16px;
+	}
+}
+

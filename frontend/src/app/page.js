@@ -15,6 +15,8 @@ import Trending from "@/components/componentForMainPage/Trending/Trending";
 import Achievements from "@/components/componentForMainPage/Achievements/Achievements";
 import Image from "next/image";
 import CareerVis from "@/components/componentForMainPage/CareerVis/CareerVis";
+import SuccessMetrics from "@/components/componentForMainPage/SuccessMetrics/SuccessMetrics";
+import MissionStatement from "@/components/componentForMainPage/MissionStatement/MissionStatement";
 const { Header, Content } = Layout;
 const { Title } = Typography;
 
@@ -101,8 +103,10 @@ export default function Home() {
 					<section id="hero"><HeroSection /></section>
 					{/* <section id="features"><Features /></section> */}
 					<section id="achievements"><Achievements /></section>
+					<section id="success-metrics"><SuccessMetrics /></section>
 					<section id="showcase"><MenteeShowcase /></section>
 					{/* <section id="feedback"><FeedbackGallery /></section> */}
+					<section id="mission"><MissionStatement /></section>
 					<section id="community"><Community /></section>
 					<FooterComponent />
 				</div>
