@@ -31,7 +31,7 @@ const Community = () => {
               width={300}
               height={200}
             />
-            <Text className="image-description">Group TECH</Text>
+            <Text className="image-description">Group community</Text>
           </div>
         </Col>
         <Col xs={24} sm={12} md={8} lg={6} className="image-col">
@@ -48,7 +48,7 @@ const Community = () => {
               width={300}
               height={200}
             />
-            <Text className="image-description">Instagram TECH</Text>
+            <Text className="image-description">Instagram community</Text>
           </div>
         </Col>
       </Row>

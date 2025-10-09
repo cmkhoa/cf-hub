@@ -4,7 +4,7 @@
 // R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET, (optional) R2_ENDPOINT, R2_ACCOUNT_ID
 // Optional: R2_PUBLIC_BASE_URL for constructing public URLs
 
-const { S3Client, PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
+const { S3Client, PutObjectCommand, DeleteObjectCommand, GetObjectCommand } = require('@aws-sdk/client-s3');
 
 function getR2Client() {
   const accessKeyId = process.env.R2_ACCESS_KEY_ID;
@@ -24,7 +24,8 @@ async function uploadBufferToR2({ Key, Body, ContentType }) {
   const Bucket = process.env.R2_BUCKET;
   if (!Bucket) throw new Error('R2_BUCKET not set');
   const client = getR2Client();
-  await client.send(new PutObjectCommand({ Bucket, Key, Body, ContentType, ACL: 'public-read' }));
+  // R2 does not support ACL; bucket policy controls public access
+  await client.send(new PutObjectCommand({ Bucket, Key, Body, ContentType }));
   const url = getPublicUrl(Key);
   return { url, key: Key };
 }
@@ -47,4 +48,18 @@ function getPublicUrl(Key) {
   return `${endpoint.replace(/\/$/, '')}/${bucket}/${Key}`;
 }
 
-module.exports = { uploadBufferToR2, deleteObjectFromR2, getPublicUrl };
+async function getObjectFromR2({ Key }) {
+  const Bucket = process.env.R2_BUCKET;
+  if (!Bucket) throw new Error('R2_BUCKET not set');
+  const client = getR2Client();
+  const resp = await client.send(new GetObjectCommand({ Bucket, Key }));
+  // resp.Body is a stream; ContentType may be present
+  return {
+    Body: resp.Body,
+    ContentType: resp.ContentType || 'application/octet-stream',
+    ContentLength: resp.ContentLength,
+    ETag: resp.ETag,
+  };
+}
+
+module.exports = { uploadBufferToR2, deleteObjectFromR2, getPublicUrl, getObjectFromR2 };

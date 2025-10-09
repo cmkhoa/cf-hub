@@ -65,7 +65,7 @@ const BlogGrid = () => {
       </section>
     );
 
-  const regularPosts = posts.slice(0, 2);
+  const regularPosts = posts.slice(0, 3);
 
   // Helper to resolve image path (relative '/uploads/...' kept as-is)
   const apiBase =
@@ -76,8 +76,9 @@ const BlogGrid = () => {
       return `${apiBase}/blog/posts/${post._id}/cover`;
     }
     if (post?.coverImage) {
-      if (post.coverImage.startsWith("/")) return post.coverImage;
-      return post.coverImage;
+      if (/^https?:\/\//i.test(post.coverImage)) return post.coverImage;
+      // Treat as stored key and go through API cover to stream/redirect
+      return `${apiBase}/blog/posts/${post._id}/cover`;
     }
     return "/images/resume.jpeg";
   };
