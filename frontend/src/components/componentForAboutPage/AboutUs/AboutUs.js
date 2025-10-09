@@ -1,5 +1,6 @@
 import React from "react";
 import { Typography } from "antd";
+import { useLang } from "@/contexts/langprov";
 import "./AboutUs.css";
 
 const { Title, Text } = Typography;
@@ -44,92 +45,77 @@ const teamMembers = [
   },
 ];
 
-const AboutContent = () => (
-  <div className="about-content">
-    <p>
-      VNPN là mạng lưới kết nối chuyên gia Việt tại Hoa Kỳ. Nhiệm vụ của VNPN là
-      tạo ra cơ hội phát triển sự nghiệp cho mọi thành viên thông qua việc tiếp
-      cận với các nguồn thông tin tuyển dụng có ưu thế, kiến thức chuyên ngành
-      và kinh nghiệm cố vấn từ những người đi trước. VNPN mong muốn được góp
-      phần xây dựng cộng đồng người Việt Nam ở nước ngoài gắn kết, tương trợ lẫn
-      nhau.
-    </p>
+const AboutContent = () => {
+  const { t } = useLang();
+  
+  return (
+    <div className="about-content">
+      <p>
+        {t("aboutUs.intro")}
+      </p>
 
-    <p style={{ marginTop: "20px" }}>Bạn tham gia VNPN vì:</p>
+      <p style={{ marginTop: "20px" }}>{t("aboutUs.joinTitle")}</p>
 
-    <ul style={{ marginLeft: "20px", marginTop: "10px" }}>
-      <li>
-        Bạn muốn đóng góp, hỗ trợ xây dựng cộng đồng người Việt Nam ở Hoa Kỳ
-      </li>
-      <li>Bạn muốn kinh nghiệm của mình được chia sẻ và sử dụng</li>
-      <li>Bạn muốn tìm thành viên mới cho công ty bạn đang làm</li>
-      <li>Bạn muốn tìm đồng sáng lập (co-founder) cho start-up của mình</li>
-      <li>
-        Bạn muốn có cơ hội có được giới thiệu từ bên trong (internal job
-        referral)
-      </li>
-      <li>
-        Bạn muốn hỗ sơ xin việc (resume) của mình được đánh giá (review) từ
-        những người nhiều kinh nghiệm cùng ngành
-      </li>
-      <li>
-        Bạn muốn tìm một người hướng dẫn có nhiều kinh nghiệm để phát triển sự
-        nghiệp
-      </li>
-      <li>
-        Bạn muốn tìm hiểu về công ty bạn quan tâm qua góc nhìn của những người
-        Việt làm việc ở đó
-      </li>
-      <li>
-        Bạn muốn kết nối với các thành viên khác đang làm việc khắp nơi trên
-        nước Mỹ
-      </li>
-    </ul>
+      <ul style={{ marginLeft: "20px", marginTop: "10px" }}>
+        <li>{t("aboutUs.reasons.contribute")}</li>
+        <li>{t("aboutUs.reasons.share")}</li>
+        <li>{t("aboutUs.reasons.recruit")}</li>
+        <li>{t("aboutUs.reasons.cofounder")}</li>
+        <li>{t("aboutUs.reasons.referral")}</li>
+        <li>{t("aboutUs.reasons.resume")}</li>
+        <li>{t("aboutUs.reasons.mentor")}</li>
+        <li>{t("aboutUs.reasons.insights")}</li>
+        <li>{t("aboutUs.reasons.connect")}</li>
+      </ul>
 
-    <p style={{ marginTop: "20px" }}>
-      VNPN là dự án phi lợi nhuận, được triển khai với sự hỗ trợ từ Hội Thanh
-      Niên, Sinh Viên Việt Nam ở Hoa Kỳ (
-      <a
-        href="https://www.sinhvienusa.org"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        www.sinhvienusa.org
-      </a>
-      ) và cuộc thi khởi nghiệp VietChallenge (
-      <a
-        href="https://www.vietchallenge.org"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        www.vietchallenge.org
-      </a>
-      ). Dự án hiện tại đang được thử nghiệm ở giai đoạn Beta.
-    </p>
-  </div>
-);
-
-const AboutUs = () => (
-  <>
-    {/* Full-width banner at the top */}
-    <div className="about-banner">
-      <img
-        src="/assets/offline-event2.png"
-        alt="About CF Hub Banner"
-        className="about-banner-image"
-      />
+      <p style={{ marginTop: "20px" }}>
+        {t("aboutUs.nonprofit")}
+        <a
+          href="https://www.sinhvienusa.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {t("aboutUs.sinhvien")}
+        </a>
+        {t("aboutUs.vietchallenge")}
+        <a
+          href="https://www.vietchallenge.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          www.vietchallenge.org
+        </a>
+        {t("aboutUs.betaNote")}
+      </p>
     </div>
+  );
+};
 
-    {/* Content section below the banner */}
-    <div className="about-us-container">
-      <Title level={2} className="about-us-title">
-        About Us
-      </Title>
-      <div className="about-us-sticky">
-        <AboutContent />
+const AboutUs = () => {
+  const { t } = useLang();
+  
+  return (
+    <>
+      {/* Full-width banner at the top */}
+      <div className="about-banner">
+        <img
+          src="/assets/offline-event2.png"
+          alt="About CF Hub Banner"
+          className="about-banner-image"
+        />
       </div>
-    </div>
-  </>
-);
+
+      {/* Content section below the banner */}
+      <div className="about-us-container">
+        <Title level={2} className="about-us-title">
+          {t("aboutUs.title")}
+        </Title>
+        <div className="about-us-sticky">
+          <AboutContent />
+        </div>
+      </div>
+    </>
+  );
+};
 
 export default AboutUs;

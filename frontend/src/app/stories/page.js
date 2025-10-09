@@ -5,6 +5,7 @@ import { Layout, Pagination, Select, Tag, Space, Button, Input, Segmented } from
 import PostCard from '@/components/post/PostCard';
 import HeaderComponent from '@/components/header/header';
 import FooterComponent from '@/components/footer/Footer';
+import { useLang } from '@/contexts/langprov';
 
 const { Content } = Layout;
 
@@ -17,6 +18,7 @@ const PRESET_CATEGORIES = [
 export const dynamic = 'force-dynamic';
 
 function StoriesPageInner(){
+  const { t } = useLang();
   const [current, setCurrent] = useState('blog'); // reuse same nav key if header expects it
   const handleClick = (e) => setCurrent(e.key);
   const searchParams = useSearchParams();
@@ -89,27 +91,27 @@ function StoriesPageInner(){
       <Content style={{ minHeight:'60vh' }}>
         <div style={{ maxWidth:1100, margin:'40px auto', padding:'0 24px' }}>
           <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', gap:16, flexWrap:'wrap', marginBottom:24 }}>
-            <h1 style={{ fontSize:32, margin:0 }}>Job Application Tips</h1>
-            <Segmented size='middle' value={viewMode} onChange={setViewMode} options={[{label:'Cards', value:'card'},{label:'Rows', value:'row'}]} />
+            <h1 style={{ fontSize:32, margin:0 }}>{t('storiesPage.title')}</h1>
+            <Segmented size='middle' value={viewMode} onChange={setViewMode} options={[{label:t('storiesPage.cardView'), value:'card'},{label:t('storiesPage.rowView'), value:'row'}]} />
           </div>
           <div style={{ marginBottom:24, background:'#fff', padding:16, border:'1px solid #eee', borderRadius:8 }}>
             <Space direction='vertical' style={{ width:'100%' }} size='small'>
               <div style={{ display:'flex', flexWrap:'wrap', gap:16 }}>
                 <div style={{ minWidth:280, flex:'1 1 320px' }}>
-                  <label style={{ fontSize:12, fontWeight:600, letterSpacing:0.5 }}>Search</label>
-                  <Input.Search placeholder='Search stories' allowClear value={searchQuery} onChange={e=> setSearchQuery(e.target.value)} onSearch={val=> setSearchQuery(val)} />
+                  <label style={{ fontSize:12, fontWeight:600, letterSpacing:0.5 }}>{t('searchPlaceholder')}</label>
+                  <Input.Search placeholder={t('storiesPage.searchPlaceholder')} allowClear value={searchQuery} onChange={e=> setSearchQuery(e.target.value)} onSearch={val=> setSearchQuery(val)} />
                 </div>
                 <div style={{ minWidth:240 }}>
                   <label style={{ fontSize:12, fontWeight:600, letterSpacing:0.5 }}>
-                    {`Categories${selectedCategories.length ? ` (${selectedCategories.length})` : ''}`}
+                    {`${t('storiesPage.filterByCategory')}${selectedCategories.length ? ` (${selectedCategories.length})` : ''}`}
                   </label>
-                  <Select mode='multiple' allowClear placeholder='Filter by category' value={selectedCategories} onChange={vals=> { setSelectedCategories(vals); setPage(1); }} options={categories.map(c=> ({ value:c.key, label:c.label }))} style={{ width:'100%' }} maxTagCount={2} />
+                  <Select mode='multiple' allowClear placeholder={t('storiesPage.filterByCategory')} value={selectedCategories} onChange={vals=> { setSelectedCategories(vals); setPage(1); }} options={categories.map(c=> ({ value:c.key, label:c.label }))} style={{ width:'100%' }} maxTagCount={2} />
                 </div>
                 <div style={{ minWidth:240 }}>
                   <label style={{ fontSize:12, fontWeight:600, letterSpacing:0.5 }}>
-                    {`Tags${selectedTags.length ? ` (${selectedTags.length})` : ''}`}
+                    {`${t('storiesPage.filterByTags')}${selectedTags.length ? ` (${selectedTags.length})` : ''}`}
                   </label>
-                  <Select mode='tags' allowClear placeholder='Filter by tags' value={selectedTags} onChange={vals=> { setSelectedTags(vals); setPage(1); }} options={tags.map(t=> ({ value:t.name, label:t.name }))} loading={metaLoading} style={{ width:'100%' }} maxTagCount={3} />
+                  <Select mode='tags' allowClear placeholder={t('storiesPage.selectTags')} value={selectedTags} onChange={vals=> { setSelectedTags(vals); setPage(1); }} options={tags.map(t=> ({ value:t.name, label:t.name }))} loading={metaLoading} style={{ width:'100%' }} maxTagCount={3} />
                 </div>
                 {/* Removed Any/All switch; default tag matching is OR (any) */}
               </div>
@@ -121,14 +123,14 @@ function StoriesPageInner(){
                     })}
                     {selectedTags.map(t=> <Tag key={t} closable onClose={()=> setSelectedTags(selectedTags.filter(x=> x!==t))}>{t}</Tag>)}
                   </div>
-                  <Button onClick={clearFilters}>Clear</Button>
+                  <Button onClick={clearFilters}>{t('storiesPage.clearFilters')}</Button>
                 </div>
               )}
             </Space>
           </div>
-          {loading && <p>Loading stories...</p>}
-          {error && <p style={{ color:'red' }}>Error: {error}</p>}
-          {!loading && !error && posts.length === 0 && <p>No stories yet.</p>}
+          {loading && <p>{t('storiesPage.loading')}</p>}
+          {error && <p style={{ color:'red' }}>{t('storiesPage.error')}: {error}</p>}
+          {!loading && !error && posts.length === 0 && <p>{t('storiesPage.noResults')}</p>}
           {posts.length > 0 && (
             viewMode === 'card' ? (
               <div style={{ display:'grid', gap:24, gridTemplateColumns:'repeat(auto-fill, minmax(250px,1fr))' }}>

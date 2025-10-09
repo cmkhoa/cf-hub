@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import PromptSuggestionsRow from "./PromptSuggestionsRow.js";
 import LoadingBubble from "./LoadingBubble.js";
 import {
@@ -11,15 +12,22 @@ import "./Chatbot.css";
 import "./PromptSuggestionsRow.css";
 import { useAuth } from "@/contexts/authContext/authContext";
 import ChatService from "@/services/chatService";
+import { useLang } from "@/contexts/langprov";
 
 const Chatbot = () => {
+	const { t } = useLang();
+	const pathname = usePathname();
 	const [input, setInput] = useState("");
 	const [messages, setMessages] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [isOpen, setIsOpen] = useState(true);
 	const chatContainerRef = useRef(null);
 	const { currentUser } = useAuth();
-	const chatService = new ChatService();
+	// Lazily create ChatService only when needed to avoid crashes on routes where we return early
+	const chatServiceRef = useRef(null);
+
+	// Hide chatbot on chatroom page (client-side). Keep rendering minimal to avoid SSR issues.
+	const isChatroom = pathname === '/chatroom';
 
 	const handleInputChange = (e) => {
 		setInput(e.target.value);
@@ -41,13 +49,17 @@ const Chatbot = () => {
 		// Clear the input right after sending so it disappears from the form
 		setInput("");
 		try {
-			const response = await chatService.generateResponse([...messages, { role: "user", content: p }]);
+			// Initialize service on first use only
+			if (!chatServiceRef.current) {
+				chatServiceRef.current = new ChatService();
+			}
+			const response = await chatServiceRef.current.generateResponse([...messages, { role: "user", content: p }]);
 			setMessages((prev) => [...prev, response]);
 		} catch (error) {
 			console.error("Error:", error);
 			setMessages((prev) => [
 				...prev,
-				{ role: "assistant", content: "I apologize, but I encountered an error. Please try again." },
+				{ role: "assistant", content: t('chatbot.errorMessage') },
 			]);
 		} finally {
 			setIsLoading(false);
@@ -185,14 +197,18 @@ const Chatbot = () => {
 		return elements;
 	};
 
+	if (isChatroom) {
+		return null;
+	}
+
 	return (
 		<div className="chatbot-wrapper">
 			{/* Chat Modal */}
 			<div className={`chat-modal ${isOpen ? "open" : ""}`}>
 				<div className="chat-header">
 					<div className="header-content">
-						<h3>Let's Chat!</h3>
-						<p className="header-subtitle">We'll reply as soon as we can</p>
+						<h3>{t('chatbot.title')}</h3>
+						<p className="header-subtitle">{t('chatbot.subtitle')}</p>
 					</div>
 					<button className="close-button" onClick={toggleChat}>
 						<CloseOutlined />
@@ -205,13 +221,20 @@ const Chatbot = () => {
 								<div className="message assistant">
 									<p>
 										{currentUser
-											? `Hi, ${currentUser.name}! How can I help you today?`
-											: "Hi! How can I help you today?"}
+											? t('chatbot.greetingWithName', { name: currentUser.name }).replace('{name}', currentUser.name)
+											: t('chatbot.greeting')}
 									</p>
 								</div>
 								<span className="message-time">03:52 PM</span>
 							</div>
-							<PromptSuggestionsRow onSuggestionClick={handleSuggestionClick} />
+							<PromptSuggestionsRow 
+								onSuggestionClick={handleSuggestionClick}
+								suggestions={[
+									t('chatbot.suggestions.resume'),
+									t('chatbot.suggestions.interview'),
+									t('chatbot.suggestions.career')
+								]}
+							/>
 						</>
 					) : (
 						<>
@@ -268,10 +291,10 @@ const Chatbot = () => {
 						className="chat-input"
 						onChange={handleInputChange}
 						value={input}
-						placeholder="Write your message..."
+						placeholder={t('chatbot.placeholder')}
 					/>
 					<button type="submit" className="send-button">
-						Send
+						{t('chatbot.send')}
 					</button>
 				</form>
 			</div>

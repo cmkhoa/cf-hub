@@ -1,8 +1,10 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { useLang } from "@/contexts/langprov";
 import "./MissionStatement.css";
 
 const MissionStatement = () => {
+	const { t } = useLang();
 	const [isVisible, setIsVisible] = useState(false);
 	const sectionRef = useRef(null);
 
@@ -30,20 +32,20 @@ const MissionStatement = () => {
 	}, []);
 
 	const words = [
-		{ text: "CF Hub", highlight: true },
-		{ text: "empowers", highlight: false },
-		{ text: "young professionals", highlight: true },
-		{ text: "to secure jobs and build successful careers in", highlight: false },
-		{ text: "finance,", highlight: true },
-		{ text: "operations,", highlight: true },
-		{ text: "strategy,", highlight: true },
-		{ text: "marketing,", highlight: true },
-		{ text: "management,", highlight: true },
-		{ text: "and beyond", highlight: false },
-		{ text: "through dedicated", highlight: false },
-		{ text: "mentorship", highlight: true },
-		{ text: "and", highlight: false },
-		{ text: "support.", highlight: true },
+		{ text: t("missionStatement.words.cfHub"), highlight: true },
+		{ text: t("missionStatement.words.empowers"), highlight: false },
+		{ text: t("missionStatement.words.youngProfessionals"), highlight: true },
+		{ text: t("missionStatement.words.toSecureJobs"), highlight: false },
+		{ text: t("missionStatement.words.finance"), highlight: true },
+		{ text: t("missionStatement.words.operations"), highlight: true },
+		{ text: t("missionStatement.words.strategy"), highlight: true },
+		{ text: t("missionStatement.words.marketing"), highlight: true },
+		{ text: t("missionStatement.words.management"), highlight: true },
+		{ text: t("missionStatement.words.andBeyond"), highlight: false },
+		{ text: t("missionStatement.words.throughDedicated"), highlight: false },
+		{ text: t("missionStatement.words.mentorship"), highlight: true },
+		{ text: t("missionStatement.words.and"), highlight: false },
+		{ text: t("missionStatement.words.support"), highlight: true },
 	];
 
 	return (
@@ -77,15 +79,15 @@ const MissionStatement = () => {
 				<div className="mission-stats">
 					<div className="stat-item">
 						<div className="stat-icon">🎯</div>
-						<div className="stat-text">Career Success</div>
+						<div className="stat-text">{t("missionStatement.stats.careerSuccess")}</div>
 					</div>
 					<div className="stat-item">
 						<div className="stat-icon">👥</div>
-						<div className="stat-text">Expert Mentorship</div>
+						<div className="stat-text">{t("missionStatement.stats.expertMentorship")}</div>
 					</div>
 					<div className="stat-item">
 						<div className="stat-icon">🚀</div>
-						<div className="stat-text">Professional Growth</div>
+						<div className="stat-text">{t("missionStatement.stats.professionalGrowth")}</div>
 					</div>
 				</div>
 			</div>

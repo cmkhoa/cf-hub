@@ -7,11 +7,13 @@ import {
 } from "@ant-design/icons";
 import Image from "next/image";
 import Link from "next/link";
+import { useLang } from "@/contexts/langprov";
 import "./BlogGrid.css";
 
 const { Title, Paragraph } = Typography;
 
 const BlogGrid = () => {
+  const { t } = useLang();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -44,7 +46,7 @@ const BlogGrid = () => {
     return (
       <section className="blog-grid-section">
         <div className="container">
-          <p>Loading latest articles...</p>
+          <p>{t("blogGrid.loading")}</p>
         </div>
       </section>
     );
@@ -52,7 +54,7 @@ const BlogGrid = () => {
     return (
       <section className="blog-grid-section">
         <div className="container">
-          <p>Error: {error}</p>
+          <p>{t("blogGrid.error")}: {error}</p>
         </div>
       </section>
     );
@@ -60,7 +62,7 @@ const BlogGrid = () => {
     return (
       <section className="blog-grid-section">
         <div className="container">
-          <p>No articles yet.</p>
+          <p>{t("blogGrid.noArticles")}</p>
         </div>
       </section>
     );
@@ -108,7 +110,7 @@ const BlogGrid = () => {
       <div className="container">
         <header className="blog-grid-header">
           <h2 id="latest-news-heading" className="blog-grid-title">
-            Latest News
+            {t("blogGrid.title")}
           </h2>
         </header>
         <div className="blog-grid">
@@ -177,7 +179,7 @@ const BlogGrid = () => {
               className="view-all-btn"
               icon={<ArrowRightOutlined />}
             >
-              View All Articles
+              {t("blogGrid.viewAll")}
             </Button>
           </Link>
         </div>

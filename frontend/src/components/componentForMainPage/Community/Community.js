@@ -7,6 +7,8 @@ import { useLang } from "@/contexts/langprov";
 const { Text } = Typography;
 
 const Community = () => {
+  const { t } = useLang();
+  
   const handleClick = (url) => {
     window.open(url, "_blank"); // Opens the link in a new tab
   };
@@ -14,7 +16,7 @@ const Community = () => {
   return (
     <div className="community-container">
       <div className="community-title-wrapper">
-        <Text className="community-title">CF Hub Community</Text>
+        <Text className="community-title">{t("community.title")}</Text>
       </div>
       <Row gutter={[16, 16]} justify="center" className="community-row">
         <Col xs={24} sm={12} md={8} lg={6} className="image-col">
@@ -31,7 +33,7 @@ const Community = () => {
               width={300}
               height={200}
             />
-            <Text className="image-description">Group community</Text>
+            <Text className="image-description">{t("community.groupTech")}</Text>
           </div>
         </Col>
         <Col xs={24} sm={12} md={8} lg={6} className="image-col">
@@ -48,7 +50,7 @@ const Community = () => {
               width={300}
               height={200}
             />
-            <Text className="image-description">Instagram community</Text>
+            <Text className="image-description">{t("community.instagramTech")}</Text>
           </div>
         </Col>
       </Row>

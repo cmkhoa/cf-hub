@@ -85,6 +85,172 @@
     "followUs": "Theo dõi chúng tôi",
     "noRecent": "Chưa có bài viết mới",
     "copyright": "© 2025 CF Hub Corporation - Website chính thức của CF Hub Corporation."
+  },
+  "chatroom": {
+    "title": "Phòng Chat",
+    "saveChat": "Lưu Cuộc Trò Chuyện",
+    "newChat": "Cuộc Trò Chuyện Mới",
+    "sessionStats": "Thống Kê Phiên",
+    "messages": "Tin nhắn",
+    "files": "Tệp đính kèm",
+    "helpWith": "Tôi Có Thể Giúp Gì",
+    "capabilities": {
+      "resume": "Xem xét & tối ưu hóa CV",
+      "career": "Lập kế hoạch nghề nghiệp",
+      "interview": "Chuẩn bị phỏng vấn",
+      "skills": "Tư vấn phát triển kỹ năng",
+      "jobSearch": "Chiến lược tìm việc",
+      "insights": "Hiểu biết về ngành"
+    },
+    "greeting": "Xin chào! 👋 Tôi là Trợ Lý Nghề Nghiệp CF Hub của bạn. Tôi ở đây để giúp bạn với:\n\n• Xem xét và tối ưu hóa CV\n• Hướng dẫn lộ trình nghề nghiệp\n• Chuẩn bị phỏng vấn\n• Lộ trình phát triển kỹ năng\n• Chiến lược ứng tuyển việc làm\n\nBạn có thể tải lên CV (PDF/DOCX) hoặc ảnh chụp màn hình để nhận phản hồi cá nhân hóa. Tôi có thể hỗ trợ gì cho bạn hôm nay?",
+    "placeholder": "Hỏi về sự nghiệp của bạn, tải CV để xem xét, hoặc chia sẻ ảnh chụp màn hình...",
+    "attachFile": "Đính kèm tệp (PDF, DOCX, hoặc hình ảnh)",
+    "thinking": "Đang suy nghĩ...",
+    "disclaimer": "Các phản hồi AI chỉ để tham khảo. Hãy xác minh thông tin quan trọng.",
+    "warningMessage": "Vui lòng nhập tin nhắn hoặc đính kèm tệp",
+    "limitReached": "Đã đạt giới hạn tin nhắn. Vui lòng làm mới để bắt đầu phiên mới.",
+    "fileAttached": "đã đính kèm",
+    "clearConfirmTitle": "Xóa Lịch Sử Trò Chuyện",
+    "clearConfirmMessage": "Bạn có chắc chắn muốn xóa tất cả tin nhắn? Hành động này không thể hoàn tác. Hãy cân nhắc lưu cuộc trò chuyện trước.",
+    "clearButton": "Xóa",
+    "cancelButton": "Hủy",
+    "chatCleared": "Đã xóa cuộc trò chuyện. Tôi có thể giúp gì cho bạn hôm nay?",
+    "chatClearedSuccess": "Đã xóa lịch sử trò chuyện",
+    "conversationSaved": "Đã lưu cuộc trò chuyện!",
+    "errorResponse": "Xin lỗi, tôi gặp lỗi khi xử lý yêu cầu của bạn. Vui lòng thử lại.",
+    "failedResponse": "Không nhận được phản hồi. Vui lòng thử lại.",
+    "suggestions": {
+      "workshops": "Cho tôi biết về các buổi workshop của CF Hub",
+      "mentor": "Làm sao để tham gia với tư cách mentor?",
+      "opportunities": "Có những cơ hội nghề nghiệp nào?"
+    }
+  },
+  "blog": {
+    "title": "Blog",
+    "searchPlaceholder": "Tìm kiếm bài viết...",
+    "filterByCategory": "Lọc theo danh mục",
+    "filterByTags": "Lọc theo thẻ",
+    "allCategories": "Tất cả danh mục",
+    "selectTags": "Chọn thẻ",
+    "tagsMode": "Chế độ thẻ",
+    "anyTag": "Bất kỳ thẻ nào",
+    "allTags": "Tất cả thẻ",
+    "viewMode": "Xem",
+    "cardView": "Thẻ",
+    "rowView": "Hàng",
+    "clearFilters": "Xóa bộ lọc",
+    "noResults": "Không tìm thấy bài viết",
+    "tryAdjusting": "Thử điều chỉnh tìm kiếm hoặc bộ lọc của bạn",
+    "loading": "Đang tải...",
+    "error": "Không thể tải bài viết"
+  },
+  "storiesPage": {
+    "title": "Câu Chuyện Nghề Nghiệp",
+    "searchPlaceholder": "Tìm kiếm câu chuyện...",
+    "filterByCategory": "Lọc theo danh mục",
+    "filterByTags": "Lọc theo thẻ",
+    "allCategories": "Tất cả danh mục",
+    "selectTags": "Chọn thẻ",
+    "tagsMode": "Chế độ thẻ",
+    "anyTag": "Bất kỳ thẻ nào",
+    "allTags": "Tất cả thẻ",
+    "viewMode": "Xem",
+    "cardView": "Thẻ",
+    "rowView": "Hàng",
+    "clearFilters": "Xóa bộ lọc",
+    "noResults": "Không tìm thấy câu chuyện",
+    "tryAdjusting": "Thử điều chỉnh tìm kiếm hoặc bộ lọc của bạn",
+    "loading": "Đang tải...",
+    "error": "Không thể tải câu chuyện"
+  },
+  "search": {
+    "title": "Kết Quả Tìm Kiếm",
+    "searchPlaceholder": "Tìm kiếm...",
+    "filterByTags": "Lọc theo thẻ",
+    "selectTags": "Chọn thẻ",
+    "tagsMode": "Chế độ thẻ",
+    "anyTag": "Bất kỳ thẻ nào",
+    "allTags": "Tất cả thẻ",
+    "viewMode": "Xem",
+    "cardView": "Thẻ",
+    "rowView": "Hàng",
+    "clearFilters": "Xóa bộ lọc",
+    "noResults": "Không tìm thấy kết quả",
+    "tryAdjusting": "Thử điều chỉnh tìm kiếm của bạn",
+    "loading": "Đang tải...",
+    "error": "Không thể tải kết quả",
+    "searchButton": "Tìm kiếm",
+    "resultsFor": "Kết quả cho"
+  },
+  "chatbot": {
+    "title": "Hãy Trò Chuyện!",
+    "subtitle": "Chúng tôi sẽ trả lời sớm nhất có thể",
+    "greeting": "Xin chào! Tôi có thể giúp gì cho bạn hôm nay?",
+    "greetingWithName": "Xin chào, {name}! Tôi có thể giúp gì cho bạn hôm nay?",
+    "placeholder": "Viết tin nhắn của bạn...",
+    "send": "Gửi",
+    "errorMessage": "Xin lỗi, tôi gặp lỗi. Vui lòng thử lại.",
+    "suggestions": {
+      "resume": "Giúp xem xét CV",
+      "interview": "Mẹo chuẩn bị phỏng vấn",
+      "career": "Hướng dẫn nghề nghiệp"
+    }
+  },
+  "offlineEvents": {
+    "title": "Sự Kiện Trực Tiếp"
+  },
+  "onlineEvents": {
+    "title": "Sự Kiện Trực Tuyến"
+  },
+  "missionStatement": {
+    "words": {
+      "cfHub": "CF Hub",
+      "empowers": "trao quyền cho",
+      "youngProfessionals": "các chuyên gia trẻ",
+      "toSecureJobs": "để đảm bảo công việc và xây dựng sự nghiệp thành công trong",
+      "finance": "tài chính,",
+      "operations": "vận hành,",
+      "strategy": "chiến lược,",
+      "marketing": "marketing,",
+      "management": "quản lý,",
+      "andBeyond": "và hơn thế nữa",
+      "throughDedicated": "thông qua",
+      "mentorship": "cố vấn",
+      "and": "và",
+      "support": "hỗ trợ tận tâm."
+    },
+    "stats": {
+      "careerSuccess": "Thành Công Nghề Nghiệp",
+      "expertMentorship": "Cố Vấn Chuyên Gia",
+      "professionalGrowth": "Phát Triển Chuyên Nghiệp"
+    }
+  },
+  "blogGrid": {
+    "title": "Tin Tức Mới Nhất",
+    "loading": "Đang tải bài viết mới nhất...",
+    "error": "Lỗi",
+    "noArticles": "Chưa có bài viết.",
+    "viewAll": "Xem Tất Cả Bài Viết"
+  },
+  "aboutUs": {
+    "title": "Giới Thiệu",
+    "intro": "VNPN là mạng lưới kết nối chuyên gia Việt tại Hoa Kỳ. Nhiệm vụ của VNPN là tạo ra cơ hội phát triển sự nghiệp cho mọi thành viên thông qua việc tiếp cận với các nguồn thông tin tuyển dụng có ưu thế, kiến thức chuyên ngành và kinh nghiệm cố vấn từ những người đi trước. VNPN mong muốn được góp phần xây dựng cộng đồng người Việt Nam ở nước ngoài gắn kết, tương trợ lẫn nhau.",
+    "joinTitle": "Bạn tham gia VNPN vì:",
+    "reasons": {
+      "contribute": "Bạn muốn đóng góp, hỗ trợ xây dựng cộng đồng người Việt Nam ở Hoa Kỳ",
+      "share": "Bạn muốn kinh nghiệm của mình được chia sẻ và sử dụng",
+      "recruit": "Bạn muốn tìm thành viên mới cho công ty bạn đang làm",
+      "cofounder": "Bạn muốn tìm đồng sáng lập (co-founder) cho start-up của mình",
+      "referral": "Bạn muốn có cơ hội có được giới thiệu từ bên trong (internal job referral)",
+      "resume": "Bạn muốn hồ sơ xin việc (resume) của mình được đánh giá (review) từ những người nhiều kinh nghiệm cùng ngành",
+      "mentor": "Bạn muốn tìm một người hướng dẫn có nhiều kinh nghiệm để phát triển sự nghiệp",
+      "insights": "Bạn muốn tìm hiểu về công ty bạn quan tâm qua góc nhìn của những người Việt làm việc ở đó",
+      "connect": "Bạn muốn kết nối với các thành viên khác đang làm việc khắp nơi trên nước Mỹ"
+    },
+    "nonprofit": "VNPN là dự án phi lợi nhuận, được triển khai với sự hỗ trợ từ Hội Thanh Niên, Sinh Viên Việt Nam ở Hoa Kỳ (",
+    "sinhvien": "www.sinhvienusa.org",
+    "vietchallenge": ") và cuộc thi khởi nghiệp VietChallenge (",
+    "betaNote": "). Dự án hiện tại đang được thử nghiệm ở giai đoạn Beta."
   }
 }
   
