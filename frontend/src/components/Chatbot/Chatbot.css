@@ -219,11 +219,19 @@
 .message {
 	padding: 12px 16px;
 	border-radius: 16px;
+	max-width: 80%;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
 }
 
 .message p {
 	margin: 0;
 	padding-bottom: 0;
+	max-width: 100%;
+}
+
+.message a {
+	word-break: break-all;
 }
 
 .message-time {

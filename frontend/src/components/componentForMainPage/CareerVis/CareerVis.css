@@ -539,7 +539,7 @@
   .path-timeline {
     display: block;
     position: relative;
-    padding-left: 50px; /* tighter for mobile */
+    padding-left: 30px; /* tighter for mobile */
     padding-right: 20px; /* less padding on right */
     margin-bottom: 40px;
     /* Draw the vertical rail as a background to ensure continuity */
@@ -638,7 +638,7 @@
   }
 
   .path-timeline {
-    padding-left: 40px;
+    padding-left: 20px;
     padding-right: 10px;
     background-position: 18px 0;
   }
