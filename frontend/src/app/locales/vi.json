@@ -251,14 +251,14 @@
       "jobSearch": "Chiến lược tìm việc",
       "insights": "Hiểu biết về ngành"
     },
-    "greeting": "Xin chào! 👋 Tôi là Trợ Lý Nghề Nghiệp CF Hub của bạn. Tôi ở đây để giúp bạn với:\n\n• Xem xét và tối ưu hóa CV\n• Hướng dẫn lộ trình nghề nghiệp\n• Chuẩn bị phỏng vấn\n• Lộ trình phát triển kỹ năng\n• Chiến lược ứng tuyển việc làm\n\nBạn có thể tải lên CV (PDF/DOCX) hoặc ảnh chụp màn hình để nhận phản hồi cá nhân hóa. Tôi có thể hỗ trợ gì cho bạn hôm nay?",
-    "placeholder": "Hỏi về sự nghiệp của bạn, tải CV để xem xét, hoặc chia sẻ ảnh chụp màn hình...",
+    "greeting": "👋 Xin chào, tôi là Hubee, cố vấn nghề nghiệp của bạn từ CF Hub. Tôi sẽ hướng dẫn bạn từng bước trong thị trường việc làm Hoa Kỳ — từ CV và kết nối mạng lưới đến phỏng vấn và nhận offer. Bạn muốn bắt đầu từ đâu hôm nay?",
+    "placeholder": "Hỏi tôi về sự nghiệp, tìm việc, hoặc lời khuyên chuyên môn...",
     "attachFile": "Đính kèm tệp (PDF, DOCX, hoặc hình ảnh)",
     "thinking": "Đang suy nghĩ...",
     "disclaimer": "Các phản hồi AI chỉ để tham khảo. Hãy xác minh thông tin quan trọng.",
     "warningMessage": "Vui lòng nhập tin nhắn hoặc đính kèm tệp",
     "limitReached": "Đã đạt giới hạn tin nhắn. Vui lòng làm mới để bắt đầu phiên mới.",
-    "fileAttached": "đã đính kèm",
+    "fileAttached": "Tệp đính kèm",
     "clearConfirmTitle": "Xóa Lịch Sử Trò Chuyện",
     "clearConfirmMessage": "Bạn có chắc chắn muốn xóa tất cả tin nhắn? Hành động này không thể hoàn tác. Hãy cân nhắc lưu cuộc trò chuyện trước.",
     "clearButton": "Xóa",
@@ -269,9 +269,9 @@
     "errorResponse": "Xin lỗi, tôi gặp lỗi khi xử lý yêu cầu của bạn. Vui lòng thử lại.",
     "failedResponse": "Không nhận được phản hồi. Vui lòng thử lại.",
     "suggestions": {
-      "workshops": "Cho tôi biết về các buổi workshop của CF Hub",
-      "mentor": "Làm sao để tham gia với tư cách mentor?",
-      "opportunities": "Có những cơ hội nghề nghiệp nào?"
+      "resume": "📄 Xem xét CV của tôi cho việc làm tại Hoa Kỳ",
+      "networking": "🤝 Soạn tin nhắn kết nối với cựu sinh viên",
+      "interview": "🎤 Luyện tập các câu hỏi phỏng vấn hành vi thường gặp"
     }
   },
   "blog": {

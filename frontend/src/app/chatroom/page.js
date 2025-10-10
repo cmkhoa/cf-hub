@@ -148,16 +148,29 @@ const ChatRoom = () => {
       return;
     }
 
+    // Build content with file information for AI prompt
+    let promptContent = text;
+    if (filesToSend.length > 0) {
+      const fileDescriptions = filesToSend.map(f => {
+        const fileType = f.type.startsWith('image/') ? 'image' : 
+                         f.type.includes('pdf') ? 'PDF document' : 'document';
+        return `[Attached ${fileType}: ${f.name}]`;
+      }).join(' ');
+      
+      // Add file info to the prompt content
+      promptContent = text ? `${text}\n\n${fileDescriptions}` : fileDescriptions;
+    }
+
     const userMessage = {
       id: Date.now(),
       role: 'user',
-      content: text,
+      content: text || t('chatroom.fileAttached'), // Display text (or placeholder if only files)
       files: [...filesToSend],
       timestamp: new Date()
     };
 
     setMessages(prev => [...prev, userMessage]);
-    const currentInput = text;
+    const currentInput = promptContent; // Send full prompt with file info to AI
     const currentFiles = [...filesToSend];
     setInputValue('');
     setAttachedFiles([]);
@@ -207,16 +220,16 @@ const ChatRoom = () => {
     }
   };
 
-  // Handle suggestion bubble click: send immediately
+  // Handle suggestion bubble click: populate input field
   const handleSuggestionClick = (text) => {
-    sendMessage(text);
+    setInputValue(text);
   };
 
   // Get translated suggestions
   const suggestions = [
-    t('chatroom.suggestions.workshops'),
-    t('chatroom.suggestions.mentor'),
-    t('chatroom.suggestions.opportunities')
+    t('chatroom.suggestions.resume'),
+    t('chatroom.suggestions.networking'),
+    t('chatroom.suggestions.interview')
   ];
 
   // Save conversation
@@ -309,20 +322,22 @@ const ChatRoom = () => {
             <div className="stat-item">
               <span>{t('chatroom.messages')}: {messages.length}/{MAX_MESSAGES_PER_SESSION}</span>
             </div>
+            {/* TODO: File upload counter - Future update
             <div className="stat-item">
               <span>{t('chatroom.files')}: {attachedFiles.length}/{MAX_FILES_PER_SESSION}</span>
             </div>
+            */}
           </div>
 
           <div className="capabilities-section">
             <p className="info-label capabilities-label">{t('chatroom.helpWith')}</p>
             <ul className="capabilities-list">
-              <li>📄 {t('chatroom.capabilities.resume')}</li>
-              <li>🎯 {t('chatroom.capabilities.career')}</li>
-              <li>💼 {t('chatroom.capabilities.interview')}</li>
-              <li>📚 {t('chatroom.capabilities.skills')}</li>
-              <li>🔍 {t('chatroom.capabilities.jobSearch')}</li>
-              <li>📊 {t('chatroom.capabilities.insights')}</li>
+              <li onClick={() => setInputValue(t('chatroom.capabilities.resume'))}>📄 {t('chatroom.capabilities.resume')}</li>
+              <li onClick={() => setInputValue(t('chatroom.capabilities.career'))}>🎯 {t('chatroom.capabilities.career')}</li>
+              <li onClick={() => setInputValue(t('chatroom.capabilities.interview'))}>💼 {t('chatroom.capabilities.interview')}</li>
+              <li onClick={() => setInputValue(t('chatroom.capabilities.skills'))}>📚 {t('chatroom.capabilities.skills')}</li>
+              <li onClick={() => setInputValue(t('chatroom.capabilities.jobSearch'))}>🔍 {t('chatroom.capabilities.jobSearch')}</li>
+              <li onClick={() => setInputValue(t('chatroom.capabilities.insights'))}>📊 {t('chatroom.capabilities.insights')}</li>
             </ul>
           </div>
         </div>
@@ -454,6 +469,7 @@ const ChatRoom = () => {
           )}
 
           <div className="input-wrapper">
+            {/* TODO: File upload - Future update
             <Upload
               beforeUpload={handleFileChange}
               showUploadList={false}
@@ -468,6 +484,7 @@ const ChatRoom = () => {
                 />
               </Tooltip>
             </Upload>
+            */}
 
             <TextArea
               value={inputValue}

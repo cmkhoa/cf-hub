@@ -252,14 +252,14 @@
       "jobSearch": "Job search strategies",
       "insights": "Industry insights"
     },
-    "greeting": "Hello! 👋 I'm your CF Hub Career Assistant. I'm here to help you with:\n\n• Resume review and optimization\n• Career path guidance\n• Interview preparation\n• Skill development roadmaps\n• Job application strategies\n\nYou can upload your resume (PDF/DOCX) or screenshots for personalized feedback. How can I assist you today?",
-    "placeholder": "Ask about your career, upload your resume for review, or share a screenshot...",
+    "greeting": "👋 Hi, I'm Hubee, your career mentor from CF Hub. I'll guide you step by step in the U.S. job market — from resumes and networking to interviews and offers. Where would you like to start today?",
+    "placeholder": "Ask me about your career, job search, or any professional advice...",
     "attachFile": "Attach file (PDF, DOCX, or image)",
     "thinking": "Thinking...",
     "disclaimer": "AI responses are for guidance only. Verify important information.",
     "warningMessage": "Please enter a message or attach a file",
     "limitReached": "Message limit reached. Please refresh to start a new session.",
-    "fileAttached": "attached",
+    "fileAttached": "Attached files",
     "clearConfirmTitle": "Clear Chat History",
     "clearConfirmMessage": "Are you sure you want to clear all messages? This cannot be undone. Consider saving your conversation first.",
     "clearButton": "Clear",
@@ -270,9 +270,9 @@
     "errorResponse": "Sorry, I encountered an error processing your request. Please try again.",
     "failedResponse": "Failed to get response. Please try again.",
     "suggestions": {
-      "workshops": "Tell me about CF Hub's workshops",
-      "mentor": "How can I join as a mentor?",
-      "opportunities": "What career opportunities are available?"
+      "resume": "📄 Review my resume for U.S. jobs",
+      "networking": "🤝 Draft a networking message to an alum",
+      "interview": "🎤 Practice common behavioral interview questions"
     }
   },
   "blog": {
