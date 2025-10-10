@@ -119,6 +119,7 @@ Respond in STRICT JSON only. Do NOT include any extra prose, markdown, or code f
 }
 
 Rules:
+- always respond in the language of the user's question.
 - Output ONLY JSON matching the schema above.
 - If you have no follow-ups, return an empty array for "followUps".
 - Keep "answer" concise, practical, and mentor-like.
