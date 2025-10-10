@@ -4,6 +4,13 @@ const webinarSchema = new mongoose.Schema({
   title: { type: String, required: true, trim: true },
   description: { type: String, trim: true },
   date: { type: Date },
+  speakers: [
+    {
+      name: { type: String, required: true, trim: true },
+      title: { type: String, trim: true },
+    },
+  ],
+  // Keep legacy fields for backward compatibility
   speakerName: { type: String, trim: true },
   speakerTitle: { type: String, trim: true },
   image: { type: String, trim: true }, // URL or path to image
