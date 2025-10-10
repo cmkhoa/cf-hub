@@ -195,8 +195,8 @@ export async function generateCareerGuidance(userMessage, files = [], conversati
       console.log('Gemini response received successfully');
       return text;
     } catch (primaryErr) {
-      console.warn('Primary model call failed, retrying with gemini-1.5-flash', primaryErr);
-      const fallback = getModel('gemini-1.5-flash');
+      console.warn('Primary model call failed, retrying with fallback model', primaryErr);
+      const fallback = getModel('gemini-2.0-flash-exp');
       const result2 = await fallback.generateContent(parts);
       const response2 = await result2.response;
       console.log('Fallback model response received successfully');
