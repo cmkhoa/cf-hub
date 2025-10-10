@@ -24,7 +24,11 @@ import {
   Menu,
   Tag as AntTag,
 } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import {
+  UploadOutlined,
+  PlusOutlined,
+  MinusCircleOutlined,
+} from "@ant-design/icons";
 import { API_ENDPOINTS, getAuthHeader } from "@/config/api";
 import HeaderComponent from "@/components/header/header";
 const { Title } = Typography;
@@ -365,12 +369,21 @@ export default function AdminDashboard() {
   const openWebinarModal = (record = null) => {
     setEditingWebinar(record);
     if (record) {
+      // Handle both new speakers array and legacy single speaker fields
+      const speakers =
+        record.speakers && record.speakers.length > 0
+          ? record.speakers
+          : record.speakerName
+          ? [{ name: record.speakerName, title: record.speakerTitle || "" }]
+          : [];
+
       webinarForm.setFieldsValue({
         title: record.title,
         description: record.description,
         date: record.date
           ? new Date(record.date).toISOString().slice(0, 16)
           : "",
+        speakers: speakers,
         speakerName: record.speakerName,
         speakerTitle: record.speakerTitle,
         image: record.image,
@@ -381,17 +394,17 @@ export default function AdminDashboard() {
       });
     } else {
       webinarForm.resetFields();
-      webinarForm.setFieldsValue({ featured: false, order: 0 });
+      webinarForm.setFieldsValue({ featured: false, order: 0, speakers: [] });
     }
     setWebinarModalOpen(true);
   };
   const submitWebinar = async () => {
     try {
       const values = await webinarForm.validateFields();
-  const payload = { ...values };
-  // Ensure only imageBase64 is sent (backend will set image key); remove legacy image field
-  if (!payload.imageBase64) delete payload.imageBase64;
-  delete payload.image;
+      const payload = { ...values };
+      // Ensure only imageBase64 is sent (backend will set image key); remove legacy image field
+      if (!payload.imageBase64) delete payload.imageBase64;
+      delete payload.image;
       // Convert datetime-local string to Date if present
       if (payload.date) payload.date = new Date(payload.date).toISOString();
       const method = editingWebinar ? "PUT" : "POST";
@@ -1389,24 +1402,31 @@ export default function AdminDashboard() {
                     <Form.Item label="Webinar Image (uploads to R2)">
                       <Upload
                         beforeUpload={(file) => {
-                          const isImg = file.type.startsWith('image/');
-                          if (!isImg) { message.error('Only image files'); return Upload.LIST_IGNORE; }
+                          const isImg = file.type.startsWith("image/");
+                          if (!isImg) {
+                            message.error("Only image files");
+                            return Upload.LIST_IGNORE;
+                          }
                           const reader = new FileReader();
                           reader.onload = (e) => {
                             // Store temporarily in form for submit
-                            webinarForm.setFieldsValue({ imageBase64: e.target.result });
-                            message.success('Image ready for upload');
+                            webinarForm.setFieldsValue({
+                              imageBase64: e.target.result,
+                            });
+                            message.success("Image ready for upload");
                           };
                           reader.readAsDataURL(file);
                           return false; // prevent auto upload
                         }}
                         maxCount={1}
                         accept="image/*"
-                        onRemove={() => webinarForm.setFieldsValue({ imageBase64: null })}
+                        onRemove={() =>
+                          webinarForm.setFieldsValue({ imageBase64: null })
+                        }
                       >
                         <Button icon={<UploadOutlined />}>Select Image</Button>
                       </Upload>
-                      <Form.Item name="imageBase64" style={{ display: 'none' }}>
+                      <Form.Item name="imageBase64" style={{ display: "none" }}>
                         <Input type="hidden" />
                       </Form.Item>
                     </Form.Item>
@@ -1446,9 +1466,49 @@ export default function AdminDashboard() {
                     },
                     { title: "Title", dataIndex: "title", key: "title" },
                     {
-                      title: "Speaker",
-                      dataIndex: "speakerName",
-                      key: "speakerName",
+                      title: "Speakers",
+                      key: "speakers",
+                      render: (_, record) => {
+                        // Handle both new speakers array and legacy single speaker
+                        const speakers =
+                          record.speakers && record.speakers.length > 0
+                            ? record.speakers
+                            : record.speakerName
+                            ? [
+                                {
+                                  name: record.speakerName,
+                                  title: record.speakerTitle,
+                                },
+                              ]
+                            : [];
+
+                        if (speakers.length === 0) return "-";
+
+                        return (
+                          <div>
+                            {speakers.map((speaker, index) => (
+                              <div
+                                key={index}
+                                style={{
+                                  marginBottom:
+                                    index < speakers.length - 1 ? 4 : 0,
+                                }}
+                              >
+                                <div style={{ fontWeight: "bold" }}>
+                                  {speaker.name}
+                                </div>
+                                {speaker.title && (
+                                  <div
+                                    style={{ fontSize: "12px", color: "#666" }}
+                                  >
+                                    {speaker.title}
+                                  </div>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        );
+                      },
                     },
                     {
                       title: "Date",
@@ -1509,20 +1569,27 @@ export default function AdminDashboard() {
                       try {
                         const items = e.clipboardData?.items || [];
                         for (const item of items) {
-                          if (item.kind === 'file' && item.type.startsWith('image/')) {
+                          if (
+                            item.kind === "file" &&
+                            item.type.startsWith("image/")
+                          ) {
                             const file = item.getAsFile();
                             if (file) {
                               const reader = new FileReader();
                               reader.onload = (ev) => {
-                                webinarForm.setFieldsValue({ imageBase64: ev.target.result });
-                                message.success('Pasted image captured');
+                                webinarForm.setFieldsValue({
+                                  imageBase64: ev.target.result,
+                                });
+                                message.success("Pasted image captured");
                               };
                               reader.readAsDataURL(file);
                               break;
                             }
                           }
                         }
-                      } catch (err) { /* ignore */ }
+                      } catch (err) {
+                        /* ignore */
+                      }
                     }}
                   >
                     <Form.Item
@@ -1541,42 +1608,156 @@ export default function AdminDashboard() {
                     <Form.Item name="date" label="Date & Time">
                       <Input type="datetime-local" />
                     </Form.Item>
-                    <Form.Item name="speakerName" label="Speaker Name">
+                    <Form.List name="speakers">
+                      {(fields, { add, remove }) => (
+                        <>
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                              marginBottom: 8,
+                            }}
+                          >
+                            <label style={{ fontWeight: "bold" }}>
+                              Speakers (max 4)
+                            </label>
+                            <Button
+                              type="dashed"
+                              onClick={() => add()}
+                              icon={<PlusOutlined />}
+                              disabled={fields.length >= 4}
+                            >
+                              Add Speaker
+                            </Button>
+                          </div>
+                          {fields.map(({ key, name, ...restField }) => (
+                            <div
+                              key={key}
+                              style={{
+                                display: "flex",
+                                gap: 8,
+                                marginBottom: 8,
+                              }}
+                            >
+                              <Form.Item
+                                {...restField}
+                                name={[name, "name"]}
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: "Speaker name is required",
+                                  },
+                                ]}
+                                style={{ flex: 1 }}
+                              >
+                                <Input placeholder="Speaker name" />
+                              </Form.Item>
+                              <Form.Item
+                                {...restField}
+                                name={[name, "title"]}
+                                style={{ flex: 1 }}
+                              >
+                                <Input placeholder="Speaker title/role" />
+                              </Form.Item>
+                              <Button
+                                type="text"
+                                danger
+                                icon={<MinusCircleOutlined />}
+                                onClick={() => remove(name)}
+                                style={{ flexShrink: 0 }}
+                              />
+                            </div>
+                          ))}
+                          {fields.length === 0 && (
+                            <div
+                              style={{
+                                textAlign: "center",
+                                color: "#999",
+                                padding: "20px 0",
+                              }}
+                            >
+                              No speakers added yet. Click "Add Speaker" to add
+                              speakers.
+                            </div>
+                          )}
+                        </>
+                      )}
+                    </Form.List>
+                    {/* Legacy single speaker fields for backward compatibility */}
+                    <Form.Item
+                      name="speakerName"
+                      label="Speaker Name (Legacy)"
+                      style={{ display: "none" }}
+                    >
                       <Input placeholder="Speaker name" />
                     </Form.Item>
-                    <Form.Item name="speakerTitle" label="Speaker Title">
+                    <Form.Item
+                      name="speakerTitle"
+                      label="Speaker Title (Legacy)"
+                      style={{ display: "none" }}
+                    >
                       <Input placeholder="Speaker title/role" />
                     </Form.Item>
                     <Form.Item label="Webinar Image (uploads to R2)">
                       <Upload
                         beforeUpload={(file) => {
-                          const isImg = file.type.startsWith('image/');
-                          if (!isImg) { message.error('Only image files'); return Upload.LIST_IGNORE; }
+                          const isImg = file.type.startsWith("image/");
+                          if (!isImg) {
+                            message.error("Only image files");
+                            return Upload.LIST_IGNORE;
+                          }
                           const reader = new FileReader();
                           reader.onload = (e) => {
-                            webinarForm.setFieldsValue({ imageBase64: e.target.result });
-                            message.success('Image ready for upload');
+                            webinarForm.setFieldsValue({
+                              imageBase64: e.target.result,
+                            });
+                            message.success("Image ready for upload");
                           };
                           reader.readAsDataURL(file);
                           return false;
                         }}
                         maxCount={1}
                         accept="image/*"
-                        onRemove={() => webinarForm.setFieldsValue({ imageBase64: null })}
+                        onRemove={() =>
+                          webinarForm.setFieldsValue({ imageBase64: null })
+                        }
                       >
                         <Button icon={<UploadOutlined />}>Select Image</Button>
                       </Upload>
-                      <Form.Item name="imageBase64" style={{ display: 'none' }}>
+                      <Form.Item name="imageBase64" style={{ display: "none" }}>
                         <Input type="hidden" />
                       </Form.Item>
-                      {editingWebinar && !webinarForm.getFieldValue('imageBase64') && editingWebinar?.image && (
-                        <div style={{ marginTop: 8, fontSize: 12, color: '#666' }}>
-                          Existing image in use. Selecting a new image will replace it.
-                        </div>
-                      )}
-                      {webinarForm.getFieldValue('imageBase64') && (
-                        <div style={{ marginTop: 8, fontSize: 12, wordBreak: 'break-all' }}>
-                          Embedded (base64) size: {Math.round((webinarForm.getFieldValue('imageBase64').length * 3) / 4 / 1024)} KB
+                      {editingWebinar &&
+                        !webinarForm.getFieldValue("imageBase64") &&
+                        editingWebinar?.image && (
+                          <div
+                            style={{
+                              marginTop: 8,
+                              fontSize: 12,
+                              color: "#666",
+                            }}
+                          >
+                            Existing image in use. Selecting a new image will
+                            replace it.
+                          </div>
+                        )}
+                      {webinarForm.getFieldValue("imageBase64") && (
+                        <div
+                          style={{
+                            marginTop: 8,
+                            fontSize: 12,
+                            wordBreak: "break-all",
+                          }}
+                        >
+                          Embedded (base64) size:{" "}
+                          {Math.round(
+                            (webinarForm.getFieldValue("imageBase64").length *
+                              3) /
+                              4 /
+                              1024
+                          )}{" "}
+                          KB
                         </div>
                       )}
                     </Form.Item>

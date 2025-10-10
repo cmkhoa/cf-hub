@@ -92,9 +92,20 @@ const MenteeShowcase = () => {
                 <Title level={4} className="webinar-title">
                   {webinar.title}
                 </Title>
-                <div className="webinar-speaker">
-                  {webinar.speakerName}
-                  {webinar.speakerTitle ? ` — ${webinar.speakerTitle}` : ""}
+                <div className="webinar-speakers">
+                  {webinar.speakers && webinar.speakers.length > 0 ? (
+                    webinar.speakers.slice(0, 4).map((speaker, idx) => (
+                      <div key={idx} className="webinar-speaker">
+                        {speaker.name}
+                        {speaker.title ? ` — ${speaker.title}` : ""}
+                      </div>
+                    ))
+                  ) : webinar.speakerName ? (
+                    <div className="webinar-speaker">
+                      {webinar.speakerName}
+                      {webinar.speakerTitle ? ` — ${webinar.speakerTitle}` : ""}
+                    </div>
+                  ) : null}
                 </div>
                 <Paragraph className="webinar-description">
                   {webinar.description}
